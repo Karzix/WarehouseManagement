@@ -1,0 +1,12 @@
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.TransferCronjob\bin\Debug\net6.0\WarehouseManagement.TransferCronjob.deps.json
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.TransferCronjob\bin\Debug\net6.0\WarehouseManagement.TransferCronjob.dll
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.TransferCronjob\bin\Debug\net6.0\WarehouseManagement.TransferCronjob.pdb
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.TransferCronjob\obj\Debug\net6.0\WarehouseManagement.TransferCronjob.csproj.AssemblyReference.cache
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.TransferCronjob\obj\Debug\net6.0\WarehouseManagement.TransferCronjob.GeneratedMSBuildEditorConfig.editorconfig
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.TransferCronjob\obj\Debug\net6.0\WarehouseManagement.TransferCronjob.AssemblyInfoInputs.cache
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.TransferCronjob\obj\Debug\net6.0\WarehouseManagement.TransferCronjob.AssemblyInfo.cs
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.TransferCronjob\obj\Debug\net6.0\WarehouseManagement.TransferCronjob.csproj.CoreCompileInputs.cache
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.TransferCronjob\obj\Debug\net6.0\WarehouseManagement.TransferCronjob.dll
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.TransferCronjob\obj\Debug\net6.0\refint\WarehouseManagement.TransferCronjob.dll
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.TransferCronjob\obj\Debug\net6.0\WarehouseManagement.TransferCronjob.pdb
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.TransferCronjob\obj\Debug\net6.0\ref\WarehouseManagement.TransferCronjob.dll

@@ -1,0 +1,12 @@
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.DAL\bin\Debug\net6.0\WarehouseManagement.DAL.deps.json
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.DAL\bin\Debug\net6.0\WarehouseManagement.DAL.dll
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.DAL\bin\Debug\net6.0\WarehouseManagement.DAL.pdb
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.DAL\obj\Debug\net6.0\WarehouseManagement.DAL.csproj.AssemblyReference.cache
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.DAL\obj\Debug\net6.0\WarehouseManagement.DAL.GeneratedMSBuildEditorConfig.editorconfig
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.DAL\obj\Debug\net6.0\WarehouseManagement.DAL.AssemblyInfoInputs.cache
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.DAL\obj\Debug\net6.0\WarehouseManagement.DAL.AssemblyInfo.cs
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.DAL\obj\Debug\net6.0\WarehouseManagement.DAL.csproj.CoreCompileInputs.cache
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.DAL\obj\Debug\net6.0\WarehouseManagement.DAL.dll
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.DAL\obj\Debug\net6.0\refint\WarehouseManagement.DAL.dll
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.DAL\obj\Debug\net6.0\WarehouseManagement.DAL.pdb
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.DAL\obj\Debug\net6.0\ref\WarehouseManagement.DAL.dll

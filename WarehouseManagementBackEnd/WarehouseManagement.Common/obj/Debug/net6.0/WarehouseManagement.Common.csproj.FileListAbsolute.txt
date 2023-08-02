@@ -1,0 +1,12 @@
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.Common\bin\Debug\net6.0\WarehouseManagement.Common.deps.json
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.Common\bin\Debug\net6.0\WarehouseManagement.Common.dll
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.Common\bin\Debug\net6.0\WarehouseManagement.Common.pdb
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.Common\obj\Debug\net6.0\WarehouseManagement.Common.csproj.AssemblyReference.cache
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.Common\obj\Debug\net6.0\WarehouseManagement.Common.GeneratedMSBuildEditorConfig.editorconfig
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.Common\obj\Debug\net6.0\WarehouseManagement.Common.AssemblyInfoInputs.cache
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.Common\obj\Debug\net6.0\WarehouseManagement.Common.AssemblyInfo.cs
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.Common\obj\Debug\net6.0\WarehouseManagement.Common.csproj.CoreCompileInputs.cache
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.Common\obj\Debug\net6.0\WarehouseManagement.Common.dll
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.Common\obj\Debug\net6.0\refint\WarehouseManagement.Common.dll
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.Common\obj\Debug\net6.0\WarehouseManagement.Common.pdb
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.Common\obj\Debug\net6.0\ref\WarehouseManagement.Common.dll
