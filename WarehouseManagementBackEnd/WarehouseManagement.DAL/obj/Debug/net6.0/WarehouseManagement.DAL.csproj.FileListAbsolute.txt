@@ -10,3 +10,8 @@ D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.DAL
 D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.DAL\obj\Debug\net6.0\refint\WarehouseManagement.DAL.dll
 D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.DAL\obj\Debug\net6.0\WarehouseManagement.DAL.pdb
 D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.DAL\obj\Debug\net6.0\ref\WarehouseManagement.DAL.dll
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.DAL\bin\Debug\net6.0\Maynghien.Common.dll
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.DAL\bin\Debug\net6.0\Maynghien.Common.pdb
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.DAL\obj\Debug\net6.0\WarehouseManagement.DAL.csproj.CopyComplete
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.DAL\bin\Debug\net6.0\WarehouseManagement.DAL.runtimeconfig.json
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.DAL\obj\Debug\net6.0\WarehouseManagement.DAL.genruntimeconfig.cache

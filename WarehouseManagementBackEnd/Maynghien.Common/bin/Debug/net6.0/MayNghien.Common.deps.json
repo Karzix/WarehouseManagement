@@ -6,14 +6,14 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "MayNghien.Common/1.0.0": {
+      "Maynghien.Common/1.0.0": {
         "dependencies": {
           "EFCore.BulkExtensions": "6.7.12",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "6.0.19",
           "Newtonsoft.Json": "13.0.3"
         },
         "runtime": {
-          "MayNghien.Common.dll": {}
+          "Maynghien.Common.dll": {}
         }
       },
       "dotMorten.Microsoft.SqlServer.Types/1.4.0": {
@@ -803,7 +803,7 @@
     }
   },
   "libraries": {
-    "MayNghien.Common/1.0.0": {
+    "Maynghien.Common/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
