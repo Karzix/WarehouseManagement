@@ -9,7 +9,7 @@ namespace WarehouseManagement.DAL.Models.Entity
 {
     public class Supplier:BaseEntity
     {
-        public string Name { get; set; }
-        public string Email { get; set; }
+        public string? Name { get; set; }
+        public string? Email { get; set; }
     }
 }
