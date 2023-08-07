@@ -109,3 +109,7 @@ D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.API
 D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.API\bin\Debug\net6.0\WarehouseManagement.DAL.pdb
 D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.API\bin\Debug\net6.0\WarehouseManagement.Model.dll
 D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.API\bin\Debug\net6.0\WarehouseManagement.Model.pdb
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.API\bin\Debug\net6.0\AutoMapper.dll
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.API\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.API\bin\Debug\net6.0\WarehouseManagement.Service.dll
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.API\bin\Debug\net6.0\WarehouseManagement.Service.pdb

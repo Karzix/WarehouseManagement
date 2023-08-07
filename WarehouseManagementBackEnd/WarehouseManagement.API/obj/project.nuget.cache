@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "5X5MfkfwdG2Yi+rn8vutv4BSMp1huO3wRkb3dgG/olsMwSPCRwNWInqXuksjPWXd7rq/kERRLReKFPl9f5n13w==",
+  "dgSpecHash": "drMr1JiemywuzvQ2KfiBfmzzjYQmXm3rNdFNjDI2p2aJo6FvS2EsgSSfbtidFKjc17dVD4f9Ji92UYKpI/ukgg==",
   "success": true,
   "projectFilePath": "D:\\GitHub\\WarehouseManagement\\WarehouseManagementBackEnd\\WarehouseManagement.API\\WarehouseManagement.API.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\ANH KIET\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
+    "C:\\Users\\ANH KIET\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\ANH KIET\\.nuget\\packages\\azure.core\\1.6.0\\azure.core.1.6.0.nupkg.sha512",
     "C:\\Users\\ANH KIET\\.nuget\\packages\\azure.identity\\1.3.0\\azure.identity.1.3.0.nupkg.sha512",
     "C:\\Users\\ANH KIET\\.nuget\\packages\\azure.security.keyvault.certificates\\4.1.0\\azure.security.keyvault.certificates.4.1.0.nupkg.sha512",
@@ -19,7 +21,7 @@
     "C:\\Users\\ANH KIET\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\6.0.19\\microsoft.aspnetcore.cryptography.keyderivation.6.0.19.nupkg.sha512",
     "C:\\Users\\ANH KIET\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\6.0.19\\microsoft.aspnetcore.identity.entityframeworkcore.6.0.19.nupkg.sha512",
     "C:\\Users\\ANH KIET\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.0.0\\microsoft.bcl.asyncinterfaces.1.0.0.nupkg.sha512",
-    "C:\\Users\\ANH KIET\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
+    "C:\\Users\\ANH KIET\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\ANH KIET\\.nuget\\packages\\microsoft.data.sqlclient\\2.1.5\\microsoft.data.sqlclient.2.1.5.nupkg.sha512",
     "C:\\Users\\ANH KIET\\.nuget\\packages\\microsoft.data.sqlclient.sni.runtime\\2.1.1\\microsoft.data.sqlclient.sni.runtime.2.1.1.nupkg.sha512",
     "C:\\Users\\ANH KIET\\.nuget\\packages\\microsoft.data.sqlite.core\\6.0.16\\microsoft.data.sqlite.core.6.0.16.nupkg.sha512",

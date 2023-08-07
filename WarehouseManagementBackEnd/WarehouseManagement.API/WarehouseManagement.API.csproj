@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.19" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.19" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.20" />
@@ -28,6 +29,7 @@
     <ProjectReference Include="..\Maynghien.Common\Maynghien.Common.csproj" />
     <ProjectReference Include="..\WarehouseManagement.DAL\WarehouseManagement.DAL.csproj" />
     <ProjectReference Include="..\WarehouseManagement.Model\WarehouseManagement.Model.csproj" />
+    <ProjectReference Include="..\WarehouseManagement.Service\WarehouseManagement.Service.csproj" />
   </ItemGroup>
 
 </Project>
