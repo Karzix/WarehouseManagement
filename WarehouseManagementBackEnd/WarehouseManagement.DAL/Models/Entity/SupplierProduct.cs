@@ -4,22 +4,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Query.Internal;
+using MayNghien.Common.Models.Entity;
 
 namespace WarehouseManagement.DAL.Models.Entity
 {
-    public class InventoryReport
+    public class SupplierProduct:BaseEntity
     {
-        public Guid Id { get; set; }
-
         [ForeignKey("Product")]
         public Guid ProductId { get; set; }
         [ForeignKey("ProductId")]
-        public virtual Product? Product { get; set; }
+        public Product? Product { get; set; }
 
         [ForeignKey("Supplier")]
-        public Guid SupplierId { get; set; }
+        public Guid SupplierId { get; set;}
         [ForeignKey("SupplierId")]
-        public virtual Supplier? Supplier { get; set; }
+        public Supplier Supplier { get; set; }
     }
 }

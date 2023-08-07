@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WarehouseManagement.DAL.Migrations
 {
-    public partial class InitDb : Migration
+    public partial class Db : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -49,36 +49,59 @@ namespace WarehouseManagement.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Suppliers",
+                name: "Product",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SupplierName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SupplierAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SupplierPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SupplierEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProductType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Modifiedby = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Suppliers", x => x.Id);
+                    table.PrimaryKey("PK_Product", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Warehouses",
+                name: "Supplier",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    WarehouseName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    WarehouseAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<int>(type: "int", nullable: false),
-                    WarehouseManager = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Modifiedby = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Warehouses", x => x.Id);
+                    table.PrimaryKey("PK_Supplier", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Warehouse",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Managent = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Modifiedby = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Warehouse", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -188,141 +211,119 @@ namespace WarehouseManagement.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Products",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProductDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PurchasePrice = table.Column<int>(type: "int", nullable: false),
-                    SellingPrice = table.Column<int>(type: "int", nullable: false),
-                    QuantityOnHand = table.Column<int>(type: "int", nullable: false),
-                    DateAdded = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Products", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Products_Suppliers_SupplierId",
-                        column: x => x.SupplierId,
-                        principalTable: "Suppliers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InventoryReports",
+                name: "SupplierProduct",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InventoryReports", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_InventoryReports_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_InventoryReports_Suppliers_SupplierId",
-                        column: x => x.SupplierId,
-                        principalTable: "Suppliers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Lots",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Quantily = table.Column<int>(type: "int", nullable: false),
-                    DateAdded = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PurchasePrice = table.Column<int>(type: "int", nullable: false),
                     SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Modifiedby = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Lots", x => x.Id);
+                    table.PrimaryKey("PK_SupplierProduct", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Lots_Products_ProductId",
+                        name: "FK_SupplierProduct_Product_ProductId",
                         column: x => x.ProductId,
-                        principalTable: "Products",
+                        principalTable: "Product",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Lots_Suppliers_SupplierId",
+                        name: "FK_SupplierProduct_Supplier_SupplierId",
                         column: x => x.SupplierId,
-                        principalTable: "Suppliers",
+                        principalTable: "Supplier",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "OutboundShipments",
+                name: "Consignment",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    From = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    To = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ExportProduct = table.Column<bool>(type: "bit", nullable: false),
+                    WarehouseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Modifiedby = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Consignment", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Consignment_Warehouse_WarehouseId",
+                        column: x => x.WarehouseId,
+                        principalTable: "Warehouse",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductRemaining",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    DateShipped = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    OutboundShipmentClerk = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    WarehouseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Modifiedby = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OutboundShipments", x => x.Id);
+                    table.PrimaryKey("PK_ProductRemaining", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OutboundShipments_Products_ProductId",
+                        name: "FK_ProductRemaining_Product_ProductId",
                         column: x => x.ProductId,
-                        principalTable: "Products",
+                        principalTable: "Product",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProductRemaining_Warehouse_WarehouseId",
+                        column: x => x.WarehouseId,
+                        principalTable: "Warehouse",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Transfers",
+                name: "ProductReceipt",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    DateTransferred = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TransferClerk = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    SupplierProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ConsignmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Modifiedby = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Transfers", x => x.Id);
+                    table.PrimaryKey("PK_ProductReceipt", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Transfers_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
+                        name: "FK_ProductReceipt_Consignment_ConsignmentId",
+                        column: x => x.ConsignmentId,
+                        principalTable: "Consignment",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InboundReceipts",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DateAdded = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    InboundReceiptClerk = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LotId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InboundReceipts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_InboundReceipts_Lots_LotId",
-                        column: x => x.LotId,
-                        principalTable: "Lots",
+                        name: "FK_ProductReceipt_SupplierProduct_SupplierProductId",
+                        column: x => x.SupplierProductId,
+                        principalTable: "SupplierProduct",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -367,44 +368,39 @@ namespace WarehouseManagement.DAL.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InboundReceipts_LotId",
-                table: "InboundReceipts",
-                column: "LotId");
+                name: "IX_Consignment_WarehouseId",
+                table: "Consignment",
+                column: "WarehouseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InventoryReports_ProductId",
-                table: "InventoryReports",
+                name: "IX_ProductReceipt_ConsignmentId",
+                table: "ProductReceipt",
+                column: "ConsignmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductReceipt_SupplierProductId",
+                table: "ProductReceipt",
+                column: "SupplierProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductRemaining_ProductId",
+                table: "ProductRemaining",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InventoryReports_SupplierId",
-                table: "InventoryReports",
+                name: "IX_ProductRemaining_WarehouseId",
+                table: "ProductRemaining",
+                column: "WarehouseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SupplierProduct_ProductId",
+                table: "SupplierProduct",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SupplierProduct_SupplierId",
+                table: "SupplierProduct",
                 column: "SupplierId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Lots_ProductId",
-                table: "Lots",
-                column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Lots_SupplierId",
-                table: "Lots",
-                column: "SupplierId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OutboundShipments_ProductId",
-                table: "OutboundShipments",
-                column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_SupplierId",
-                table: "Products",
-                column: "SupplierId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Transfers_ProductId",
-                table: "Transfers",
-                column: "ProductId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -425,19 +421,10 @@ namespace WarehouseManagement.DAL.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "InboundReceipts");
+                name: "ProductReceipt");
 
             migrationBuilder.DropTable(
-                name: "InventoryReports");
-
-            migrationBuilder.DropTable(
-                name: "OutboundShipments");
-
-            migrationBuilder.DropTable(
-                name: "Transfers");
-
-            migrationBuilder.DropTable(
-                name: "Warehouses");
+                name: "ProductRemaining");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -446,13 +433,19 @@ namespace WarehouseManagement.DAL.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Lots");
+                name: "Consignment");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "SupplierProduct");
 
             migrationBuilder.DropTable(
-                name: "Suppliers");
+                name: "Warehouse");
+
+            migrationBuilder.DropTable(
+                name: "Product");
+
+            migrationBuilder.DropTable(
+                name: "Supplier");
         }
     }
 }

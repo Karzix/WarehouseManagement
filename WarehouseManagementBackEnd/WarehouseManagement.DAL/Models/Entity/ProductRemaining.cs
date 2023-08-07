@@ -4,21 +4,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MayNghien.Common.Models.Entity;
 
 namespace WarehouseManagement.DAL.Models.Entity
 {
-    public class Transfer
+    public class ProductRemaining :BaseEntity
     {
-        public Guid Id { get; set; }
         public int Quantity { get; set; }
-        public DateTime DateTransferred { get; set; }
-        public string? TransferClerk { get; set; }
-
 
         [ForeignKey("Product")]
         public Guid ProductId { get; set; }
         [ForeignKey("ProductId")]
-        public virtual Product? Product { get; set; }
+        public Product Product { get; set; }
 
+        [ForeignKey("Warehouse")]
+        public Guid WarehouseId { get; set; }
+        [ForeignKey("WarehouseId")]
+        public Warehouse Warehouse { get; set; }
     }
 }
