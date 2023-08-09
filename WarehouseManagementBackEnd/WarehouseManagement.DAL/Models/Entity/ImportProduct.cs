@@ -8,7 +8,7 @@ using MayNghien.Common.Models.Entity;
 
 namespace WarehouseManagement.DAL.Models.Entity
 {
-    public class ProductReceipt:BaseEntity
+    public class ImportProduct:BaseEntity
     {
         public int Quantity { get; set; }
 
@@ -17,9 +17,9 @@ namespace WarehouseManagement.DAL.Models.Entity
         [ForeignKey("SupplierProductId")]
         public SupplierProduct SupplierProduct { get; set; }
 
-        [ForeignKey("Consignment")]
-        public Guid ConsignmentId { get; set; }
-        [ForeignKey("ConsignmentId")]
-        public Consignment Consignment { get; set; }
+        [ForeignKey("InboundReceipt")]
+        public Guid InboundReceiptId { get; set; }
+        [ForeignKey("InboundReceiptId")]
+        public InboundReceipt InboundReceipt { get; set; }
     }
 }

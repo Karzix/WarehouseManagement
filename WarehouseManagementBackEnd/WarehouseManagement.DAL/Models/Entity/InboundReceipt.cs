@@ -8,13 +8,15 @@ using MayNghien.Common.Models.Entity;
 
 namespace WarehouseManagement.DAL.Models.Entity
 {
-    public class Consignment:BaseEntity
+    public class InboundReceipt :BaseEntity
     {
-        public string? From { get; set; }
-        public string? To { get; set; }
-        public bool ExportProduct { get; set; }
+        [ForeignKey("Supplier")]
+        public Guid SupplierId { get; set; }
+        [ForeignKey("SupplierId")]
+        public Supplier Supplier { get; set; }
+        //public string? From { get; set; }
 
-        [ForeignKey("Warehouse")]  
+        [ForeignKey("Warehouse")]
         public Guid WarehouseId { get; set; }
         [ForeignKey("WarehouseId")]
         public virtual Warehouse Warehouse { get; set; }

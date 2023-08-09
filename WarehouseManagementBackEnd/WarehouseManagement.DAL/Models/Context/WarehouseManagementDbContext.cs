@@ -21,8 +21,12 @@ namespace WarehouseManagement.DAL.Models.Context
         public DbSet<Supplier> Supplier { get; set; }
         public DbSet<ProductRemaining> ProductRemaining { get; set; }
         public DbSet<SupplierProduct> SupplierProduct { get; set; }
-        public DbSet<ProductReceipt> ProductReceipt { get; set; }
-        public DbSet<Consignment> Consignment { get; set; }
+        //public DbSet<ProductReceipt> ProductReceipt { get; set; }
+        //public DbSet<Consignment> Consignment { get; set; }
+        public DbSet<ExportProduct> ExportProduct { get; set; }
+        public DbSet<ImportProduct> ImportProduct { get; set; }
+        public DbSet<InboundReceipt> InboundReceipt { get; set; }
+        public DbSet<OutboundReceipt> OutboundReceipt { get; set; }
        
 
 
