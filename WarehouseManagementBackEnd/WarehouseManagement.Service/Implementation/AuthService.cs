@@ -114,5 +114,34 @@ namespace WarehouseManagement.Service.Implementation
             return claims;
 
         }
+
+        public async Task<AppResponse<string>> CreateUser(UserModel user)
+        {
+            var result = new AppResponse<string>();
+            try
+            {
+                if (string.IsNullOrEmpty(user.Email))
+                {
+                    return result.BuildError(ERR_MSG_EmailIsNullOrEmpty);
+                }
+                var identityUser = await _userManager.FindByNameAsync(user.UserName);
+                if (identityUser != null)
+                {
+                    return result.BuildError(ERR_MSG_UserExisted);
+                }
+                var newIdentityUser = new IdentityUser { Email = user.Email, UserName = user.Email };
+                var createResult = await _userManager.CreateAsync(newIdentityUser);
+                await _userManager.AddPasswordAsync(newIdentityUser, user.Password);
+
+                newIdentityUser = await _userManager.FindByEmailAsync(user.Email);
+                
+                return result.BuildResult(INFO_MSG_UserCreated);
+            }
+            catch (Exception ex)
+            {
+
+                return result.BuildError(ex.ToString());
+            }
+        }
     }
 }
