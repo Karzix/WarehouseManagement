@@ -7,11 +7,11 @@ using MayNghien.Common.Models;
 
 namespace WarehouseManagement.Model.Dto
 {
-    public class UserModel : BaseDto
+    public class WarehouseDto: BaseDto
     {
-        public string? UserName { get; set; }
-        public string? Password { get; set; }
+        public string? Name { get; set; }
+        public string? Address { get; set; }
+        public string? Managent { get; set; }
         public string? Email { get; set; }
-        public string? Role { get; set; }
     }
 }

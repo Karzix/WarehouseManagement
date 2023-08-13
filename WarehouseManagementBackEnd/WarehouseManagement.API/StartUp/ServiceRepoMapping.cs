@@ -12,11 +12,11 @@ namespace WarehouseManagement.API.StartUp
         {
             #region Service Mapping
             builder.Services.AddScoped<IAuthService, AuthService>();
-
+            builder.Services.AddScoped<IWarehouseService, WarehouseService>();
             #endregion Service Mapping
 
             #region Repository Mapping
-            
+            builder.Services.AddScoped<WarehouseService, WarehouseService>();
 
             #endregion Repository Mapping
         }

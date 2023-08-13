@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using WarehouseManagement.Model.Dto;
+using WarehouseManagement.DAL.Models.Entity;
 
 namespace WarehouseManagement.Service.Mapper
 {
@@ -16,7 +18,7 @@ namespace WarehouseManagement.Service.Mapper
 
         public void CreateMap()
         {
-            
+            CreateMap<Warehouse, WarehouseDto>().ReverseMap();
         }
     }
 }
