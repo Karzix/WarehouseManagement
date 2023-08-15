@@ -307,7 +307,11 @@
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "D:\\GitHub\\WarehouseManagement\\WarehouseManagementBackEnd\\Maynghien.Common\\Maynghien.Common.csproj": {
+                "projectPath": "D:\\GitHub\\WarehouseManagement\\WarehouseManagementBackEnd\\Maynghien.Common\\Maynghien.Common.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -369,6 +373,9 @@
             "projectReferences": {
               "D:\\GitHub\\WarehouseManagement\\WarehouseManagementBackEnd\\Maynghien.Common\\Maynghien.Common.csproj": {
                 "projectPath": "D:\\GitHub\\WarehouseManagement\\WarehouseManagementBackEnd\\Maynghien.Common\\Maynghien.Common.csproj"
+              },
+              "D:\\GitHub\\WarehouseManagement\\WarehouseManagementBackEnd\\WarehouseManagement.DAL\\WarehouseManagement.DAL.csproj": {
+                "projectPath": "D:\\GitHub\\WarehouseManagement\\WarehouseManagementBackEnd\\WarehouseManagement.DAL\\WarehouseManagement.DAL.csproj"
               },
               "D:\\GitHub\\WarehouseManagement\\WarehouseManagementBackEnd\\WarehouseManagement.Model\\WarehouseManagement.Model.csproj": {
                 "projectPath": "D:\\GitHub\\WarehouseManagement\\WarehouseManagementBackEnd\\WarehouseManagement.Model\\WarehouseManagement.Model.csproj"
