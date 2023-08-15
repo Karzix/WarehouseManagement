@@ -1,4 +1,6 @@
-﻿using WarehouseManagement.Service.Contract;
+﻿using WarehouseManagement.DAL.Contract;
+using WarehouseManagement.DAL.Implementation;
+using WarehouseManagement.Service.Contract;
 using WarehouseManagement.Service.Implementation;
 
 
@@ -13,10 +15,11 @@ namespace WarehouseManagement.API.StartUp
             #region Service Mapping
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IWarehouseService, WarehouseService>();
+            builder.Services.AddScoped<IUserManagementService, UserManagamentService>();
             #endregion Service Mapping
 
             #region Repository Mapping
-            builder.Services.AddScoped<WarehouseService, WarehouseService>();
+            builder.Services.AddScoped<IWarehouseRepository, WarehouseRepository>();
 
             #endregion Repository Mapping
         }
