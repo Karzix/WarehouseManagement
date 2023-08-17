@@ -997,6 +997,11 @@
           "Maynghien.Common.dll": {}
         }
       },
+      "WarehouseManagement.Common/1.0.0": {
+        "runtime": {
+          "WarehouseManagement.Common.dll": {}
+        }
+      },
       "WarehouseManagement.DAL/1.0.0": {
         "dependencies": {
           "Maynghien.Common": "1.0.0",
@@ -1008,6 +1013,9 @@
         }
       },
       "WarehouseManagement.Model/1.0.0": {
+        "dependencies": {
+          "Maynghien.Common": "1.0.0"
+        },
         "runtime": {
           "WarehouseManagement.Model.dll": {}
         }
@@ -1016,6 +1024,8 @@
         "dependencies": {
           "AutoMapper": "12.0.1",
           "Maynghien.Common": "1.0.0",
+          "WarehouseManagement.Common": "1.0.0",
+          "WarehouseManagement.DAL": "1.0.0",
           "WarehouseManagement.Model": "1.0.0"
         },
         "runtime": {
@@ -1682,6 +1692,11 @@
       "hashPath": "system.windows.extensions.4.7.0.nupkg.sha512"
     },
     "Maynghien.Common/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "WarehouseManagement.Common/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

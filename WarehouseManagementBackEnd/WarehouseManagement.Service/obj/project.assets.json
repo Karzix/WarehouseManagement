@@ -1269,6 +1269,16 @@
           "bin/placeholder/Maynghien.Common.dll": {}
         }
       },
+      "WarehouseManagement.Common/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/WarehouseManagement.Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/WarehouseManagement.Common.dll": {}
+        }
+      },
       "WarehouseManagement.DAL/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
@@ -3145,6 +3155,11 @@
       "path": "../Maynghien.Common/Maynghien.Common.csproj",
       "msbuildProject": "../Maynghien.Common/Maynghien.Common.csproj"
     },
+    "WarehouseManagement.Common/1.0.0": {
+      "type": "project",
+      "path": "../WarehouseManagement.Common/WarehouseManagement.Common.csproj",
+      "msbuildProject": "../WarehouseManagement.Common/WarehouseManagement.Common.csproj"
+    },
     "WarehouseManagement.DAL/1.0.0": {
       "type": "project",
       "path": "../WarehouseManagement.DAL/WarehouseManagement.DAL.csproj",
@@ -3160,6 +3175,7 @@
     "net6.0": [
       "AutoMapper >= 12.0.1",
       "Maynghien.Common >= 1.0.0",
+      "WarehouseManagement.Common >= 1.0.0",
       "WarehouseManagement.DAL >= 1.0.0",
       "WarehouseManagement.Model >= 1.0.0"
     ]
@@ -3198,6 +3214,9 @@
           "projectReferences": {
             "D:\\GitHub\\WarehouseManagement\\WarehouseManagementBackEnd\\Maynghien.Common\\Maynghien.Common.csproj": {
               "projectPath": "D:\\GitHub\\WarehouseManagement\\WarehouseManagementBackEnd\\Maynghien.Common\\Maynghien.Common.csproj"
+            },
+            "D:\\GitHub\\WarehouseManagement\\WarehouseManagementBackEnd\\WarehouseManagement.Common\\WarehouseManagement.Common.csproj": {
+              "projectPath": "D:\\GitHub\\WarehouseManagement\\WarehouseManagementBackEnd\\WarehouseManagement.Common\\WarehouseManagement.Common.csproj"
             },
             "D:\\GitHub\\WarehouseManagement\\WarehouseManagementBackEnd\\WarehouseManagement.DAL\\WarehouseManagement.DAL.csproj": {
               "projectPath": "D:\\GitHub\\WarehouseManagement\\WarehouseManagementBackEnd\\WarehouseManagement.DAL\\WarehouseManagement.DAL.csproj"

@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Maynghien.Common\Maynghien.Common.csproj" />
+    <ProjectReference Include="..\WarehouseManagement.Common\WarehouseManagement.Common.csproj" />
     <ProjectReference Include="..\WarehouseManagement.DAL\WarehouseManagement.DAL.csproj" />
     <ProjectReference Include="..\WarehouseManagement.Model\WarehouseManagement.Model.csproj" />
   </ItemGroup>

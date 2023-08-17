@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using MayNghien.Models.Response.Base;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using RTools_NTS.Util;
+using WarehouseManagement.Common.Enum;
 using WarehouseManagement.DAL.Models.Context;
 using WarehouseManagement.Model.Dto;
 using WarehouseManagement.Service.Contract;
+using static MayNghien.Common.CommonMessage.AuthResponseMessage;
 
 namespace WarehouseManagement.Service.Implementation
 {
@@ -79,6 +76,87 @@ namespace WarehouseManagement.Service.Implementation
             }
             
 
+        }
+
+        public async Task<AppResponse<string>> CreateUser(UserModel user)
+        {
+            var result = new AppResponse<string>();
+            try
+            {
+                if (string.IsNullOrEmpty(user.Email))
+                {
+                    return result.BuildError(ERR_MSG_EmailIsNullOrEmpty);
+                }
+                var identityUser = await _userManager.FindByNameAsync(user.UserName);
+                if (identityUser != null)
+                {
+                    return result.BuildError(ERR_MSG_UserExisted);
+                }
+                var newIdentityUser = new IdentityUser { Email = user.Email, UserName = user.Email };
+                var createResult = await _userManager.CreateAsync(newIdentityUser);
+                await _userManager.AddPasswordAsync(newIdentityUser, user.Password);
+
+                //newIdentityUser = await _userManager.FindByEmailAsync(user.Email);
+                //if (newIdentityUser != null)
+                //{
+                //    if (user.Role != null && user.Role == nameof(UserRoleEnum.TenantAdmin))
+                //    {
+                //        var AccountInfo = new AccountInfo()
+                //        {
+                //            Id = Guid.NewGuid(),
+                //            Balance = 0,
+                //            Email = user.Email,
+                //            CreatedBy = user.Email,
+                //            CreatedOn = DateTime.Now,
+                //            Name = user.UserName,
+                //            IsDeleted = false,
+                //            UserId = newIdentityUser.Id,
+                //        };
+                //        _accountInfoRepository.Add(AccountInfo);
+                //    }
+                //    await _userManager.AddToRoleAsync(newIdentityUser, user.Role);
+                //}
+                return result.BuildResult(INFO_MSG_UserCreated);
+            }
+            catch (Exception ex)
+            {
+
+                return result.BuildError(ex.ToString());
+            }
+        }
+        public async Task<AppResponse<string>> DeleteUser(string id)
+        {
+            var result = new AppResponse<string>();
+            try
+            {
+
+                IdentityUser identityUser = new IdentityUser();
+
+                identityUser = await _userManager.FindByIdAsync(id);
+                if (identityUser != null)
+                {
+                    if (await _userManager.IsInRoleAsync(identityUser, "tenant"))
+                    {
+                        //var qUserInfo = _accountInfoRepository.FindBy(m => m.UserId == id && m.IsDeleted == false);
+                        //if (qUserInfo.Count() > 0)
+                        //{
+                        //    var AccountInfo = qUserInfo.FirstOrDefault();
+                        //    AccountInfo.IsDeleted = true;
+                        //    _accountInfoRepository.Edit(AccountInfo);
+                        //}
+                        //await _userManager.SetLockoutEnabledAsync(identityUser, true);
+                        var user = _context.Users.FirstOrDefault(m => m.Id == id);
+                        _context.Users.Remove(user);
+                    }
+
+                }
+                return result.BuildResult(/*INFO_MSG_UserDeleted*/"Đã xóa");
+            }
+            catch (Exception ex)
+            {
+
+                return result.BuildError(ex.ToString());
+            }
         }
     }
 }

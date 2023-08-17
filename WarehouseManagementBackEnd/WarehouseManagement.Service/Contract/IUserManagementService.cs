@@ -13,6 +13,7 @@ namespace WarehouseManagement.Service.Contract
     {
         AppResponse<List<UserModel>> GetAllUser();
         Task<AppResponse<string>> ResetPassword(Guid Id);
+        Task<AppResponse<string>> CreateUser(UserModel user);
 
     }
 }
