@@ -1,47 +1,40 @@
 ﻿using AutoMapper;
+using MayNghien.Models.Request.Base;
 using MayNghien.Models.Response.Base;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using WarehouseManagement.Common.Enum;
-using WarehouseManagement.DAL.Models.Context;
+using WarehouseManagement.DAL.Contract;
 using WarehouseManagement.Model.Dto;
+using WarehouseManagement.Model.Response.User;
 using WarehouseManagement.Service.Contract;
+using LinqKit;
+using static Maynghien.Common.Helpers.SearchHelper;
 using static MayNghien.Common.CommonMessage.AuthResponseMessage;
 
 namespace WarehouseManagement.Service.Implementation
 {
     public class UserManagamentService : IUserManagementService
     {
-        private WarehouseManagementDbContext _context;
+        //private WarehouseManagementDbContext _context;
         private readonly IMapper _mapper;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IUserManagementRepository _userManagementRepository;
 
-        public UserManagamentService(WarehouseManagementDbContext context, IMapper mapper, UserManager<IdentityUser> userManager)
+        public UserManagamentService(IMapper mapper,UserManager<IdentityUser> userManager, IUserManagementRepository userManagementRepository)
         {
-            _context = context;
+            
             _mapper = mapper;
             _userManager = userManager;
+            _userManagementRepository = userManagementRepository;
         }
 
 
-        public AppResponse<List<UserModel>> GetAllUser()
+        public AppResponse<List<IdentityUser>> GetAllUser()
         {
             
-            var result = new AppResponse<List<UserModel>>();
+            var result = new AppResponse<List<IdentityUser>>();
             try
             {
-                var list = (from user in _context.Users
-                            join userRole in _context.UserRoles on user.Id equals userRole.UserId
-                            join role in _context.Roles on userRole.RoleId equals role.Id
-                           select new UserModel
-                           {
-                               Id = Guid.Parse(user.Id),
-                               UserName = user.UserName,
-                               Password = user.PasswordHash,
-                               Role = role.Name,
-                               Email = user.Email
-                           }).ToList();
-
+                var list = _userManagementRepository.GetAll();
 
                 result.IsSuccess = true;
                 result.Data = list;
@@ -61,7 +54,7 @@ namespace WarehouseManagement.Service.Implementation
             try
             {
                 //dfd1b9a6-ce48-43c6-8ca2-1776b82a4fc8
-                var user = _context.Users.FirstOrDefault(m=> m.Id == Id.ToString());
+                var user = _userManagementRepository.GetById(Id.ToString());
                 await _userManager.RemovePasswordAsync(user);
                 await _userManager.AddPasswordAsync(user, "CoCaiMatKhauCungQuen");
                 result.IsSuccess = true;
@@ -95,27 +88,6 @@ namespace WarehouseManagement.Service.Implementation
                 var newIdentityUser = new IdentityUser { Email = user.Email, UserName = user.Email };
                 var createResult = await _userManager.CreateAsync(newIdentityUser);
                 await _userManager.AddPasswordAsync(newIdentityUser, user.Password);
-
-                //newIdentityUser = await _userManager.FindByEmailAsync(user.Email);
-                //if (newIdentityUser != null)
-                //{
-                //    if (user.Role != null && user.Role == nameof(UserRoleEnum.TenantAdmin))
-                //    {
-                //        var AccountInfo = new AccountInfo()
-                //        {
-                //            Id = Guid.NewGuid(),
-                //            Balance = 0,
-                //            Email = user.Email,
-                //            CreatedBy = user.Email,
-                //            CreatedOn = DateTime.Now,
-                //            Name = user.UserName,
-                //            IsDeleted = false,
-                //            UserId = newIdentityUser.Id,
-                //        };
-                //        _accountInfoRepository.Add(AccountInfo);
-                //    }
-                //    await _userManager.AddToRoleAsync(newIdentityUser, user.Role);
-                //}
                 return result.BuildResult(INFO_MSG_UserCreated);
             }
             catch (Exception ex)
@@ -145,8 +117,8 @@ namespace WarehouseManagement.Service.Implementation
                         //    _accountInfoRepository.Edit(AccountInfo);
                         //}
                         //await _userManager.SetLockoutEnabledAsync(identityUser, true);
-                        var user = _context.Users.FirstOrDefault(m => m.Id == id);
-                        _context.Users.Remove(user);
+                        var user = _userManagementRepository.GetById(id);
+                        await _userManager.DeleteAsync(user);
                     }
 
                 }
@@ -156,6 +128,96 @@ namespace WarehouseManagement.Service.Implementation
             {
 
                 return result.BuildError(ex.ToString());
+            }
+        }
+
+        public async Task<AppResponse<SearchUserResponse>> Search(SearchRequest request)
+        {
+            var result = new AppResponse<SearchUserResponse>();
+            try
+            {
+                var query = BuildFilterExpression(request.Filters);
+                var numOfRecords = _userManagementRepository.CountRecordsByPredicate(query);
+
+                var users = _userManagementRepository.FindByPredicate(query);
+                int pageIndex = request.PageSize ?? 1;
+                int pageSize = request.PageSize ?? 1;
+                int startIndex = (pageIndex - 1) * (int)pageSize;
+                var UserList = users.Skip(startIndex).Take(pageSize).ToList();
+                var dtoList = _mapper.Map<List<UserModel>>(UserList);
+                if (dtoList != null && dtoList.Count > 0)
+                {
+                    for (int i = 0; i < UserList.Count; i++)
+                    {
+                        var dtouser = dtoList[i];
+                        var identityUser = UserList[i];
+                        dtouser.Role = (await _userManager.GetRolesAsync(identityUser)).First();
+                    }
+                }
+                var searchUserResult = new SearchUserResponse
+                {
+                    TotalRows = numOfRecords,
+                    TotalPages = CalculateNumOfPages(numOfRecords, pageSize),
+                    CurrentPage = pageIndex,
+                    Data = dtoList,
+                };
+
+                return result.BuildResult(searchUserResult);
+
+            }
+            catch (Exception ex)
+            {
+
+                return result.BuildError(ex.ToString());
+            }
+        }
+
+        //public async Task<AppResponse<string>> EditUser(UserModel user)
+        //{
+        //    var result = new AppResponse<string>();
+        //    try
+        //    {
+        //        var identityUser = await _userManager.FindByIdAsync(user.Id);
+        //        if (identityUser != null)
+        //        {
+        //            identityUser = _mapper.Map<IdentityUser>(user);
+        //            _userManagementRepository.EditUser(identityUser);
+        //            return result.BuildResult("ok");
+        //        }
+        //        return result.BuildResult("Không tim thấy người dùng");
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        result.IsSuccess = false;
+        //        result.Message = ex.Message + " " + ex.StackTrace;
+        //        return result;
+        //    }
+        //}
+
+        private ExpressionStarter<IdentityUser> BuildFilterExpression(IList<Filter> Filters)
+        {
+            try
+            {
+                var predicate = PredicateBuilder.New<IdentityUser>(true);
+
+                foreach (var filter in Filters)
+                {
+                    switch (filter.FieldName)
+                    {
+                        case "Email":
+                            predicate = predicate.And(m => m.Email.Equals(filter.Value));
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+                return predicate;
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
     }
