@@ -11,25 +11,21 @@ using WarehouseManagement.Service.Mapper;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
 
 builder.Services.AddControllers();
-
 builder.Services.AddDbContext<WarehouseManagementDbContext>(options =>
         options.UseSqlServer(
             builder.Configuration.GetConnectionString("DefaultConnection"))
 
 
         );
-
-new ServiceRepoMapping().Mapping(builder);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
+new ServiceRepoMapping().Mapping(builder);
+
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
-
 builder.Services.AddCors(options =>
 {
     // this defines a CORS policy called "default"
@@ -76,8 +72,6 @@ builder.Services.AddAuthorization();
 //builder.Services.AddAuthentication("Bearer").AddJwtBearer();
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -88,6 +82,16 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors(builder =>
+{
+    builder
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader();
+});
+
+
+app.UseCors("default");
 
 app.UseAuthentication();
 app.UseAuthorization();

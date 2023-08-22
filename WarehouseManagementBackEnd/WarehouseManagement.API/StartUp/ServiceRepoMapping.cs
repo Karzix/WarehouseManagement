@@ -20,7 +20,7 @@ namespace WarehouseManagement.API.StartUp
 
             #region Repository Mapping
             builder.Services.AddScoped<IWarehouseRepository, WarehouseRepository>();
-
+            builder.Services.AddScoped<IUserManagementRepository, UserManagementRepository>();
             #endregion Repository Mapping
         }
     }
