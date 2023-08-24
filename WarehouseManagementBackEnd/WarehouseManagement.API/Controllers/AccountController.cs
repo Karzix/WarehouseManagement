@@ -21,7 +21,7 @@ namespace WarehouseManagement.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<IActionResult> Login(UserModel login)
+        public async Task<IActionResult> Login(UserModel? login)
         {
             var result = await _authService.AuthenticateUser(login);
 

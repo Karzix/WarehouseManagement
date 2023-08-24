@@ -10,3 +10,6 @@ D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.Mod
 D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.Model\obj\Debug\net6.0\refint\WarehouseManagement.Model.dll
 D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.Model\obj\Debug\net6.0\WarehouseManagement.Model.pdb
 D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.Model\obj\Debug\net6.0\ref\WarehouseManagement.Model.dll
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.Model\bin\Debug\net6.0\Maynghien.Common.dll
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.Model\bin\Debug\net6.0\Maynghien.Common.pdb
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.Model\obj\Debug\net6.0\WarehouseManagement.Model.csproj.CopyComplete

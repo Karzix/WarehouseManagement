@@ -1008,6 +1008,9 @@
         }
       },
       "WarehouseManagement.Model/1.0.0": {
+        "dependencies": {
+          "Maynghien.Common": "1.0.0"
+        },
         "runtime": {
           "WarehouseManagement.Model.dll": {}
         }
@@ -1016,6 +1019,7 @@
         "dependencies": {
           "AutoMapper": "12.0.1",
           "Maynghien.Common": "1.0.0",
+          "WarehouseManagement.DAL": "1.0.0",
           "WarehouseManagement.Model": "1.0.0"
         },
         "runtime": {
