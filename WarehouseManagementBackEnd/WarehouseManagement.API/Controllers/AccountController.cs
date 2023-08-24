@@ -9,7 +9,7 @@ namespace WarehouseManagement.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    //[Authorize(AuthenticationSchemes = "Bearer")]
     public class AccountController : Controller
     {
         IAuthService _authService;
@@ -19,7 +19,7 @@ namespace WarehouseManagement.API.Controllers
             _authService = authService;
         }
 
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserModel? login)
         {
@@ -28,7 +28,7 @@ namespace WarehouseManagement.API.Controllers
             return Ok(result);
         }
 
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Regisger(UserModel login)
         {

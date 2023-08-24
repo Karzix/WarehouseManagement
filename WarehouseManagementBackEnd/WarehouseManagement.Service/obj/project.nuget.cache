@@ -1,14 +1,17 @@
 {
   "version": 2,
-  "dgSpecHash": "VD4EyEUPYzjeQW9iZpNJVhShznnPqrDMFc+kHS7AubdTATAG0VE4+aJRhDXo3TWyKiAu4x3bv4bbT1MqkcLEZQ==",
+  "dgSpecHash": "2hdvUya/H30//i/2QSS/klaPSJaWiWT1vG42nWflIkMaCfB4rEALR1Jo/PcnUs4S+wREKAcLCKtArMy+jlz/AA==",
   "success": true,
   "projectFilePath": "D:\\GitHub\\WarehouseManagement\\WarehouseManagementBackEnd\\WarehouseManagement.Service\\WarehouseManagement.Service.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ANH KIET\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\ANH KIET\\.nuget\\packages\\dotmorten.microsoft.sqlserver.types\\1.4.0\\dotmorten.microsoft.sqlserver.types.1.4.0.nupkg.sha512",
     "C:\\Users\\ANH KIET\\.nuget\\packages\\efcore.bulkextensions\\6.7.12\\efcore.bulkextensions.6.7.12.nupkg.sha512",
+    "C:\\Users\\ANH KIET\\.nuget\\packages\\entityframework\\6.3.0\\entityframework.6.3.0.nupkg.sha512",
     "C:\\Users\\ANH KIET\\.nuget\\packages\\entityframeworkcore.sqlserver.hierarchyid\\3.0.1\\entityframeworkcore.sqlserver.hierarchyid.3.0.1.nupkg.sha512",
     "C:\\Users\\ANH KIET\\.nuget\\packages\\entityframeworkcore.sqlserver.hierarchyid.abstractions\\3.0.1\\entityframeworkcore.sqlserver.hierarchyid.abstractions.3.0.1.nupkg.sha512",
+    "C:\\Users\\ANH KIET\\.nuget\\packages\\linqkit\\1.2.4\\linqkit.1.2.4.nupkg.sha512",
+    "C:\\Users\\ANH KIET\\.nuget\\packages\\linqkit.core\\1.2.4\\linqkit.core.1.2.4.nupkg.sha512",
     "C:\\Users\\ANH KIET\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\6.0.19\\microsoft.aspnetcore.cryptography.internal.6.0.19.nupkg.sha512",
     "C:\\Users\\ANH KIET\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\6.0.19\\microsoft.aspnetcore.cryptography.keyderivation.6.0.19.nupkg.sha512",
     "C:\\Users\\ANH KIET\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\6.0.19\\microsoft.aspnetcore.identity.entityframeworkcore.6.0.19.nupkg.sha512",
@@ -58,7 +61,9 @@
     "C:\\Users\\ANH KIET\\.nuget\\packages\\runtime.win-x86.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x86.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Users\\ANH KIET\\.nuget\\packages\\sqlitepclraw.core\\2.1.2\\sqlitepclraw.core.2.1.2.nupkg.sha512",
     "C:\\Users\\ANH KIET\\.nuget\\packages\\system.buffers\\4.5.1\\system.buffers.4.5.1.nupkg.sha512",
+    "C:\\Users\\ANH KIET\\.nuget\\packages\\system.codedom\\4.6.0\\system.codedom.4.6.0.nupkg.sha512",
     "C:\\Users\\ANH KIET\\.nuget\\packages\\system.collections.immutable\\6.0.0\\system.collections.immutable.6.0.0.nupkg.sha512",
+    "C:\\Users\\ANH KIET\\.nuget\\packages\\system.componentmodel.annotations\\4.6.0\\system.componentmodel.annotations.4.6.0.nupkg.sha512",
     "C:\\Users\\ANH KIET\\.nuget\\packages\\system.configuration.configurationmanager\\4.7.0\\system.configuration.configurationmanager.4.7.0.nupkg.sha512",
     "C:\\Users\\ANH KIET\\.nuget\\packages\\system.data.sqlclient\\4.8.3\\system.data.sqlclient.4.8.3.nupkg.sha512",
     "C:\\Users\\ANH KIET\\.nuget\\packages\\system.diagnostics.diagnosticsource\\6.0.1\\system.diagnostics.diagnosticsource.6.0.1.nupkg.sha512",
@@ -77,5 +82,12 @@
     "C:\\Users\\ANH KIET\\.nuget\\packages\\system.text.json\\6.0.0\\system.text.json.6.0.0.nupkg.sha512",
     "C:\\Users\\ANH KIET\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file D:\\GitHub\\WarehouseManagement\\WarehouseManagementBackEnd\\WarehouseManagement.Service\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

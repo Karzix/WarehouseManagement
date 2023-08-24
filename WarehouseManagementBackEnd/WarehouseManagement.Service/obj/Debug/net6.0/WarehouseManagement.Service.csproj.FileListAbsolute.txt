@@ -17,3 +17,5 @@ D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.Ser
 D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.Service\obj\Debug\net6.0\WarehouseManagement.Service.csproj.CopyComplete
 D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.Service\bin\Debug\net6.0\WarehouseManagement.DAL.dll
 D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.Service\bin\Debug\net6.0\WarehouseManagement.DAL.pdb
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.Service\bin\Debug\net6.0\WarehouseManagement.Common.dll
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.Service\bin\Debug\net6.0\WarehouseManagement.Common.pdb
