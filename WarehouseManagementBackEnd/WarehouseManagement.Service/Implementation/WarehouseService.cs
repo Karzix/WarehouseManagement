@@ -24,7 +24,7 @@ namespace WarehouseManagement.Service.Implementation
             try
             {
                 var warehouse = new Warehouse();
-                warehouse = _mapper.Map<Warehouse>(warehouse);
+                warehouse = _mapper.Map<Warehouse>(request);
                 warehouse.Id = Guid.NewGuid();
                 _warehouseRepository.Add(warehouse);
 
@@ -109,7 +109,8 @@ namespace WarehouseManagement.Service.Implementation
                     Name = m.Name,
                     Address = m.Address,
                     Managent = m.Managent,
-                    Email = m.Email
+                    Email = m.Email,
+                    Id = m.Id,
                 }).ToList();
                 result.IsSuccess = true;
                 result.Data = list;

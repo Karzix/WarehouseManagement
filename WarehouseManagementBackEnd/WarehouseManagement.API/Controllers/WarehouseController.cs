@@ -22,9 +22,9 @@ namespace WarehouseManagement.API.Controllers
         }
         [HttpGet]
         [Route("{Id}")]
-        public IActionResult GetWarehouse(Guid id)
+        public IActionResult GetWarehouse(Guid Id)
         {
-            var result = _warehouseService.GetWarehouseById(id);
+            var result = _warehouseService.GetWarehouseById(Id);
             return Ok(result);
         }
         [HttpPost]

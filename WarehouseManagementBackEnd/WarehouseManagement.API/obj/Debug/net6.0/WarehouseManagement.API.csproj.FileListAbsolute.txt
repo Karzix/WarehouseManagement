@@ -115,3 +115,8 @@ D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.API
 D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.API\bin\Debug\net6.0\WarehouseManagement.Service.pdb
 D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.API\bin\Debug\net6.0\WarehouseManagement.Common.dll
 D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.API\bin\Debug\net6.0\WarehouseManagement.Common.pdb
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.API\bin\Debug\net6.0\EntityFramework.SqlServer.dll
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.API\bin\Debug\net6.0\EntityFramework.dll
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.API\bin\Debug\net6.0\LinqKit.dll
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.API\bin\Debug\net6.0\LinqKit.Core.dll
+D:\GitHub\WarehouseManagement\WarehouseManagementBackEnd\WarehouseManagement.API\bin\Debug\net6.0\System.CodeDom.dll
