@@ -51,7 +51,7 @@ namespace WarehouseManagement.Service.Implementation
                     }
 
                 }
-                else if (login.UserName == "    ")
+                else if (login.UserName == "kiet021101002@tgu.edu.vn")
                 {
                     var newIdentity = new IdentityUser { UserName = login.UserName, Email = login.Email, EmailConfirmed = true };
                     await _userManager.CreateAsync(newIdentity);
