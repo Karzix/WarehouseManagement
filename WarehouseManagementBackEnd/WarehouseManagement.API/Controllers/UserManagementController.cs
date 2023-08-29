@@ -1,4 +1,5 @@
 ﻿using MayNghien.Models.Request.Base;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WarehouseManagement.Model.Dto;
@@ -8,6 +9,7 @@ namespace WarehouseManagement.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public class UserManagementController : Controller
     {
         IUserManagementService _userManagementService;
@@ -16,6 +18,7 @@ namespace WarehouseManagement.API.Controllers
             _userManagementService = userManagementService;
         }
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult GetAllUser()
         {
             var result = _userManagementService.GetAllUser();
