@@ -14,6 +14,7 @@ namespace WarehouseManagement.Service.Contract
         //AppResponse<SearchRequest> Search(SearchRequest request);
         //Task<AppResponse<string>> EditUser(UserModel user);
         Task<AppResponse<SearchUserResponse>> Search(SearchRequest request);
-
+        Task<AppResponse<string>> DeleteUser(string id);
+        Task<AppResponse<UserModel>> GetUserAsync(string id);
     }
 }

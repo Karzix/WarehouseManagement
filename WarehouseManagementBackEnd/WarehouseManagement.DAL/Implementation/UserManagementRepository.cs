@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using WarehouseManagement.DAL.Contract;
 using WarehouseManagement.DAL.Models.Context;
+using WarehouseManagement.Model.Dto;
 
 namespace WarehouseManagement.DAL.Implementation
 {
@@ -23,11 +24,6 @@ namespace WarehouseManagement.DAL.Implementation
             return _context.Users.ToList();
         }
 
-        public IdentityUser GetById(string? Id)
-        {
-            return _context.Users.FirstOrDefault(m => m.Id == Id);
-        }
-
         public void EditUser(IdentityUser user)
         {
             _context.Users.Update(user);
@@ -41,6 +37,12 @@ namespace WarehouseManagement.DAL.Implementation
         public IQueryable<IdentityUser> FindByPredicate(Expression<Func<IdentityUser, bool>> predicate)
         {
             return _context.Users.Where(predicate).AsQueryable();
+        }
+
+
+        public IdentityUser? FindById(string id)
+        {
+            return _context.Users.Where(m => m.Id == id).FirstOrDefault();
         }
     }
 }

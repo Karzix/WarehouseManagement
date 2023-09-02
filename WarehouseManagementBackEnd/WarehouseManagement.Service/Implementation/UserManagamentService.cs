@@ -9,6 +9,8 @@ using WarehouseManagement.Service.Contract;
 using LinqKit;
 using static Maynghien.Common.Helpers.SearchHelper;
 using static MayNghien.Common.CommonMessage.AuthResponseMessage;
+using WarehouseManagement.DAL.Implementation;
+using WarehouseManagement.DAL.Models.Entity;
 
 namespace WarehouseManagement.Service.Implementation
 {
@@ -54,7 +56,7 @@ namespace WarehouseManagement.Service.Implementation
             try
             {
                 //dfd1b9a6-ce48-43c6-8ca2-1776b82a4fc8
-                var user = _userManagementRepository.GetById(Id.ToString());
+                var user = _userManagementRepository.FindById(Id.ToString());
                 await _userManager.RemovePasswordAsync(user);
                 await _userManager.AddPasswordAsync(user, "CoCaiMatKhauCungQuen");
                 result.IsSuccess = true;
@@ -107,19 +109,10 @@ namespace WarehouseManagement.Service.Implementation
                 identityUser = await _userManager.FindByIdAsync(id);
                 if (identityUser != null)
                 {
-                    if (await _userManager.IsInRoleAsync(identityUser, "tenant"))
-                    {
-                        //var qUserInfo = _accountInfoRepository.FindBy(m => m.UserId == id && m.IsDeleted == false);
-                        //if (qUserInfo.Count() > 0)
-                        //{
-                        //    var AccountInfo = qUserInfo.FirstOrDefault();
-                        //    AccountInfo.IsDeleted = true;
-                        //    _accountInfoRepository.Edit(AccountInfo);
-                        //}
-                        //await _userManager.SetLockoutEnabledAsync(identityUser, true);
-                        var user = _userManagementRepository.GetById(id);
-                        await _userManager.DeleteAsync(user);
-                    }
+                    //if (await _userManager.IsInRoleAsync(identityUser, "tenant"))
+                    //{
+                        await _userManager.DeleteAsync(identityUser);
+                    //}
 
                 }
                 return result.BuildResult(/*INFO_MSG_UserDeleted*/"Đã xóa");
@@ -145,15 +138,15 @@ namespace WarehouseManagement.Service.Implementation
                 int startIndex = (pageIndex - 1) * (int)pageSize;
                 var UserList = users.Skip(startIndex).Take(pageSize).ToList();
                 var dtoList = _mapper.Map<List<UserModel>>(UserList);
-                if (dtoList != null && dtoList.Count > 0)
-                {
-                    for (int i = 0; i < UserList.Count; i++)
-                    {
-                        var dtouser = dtoList[i];
-                        var identityUser = UserList[i];
-                        dtouser.Role = (await _userManager.GetRolesAsync(identityUser)).First();
-                    }
-                }
+                //if (dtoList != null && dtoList.Count > 0)
+                //{
+                //    for (int i = 0; i < UserList.Count; i++)
+                //    {
+                //        var dtouser = dtoList[i];
+                //        var identityUser = UserList[i];
+                //        dtouser.Role = (await _userManager.GetRolesAsync(identityUser)).First();
+                //    }
+                //}
                 var searchUserResult = new SearchUserResponse
                 {
                     TotalRows = numOfRecords,
@@ -218,6 +211,37 @@ namespace WarehouseManagement.Service.Implementation
             {
 
                 throw;
+            }
+        }
+
+        public async Task<AppResponse<UserModel>> GetUserAsync(string id)
+        {
+            var result = new AppResponse<UserModel>();
+            try
+            {
+                List<Filter> Filters = new List<Filter>();
+                var query = BuildFilterExpression(Filters);
+
+                var identityUser = _userManagementRepository.FindById(id);
+
+                if (identityUser == null)
+                {
+                    return result.BuildError("User not found");
+                }
+                var dtouser = _mapper.Map<UserModel>(identityUser);
+
+                dtouser.Role = (await _userManager.GetRolesAsync(identityUser)).First();
+
+                result.Data = dtouser;
+                result.IsSuccess = true;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.Message = ex.Message + " " + ex.StackTrace;
+                return result.BuildError(ex.ToString());
             }
         }
     }

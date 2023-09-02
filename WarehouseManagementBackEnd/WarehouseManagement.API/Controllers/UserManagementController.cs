@@ -9,7 +9,7 @@ namespace WarehouseManagement.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    //[Authorize(AuthenticationSchemes = "Bearer")]
     public class UserManagementController : Controller
     {
         IUserManagementService _userManagementService;
@@ -18,7 +18,7 @@ namespace WarehouseManagement.API.Controllers
             _userManagementService = userManagementService;
         }
         [HttpGet]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public IActionResult GetAllUser()
         {
             var result = _userManagementService.GetAllUser();
@@ -37,11 +37,25 @@ namespace WarehouseManagement.API.Controllers
             var result = await _userManagementService.CreateUser(userModel);
             return Ok(result);
         }
-        [HttpGet]
+        [HttpPost]
         [Route("search")]
-        public async Task<IActionResult> Search(SearchRequest request)
+        public async Task<IActionResult> Search([FromBody] SearchRequest search)
         {
-            var result = await _userManagementService.Search(request);
+            var result = await _userManagementService.Search(search);
+            return Ok(result);
+        }
+        [HttpGet]
+        [Route("{Id}")]
+        public async Task<IActionResult> GetUser(string Id)
+        {
+            var result = await _userManagementService.GetUserAsync(Id);
+            return Ok(result);
+        }
+        [HttpDelete]
+        [Route("{Id}")]
+        public async Task<IActionResult> DeleteUser(string Id)
+        {
+            var result = await _userManagementService.DeleteUser(Id);
             return Ok(result);
         }
     }

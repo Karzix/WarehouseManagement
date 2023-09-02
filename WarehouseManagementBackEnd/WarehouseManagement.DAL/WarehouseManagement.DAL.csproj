@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Maynghien.Common\Maynghien.Common.csproj" />
+    <ProjectReference Include="..\WarehouseManagement.Model\WarehouseManagement.Model.csproj" />
   </ItemGroup>
 
 </Project>

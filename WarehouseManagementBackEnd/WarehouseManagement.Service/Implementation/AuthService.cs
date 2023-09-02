@@ -132,6 +132,12 @@ namespace WarehouseManagement.Service.Implementation
                 var newIdentityUser = new IdentityUser { Email = user.Email, UserName = user.Email };
                 var createResult = await _userManager.CreateAsync(newIdentityUser);
                 await _userManager.AddPasswordAsync(newIdentityUser, user.Password);
+                if (!(await _roleManager.RoleExistsAsync("tenant")))
+                {
+                    IdentityRole role = new IdentityRole { Name = "tenant" };
+                    await _roleManager.CreateAsync(role);
+                }
+                await _userManager.AddToRoleAsync(newIdentityUser, "tenant");
 
                 newIdentityUser = await _userManager.FindByEmailAsync(user.Email);
                 
