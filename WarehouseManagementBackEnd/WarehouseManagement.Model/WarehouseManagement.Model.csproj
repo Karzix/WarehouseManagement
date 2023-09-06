@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Dto\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Maynghien.Common\Maynghien.Common.csproj" />
   </ItemGroup>
 

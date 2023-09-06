@@ -21,6 +21,7 @@ namespace WarehouseManagement.Service.Mapper
         {
             CreateMap<Warehouse, WarehouseDto>().ReverseMap();
             CreateMap<IdentityUser, UserModel>().ReverseMap();
+            CreateMap<Supplier, SupplierDto>().ReverseMap();
         }
     }
 }
