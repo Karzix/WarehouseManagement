@@ -16,12 +16,14 @@ namespace WarehouseManagement.API.StartUp
             builder.Services.AddScoped<IWarehouseService, WarehouseService>();
             builder.Services.AddScoped<IUserManagementService, UserManagamentService>();
             builder.Services.AddScoped<ISupplierService, SupplierService>();
+            builder.Services.AddScoped<IProductService, ProductService>();
             #endregion Service Mapping
 
             #region Repository Mapping
             builder.Services.AddScoped<IWarehouseRepository, WarehouseRepository>();
             builder.Services.AddScoped<IUserManagementRepository, UserManagementRepository>();
             builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
+            builder.Services.AddScoped<IProductRepository,ProductRepository>();
             #endregion Repository Mapping
         }
     }
