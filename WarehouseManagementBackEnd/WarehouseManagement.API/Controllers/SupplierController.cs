@@ -7,7 +7,7 @@ namespace WarehouseManagement.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SupplierController : ControllerBase
+    public class SupplierController : Controller
     {
         private ISupplierService _supplierService;
 

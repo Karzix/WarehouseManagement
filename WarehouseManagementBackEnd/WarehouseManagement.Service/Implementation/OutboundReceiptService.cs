@@ -32,7 +32,8 @@ namespace WarehouseManagement.Service.Implementation
             {
                 var outboundReceipt = _mapper.Map<OutboundReceipt>(request);
                 outboundReceipt.Id = Guid.NewGuid();
-                
+                _outboundReceiptRepository.Add(outboundReceipt);
+
                 request.Id = outboundReceipt.Id;
                 result.IsSuccess = true;
                 result.Data = request;
@@ -103,6 +104,8 @@ namespace WarehouseManagement.Service.Implementation
                     Id = m.Id,
                     To = m.To,
                     WarehouseName = m.Warehouse.Name,
+                    WarehouseId = m.Id,
+
                 }).ToList();
 
                 result.Data = list;

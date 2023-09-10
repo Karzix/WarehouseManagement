@@ -7,7 +7,7 @@ namespace WarehouseManagement.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OutboundReceiptController : ControllerBase
+    public class OutboundReceiptController : Controller
     {
         private IOutboundReceiptService _outboundReceiptService;
 

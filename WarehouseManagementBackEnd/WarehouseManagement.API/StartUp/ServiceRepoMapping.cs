@@ -19,6 +19,7 @@ namespace WarehouseManagement.API.StartUp
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<ISupplierProductService, SupplierProductService>();
             builder.Services.AddScoped<IOutboundReceiptService, OutboundReceiptService>();
+            builder.Services.AddScoped<IExportProductService, ExportProductService>();
             #endregion Service Mapping
 
             #region Repository Mapping
@@ -28,6 +29,7 @@ namespace WarehouseManagement.API.StartUp
             builder.Services.AddScoped<IProductRepository,ProductRepository>();
             builder.Services.AddScoped<ISupplierProductRepository,SupplierProductRepositor>();
             builder.Services.AddScoped<IOutboundReceiptRepository, OutboundReceiptRepository>();
+            builder.Services.AddScoped<IExportProductRepository, ExportProductRepository>();
             #endregion Repository Mapping
         }
     }
