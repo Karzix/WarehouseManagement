@@ -133,7 +133,7 @@ namespace WarehouseManagement.Service.Implementation
                 var numOfRecords = _userManagementRepository.CountRecordsByPredicate(query);
 
                 var users = _userManagementRepository.FindByPredicate(query);
-                int pageIndex = request.PageSize ?? 1;
+                int pageIndex = request.PageIndex ?? 1;
                 int pageSize = request.PageSize ?? 1;
                 int startIndex = (pageIndex - 1) * (int)pageSize;
                 var UserList = users.Skip(startIndex).Take(pageSize).ToList();
@@ -155,7 +155,10 @@ namespace WarehouseManagement.Service.Implementation
                     Data = dtoList,
                 };
 
-                return result.BuildResult(searchUserResult);
+                result.Data = searchUserResult;
+                result.IsSuccess = true;
+
+                return result;
 
             }
             catch (Exception ex)
@@ -165,27 +168,6 @@ namespace WarehouseManagement.Service.Implementation
             }
         }
 
-        //public async Task<AppResponse<string>> EditUser(UserModel user)
-        //{
-        //    var result = new AppResponse<string>();
-        //    try
-        //    {
-        //        var identityUser = await _userManager.FindByIdAsync(user.Id);
-        //        if (identityUser != null)
-        //        {
-        //            identityUser = _mapper.Map<IdentityUser>(user);
-        //            _userManagementRepository.EditUser(identityUser);
-        //            return result.BuildResult("ok");
-        //        }
-        //        return result.BuildResult("Không tim thấy người dùng");
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        result.IsSuccess = false;
-        //        result.Message = ex.Message + " " + ex.StackTrace;
-        //        return result;
-        //    }
-        //}
 
         private ExpressionStarter<IdentityUser> BuildFilterExpression(IList<Filter> Filters)
         {

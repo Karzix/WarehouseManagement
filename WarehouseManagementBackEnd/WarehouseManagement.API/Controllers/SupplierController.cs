@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WarehouseManagement.Model.Dto;
 using WarehouseManagement.Service.Contract;
@@ -7,6 +8,7 @@ namespace WarehouseManagement.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public class SupplierController : Controller
     {
         private ISupplierService _supplierService;
