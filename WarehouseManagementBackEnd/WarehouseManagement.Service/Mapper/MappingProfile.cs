@@ -27,6 +27,7 @@ namespace WarehouseManagement.Service.Mapper
             CreateMap<OutboundReceipt, OutboundReceiptDto>().ReverseMap();
             CreateMap<ExportProduct, ExportProductDto>().ReverseMap();
             CreateMap<InboundReceipt, InboundReceiptDto>().ReverseMap();
+            CreateMap<ProductRemaining, ProductRemainingDto>().ReverseMap();
         }
     }
 }

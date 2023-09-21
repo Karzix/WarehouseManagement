@@ -18,10 +18,15 @@ namespace WarehouseManagement.Service.Implementation
     {
         private readonly IExportProductRepository _repository;
         private readonly IMapper _mapper;
-        public ExportProductService(IExportProductRepository repository, IMapper mapper)
+        private IOutboundReceiptRepository _outboundReceiptRepository;
+        private ISupplierProductRepository _supplierProductRepository;
+        public ExportProductService(IExportProductRepository repository, IMapper mapper
+            , IOutboundReceiptRepository outboundReceiptRepository, ISupplierProductRepository supplierProductRepository)
         {
             _repository = repository;
             this._mapper = mapper;
+            _outboundReceiptRepository = outboundReceiptRepository;
+            _supplierProductRepository = supplierProductRepository;
         }
 
         public AppResponse<ExportProductDto> CreateExportProduct(ExportProductDto request)
@@ -29,6 +34,24 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<ExportProductDto>();
             try
             {
+                if(request.SupplierProductId == null)
+                {
+                    return result.BuildError("SupplierProduct cannot null");
+                }
+                var supplierProduct =_supplierProductRepository.FindBy(x=>x.Id == request.SupplierProductId && x.IsDeleted == false);
+                if (supplierProduct.Count() == 0)
+                {
+                    return result.BuildError("Cannot find supplier product");
+                }
+                if(request.OutboundReceiptId == null)
+                {
+                    return result.BuildError("Outbound receipt cannot null");
+                }
+                var outboundReceipt =_outboundReceiptRepository.FindBy(x=>x.Id ==request.OutboundReceiptId && x.IsDeleted==false);
+                if(outboundReceipt.Count() == 0)
+                {
+                    return result.BuildError("Cannot find outbound receipt");
+                }
                 var exportProduct = _mapper.Map<ExportProduct>(request);
                 exportProduct.Id = Guid.NewGuid();
                 _repository.Add(exportProduct);
@@ -98,14 +121,16 @@ namespace WarehouseManagement.Service.Implementation
             {
                 var query = _repository.GetAll()
                     .Include(s => s.SupplierProduct)
-                    .Include(s=> s.SupplierProduct.Supplier);
+                    .Include(s=> s.SupplierProduct.Supplier)
+                    .Include(s=>s.SupplierProduct.Product);
                 var list = query.Select(m => new ExportProductDto
                 {
                     Quantity = m.Quantity,
                     SupplierProductId = m.SupplierProductId,
                     OutboundReceiptId = m.OutboundReceiptId,
-                    SupplierProductName = m.SupplierProduct.Supplier.Name,
-                    Id = m.Id
+                    Id = m.Id,
+                    SupplierName = m.SupplierProduct.Supplier.Name,
+                    ProductName = m.SupplierProduct.Product.Name
                 }).ToList();
                 result.Data = list;
                 result.IsSuccess = true;
@@ -126,7 +151,8 @@ namespace WarehouseManagement.Service.Implementation
             {
                 var exportProduct = _repository.FindById(Id);
                 var exportProductDto = _mapper.Map<ExportProductDto>(exportProduct);
-                exportProductDto.SupplierProductName = exportProduct.SupplierProduct.Supplier.Name;
+                exportProductDto.SupplierName = exportProduct.SupplierProduct.Supplier.Name;
+                exportProductDto.ProductName = exportProduct.SupplierProduct.Product.Name;
 
                 result.IsSuccess = true;
                 result.Data = exportProductDto;

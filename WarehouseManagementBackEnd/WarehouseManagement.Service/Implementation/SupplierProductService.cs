@@ -18,11 +18,14 @@ namespace WarehouseManagement.Service.Implementation
     {
         private readonly ISupplierProductRepository _supplierProductRepository;
         private readonly IMapper _mapper;
-
-        public SupplierProductService(ISupplierProductRepository supplierProductRepository, IMapper mapper)
+        private ISupplierRepository _supplierRepository;
+        private IProductRepository _productRepository;  
+        public SupplierProductService(ISupplierProductRepository supplierProductRepository, IMapper mapper, ISupplierRepository supplierRepository, IProductRepository productRepository)
         {
             _supplierProductRepository = supplierProductRepository;
             _mapper = mapper;
+            _supplierRepository = supplierRepository;
+            _productRepository = productRepository;
         }
 
         public AppResponse<SupplierProductDto> CreateSupplierProduct(SupplierProductDto request)
@@ -30,14 +33,30 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<SupplierProductDto>();
             try
             {
-                var supplierproduct = _mapper.Map<SupplierProduct>(request);
-                supplierproduct.Id = Guid.NewGuid();
-                _supplierProductRepository.Add(supplierproduct);
+                var supplier = _supplierRepository.Get(request.SupplierId);
+                var product =_productRepository.Get(request.ProductId);
+                if (supplier == null && supplier.IsDeleted != false)
+                {
 
-                request.Id =  supplierproduct.Id;
-                result.IsSuccess = true;
-                result.Data = request;
-                return result;
+                    return result.BuildError("supplier wrong!");
+                }
+                else if (product == null && product.IsDeleted != false)
+                {
+                    return result.BuildError("product wrong!");
+                }
+                else
+                {
+                    var supplierproduct = _mapper.Map<SupplierProduct>(request);
+                    supplierproduct.Id = Guid.NewGuid();
+                    supplierproduct.Product = product;
+                    supplierproduct.Supplier = supplier;
+                    _supplierProductRepository.Add(supplierproduct);
+
+                    request.Id = supplierproduct.Id;
+                    result.IsSuccess = true;
+                    result.Data = request;
+                    return result;
+                }
             }
             catch (Exception ex)
             {

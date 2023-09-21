@@ -138,15 +138,15 @@ namespace WarehouseManagement.Service.Implementation
                 int startIndex = (pageIndex - 1) * (int)pageSize;
                 var UserList = users.Skip(startIndex).Take(pageSize).ToList();
                 var dtoList = _mapper.Map<List<UserModel>>(UserList);
-                //if (dtoList != null && dtoList.Count > 0)
-                //{
-                //    for (int i = 0; i < UserList.Count; i++)
-                //    {
-                //        var dtouser = dtoList[i];
-                //        var identityUser = UserList[i];
-                //        dtouser.Role = (await _userManager.GetRolesAsync(identityUser)).First();
-                //    }
-                //}
+                if (dtoList != null && dtoList.Count > 0)
+                {
+                    for (int i = 0; i < UserList.Count; i++)
+                    {
+                        var dtouser = dtoList[i];
+                        var identityUser = UserList[i];
+                        dtouser.Role = (await _userManager.GetRolesAsync(identityUser)).First();
+                    }
+                }
                 var searchUserResult = new SearchUserResponse
                 {
                     TotalRows = numOfRecords,

@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using AutoMapper;
 using MayNghien.Models.Response.Base;
 using WarehouseManagement.DAL.Contract;
-using WarehouseManagement.DAL.Implementation;
 using WarehouseManagement.DAL.Models.Entity;
 using WarehouseManagement.Model.Dto;
 using WarehouseManagement.Service.Contract;
@@ -18,11 +12,13 @@ namespace WarehouseManagement.Service.Implementation
     {
         private IOutboundReceiptRepository _outboundReceiptRepository;
         private IMapper _mapper;
+        private IWarehouseRepository _warehouseRepository;
 
-        public OutboundReceiptService(IOutboundReceiptRepository outboundReceiptRepository, IMapper mapper)
+        public OutboundReceiptService(IOutboundReceiptRepository outboundReceiptRepository, IMapper mapper, IWarehouseRepository warehouseRepository)
         {
             _outboundReceiptRepository = outboundReceiptRepository;
             _mapper = mapper;
+            _warehouseRepository = warehouseRepository;
         }
 
         public AppResponse<OutboundReceiptDto> CreateOutboundReceipt(OutboundReceiptDto request)
@@ -30,13 +26,23 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<OutboundReceiptDto>();
             try
             {
-                var outboundReceipt = _mapper.Map<OutboundReceipt>(request);
-                outboundReceipt.Id = Guid.NewGuid();
-                _outboundReceiptRepository.Add(outboundReceipt);
+                if (request.WarehouseId == null)
+                {
+                    return result.BuildError("warehouse cannot be null");
+                }
+                var warehouse =_warehouseRepository.FindBy(x=>x.Id == request.WarehouseId && x.IsDeleted ==false);
+                if(warehouse.Count() == 0)
+                {
+                    return result.BuildError("Cannot find warehouse");
+                }
+                    var outboundReceipt = _mapper.Map<OutboundReceipt>(request);
+                    outboundReceipt.Warehouse = null;
+                    outboundReceipt.Id = Guid.NewGuid();
+                    _outboundReceiptRepository.Add(outboundReceipt);
 
-                request.Id = outboundReceipt.Id;
-                result.IsSuccess = true;
-                result.Data = request;
+                    request.Id = outboundReceipt.Id;
+                    result.IsSuccess = true;
+                    result.Data = request;
                 return result;
             }
             catch (Exception ex)

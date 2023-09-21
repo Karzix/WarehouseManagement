@@ -18,11 +18,15 @@ namespace WarehouseManagement.Service.Implementation
     {
         private readonly IProductRemainingRepository _productRemainingRepository;
         private IMapper _mapper;
+        private IProductRepository _productRepository;
+        private IWarehouseRepository _warehouseRepository;
 
-        public ProductRemainingService(IProductRemainingRepository productRemainingRepository, IMapper mapper)
+        public ProductRemainingService(IProductRemainingRepository productRemainingRepository, IMapper mapper, IProductRepository productRepository, IWarehouseRepository warehouseRepository)
         {
             _productRemainingRepository = productRemainingRepository;
             _mapper = mapper;
+            _productRepository = productRepository;
+            _warehouseRepository = warehouseRepository;
         }
 
         public AppResponse<ProductRemainingDto> CreateProductRemaining(ProductRemainingDto request)
@@ -30,12 +34,32 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<ProductRemainingDto>();
             try
             {
-                var productREmaining = _mapper.Map<ProductRemaining>(request);
-                productREmaining.Id = Guid.NewGuid();
-                _productRemainingRepository.Add(productREmaining);
-                request.Id = productREmaining.Id;
-                result.IsSuccess = true;
-                result.Data = request;
+                if(request.ProductId == null)
+                {
+                    return result.BuildError("product cannot null");
+                }
+                var product = _productRemainingRepository.FindBy(x=>x.Id == request.ProductId && x.IsDeleted == false);
+                if (product.Count() == 0)
+                {
+                    return result.BuildError("Cannot find product");
+                }
+                if(request.WarehouseId== null)
+                {
+                    return result.BuildError("warehouse cannot null");
+                }
+                var warehouse =_warehouseRepository.FindBy(x=>x.Id == request.WarehouseId && x.IsDeleted == false);
+                if(warehouse.Count() == 0)
+                {
+                    return result.BuildError("Cannot find warehouse");
+                }
+                    var productREmaining = _mapper.Map<ProductRemaining>(request);
+                    productREmaining.Id = Guid.NewGuid();
+                    productREmaining.Product = null;
+                    productREmaining.Warehouse = null;
+                    _productRemainingRepository.Add(productREmaining);
+                    request.Id = productREmaining.Id;
+                    result.IsSuccess = true;
+                    result.Data = request;
             }
             catch (Exception ex)
             {
@@ -103,7 +127,8 @@ namespace WarehouseManagement.Service.Implementation
                     WarehouseId = m.WarehouseId,
                     WarehouseName = m.Warehouse.Name,
                     ProductId = m.ProductId,
-                    ProductName = m.Product.Name
+                    ProductName = m.Product.Name,
+                    Quantity = m.Quantity,
                 })
                 .ToList();
 

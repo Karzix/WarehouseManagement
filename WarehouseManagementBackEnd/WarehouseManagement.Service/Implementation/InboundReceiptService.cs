@@ -17,11 +17,16 @@ namespace WarehouseManagement.Service.Implementation
     {
         private readonly IInboundReceiptRepository _inboundReceiptRepository;
         private IMapper _mapper;
+        private ISupplierRepository _supplierRepository;
+        private IWarehouseRepository _warehouseRepository;
 
-        public InboundReceiptService(IInboundReceiptRepository inboundReceiptRepository, IMapper mapper)
+        public InboundReceiptService(IInboundReceiptRepository inboundReceiptRepository, IMapper mapper,
+            ISupplierRepository supplierRepository, IWarehouseRepository warehouseRepository)
         {
             _inboundReceiptRepository = inboundReceiptRepository;
             _mapper = mapper;
+            _supplierRepository = supplierRepository;
+            _warehouseRepository = warehouseRepository;
         }
 
         public AppResponse<InboundReceiptDto> CreateInboundReceipt(InboundReceiptDto request)
@@ -29,12 +34,31 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<InboundReceiptDto>();
             try
             {
+                if (request.SupplierId == null)
+                {
+                    return result.BuildError("supplier cannot be null");
+                }
+                else if (request.WarehouseId == null)
+                {
+                    return result.BuildError("warehouse cannot be null");
+                }
+                var supplier =_supplierRepository.FindBy(x=>x.Id ==  request.SupplierId && x.IsDeleted == false);
+                if (supplier.Count() == 0)
+                {
+                    return result.BuildError("Cannot find supplier");
+                }
+                var warehouse = _warehouseRepository.FindBy(x=>x.Id == request.WarehouseId && x.IsDeleted == false);
+                if(warehouse.Count() == 0)
+                {
+                    return result.BuildError("Cannot find warehouse");
+                }
                 var inboundReceipt = _mapper.Map<InboundReceipt>(request);
-                inboundReceipt.Id =  Guid.NewGuid();
-
-                _inboundReceiptRepository.Add(inboundReceipt);
-                request.Id = inboundReceipt.Id;
-                result.BuildResult(request);
+                    inboundReceipt.Id = Guid.NewGuid();
+                    inboundReceipt.Warehouse = null;
+                    inboundReceipt.Supplier = null;
+                    _inboundReceiptRepository.Add(inboundReceipt);
+                    request.Id = inboundReceipt.Id;
+                    result.BuildResult(request);    
             }
             catch (Exception ex)
             {
