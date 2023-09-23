@@ -22,7 +22,7 @@ namespace WarehouseManagement.DAL.Implementation
         {
             var outboundReceipt = _context.OutboundReceipt.Where(x=>x.Id == id)
                 .Include(x=>x.Warehouse)
-                .FirstOrDefault();
+                .First();
             return outboundReceipt;
         }
     }

@@ -5,7 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using MayNghien.Common.Helpers;
 using MayNghien.Models.Response.Base;
+using Microsoft.AspNetCore.Http;
 using WarehouseManagement.DAL.Contract;
 using WarehouseManagement.DAL.Models.Entity;
 using WarehouseManagement.Model.Dto;
@@ -19,13 +21,16 @@ namespace WarehouseManagement.Service.Implementation
         private IMapper _mapper;
         private IInboundReceiptRepository _inboundReceiptRepository;
         private ISupplierProductRepository _supplierProductRepository;
+        private IHttpContextAccessor _httpContextAccessor;
 
-        public ImportProductService(IImportProductRepository importProductRepository, IMapper mapper, IInboundReceiptRepository inboundReceiptRepository, ISupplierProductRepository supplierProductRepository)
+        public ImportProductService(IImportProductRepository importProductRepository, IMapper mapper,
+            IInboundReceiptRepository inboundReceiptRepository, ISupplierProductRepository supplierProductRepository, IHttpContextAccessor httpContextAccessor)
         {
             _importProductRepository = importProductRepository;
             _mapper = mapper;
             _inboundReceiptRepository = inboundReceiptRepository;
             _supplierProductRepository = supplierProductRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public AppResponse<ImportProductDto> CreateImportProduct(ImportProductDto requets)
@@ -33,7 +38,12 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<ImportProductDto>();
             try
             {
-                if(requets.SupplierProductId == null)
+                var UserName = ClaimHelper.GetClainByName(_httpContextAccessor, "UserName");
+                if (UserName == null)
+                {
+                    return result.BuildError("Cannot find Account by this user");
+                }
+                if (requets.SupplierProductId == null)
                 {
                     return result.BuildError("Supplier product cannot null");
                 }
@@ -55,6 +65,7 @@ namespace WarehouseManagement.Service.Implementation
                 importProduct.Id = Guid.NewGuid();
                 importProduct.SupplierProduct = null;
                 importProduct.InboundReceipt = null;
+                importProduct.CreatedBy = UserName;
                 _importProductRepository.Add(importProduct);
 
                 requets.Id = importProduct.Id;

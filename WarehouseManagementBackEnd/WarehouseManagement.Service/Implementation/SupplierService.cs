@@ -1,6 +1,8 @@
 ﻿using System.Net.NetworkInformation;
 using AutoMapper;
+using MayNghien.Common.Helpers;
 using MayNghien.Models.Response.Base;
+using Microsoft.AspNetCore.Http;
 using WarehouseManagement.DAL.Contract;
 using WarehouseManagement.DAL.Models.Entity;
 using WarehouseManagement.Model.Dto;
@@ -12,11 +14,13 @@ namespace WarehouseManagement.Service.Implementation
     {
         private readonly ISupplierRepository _supplierRepository;
         private readonly IMapper _mapper;
+        private IHttpContextAccessor _httpContextAccessor;
 
-        public SupplierService(ISupplierRepository supplierRepository, IMapper mapper)
+        public SupplierService(ISupplierRepository supplierRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _supplierRepository = supplierRepository;
             _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor; 
         }
 
         public AppResponse<SupplierDto> CreateSupplier(SupplierDto supplier)
@@ -24,8 +28,15 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<SupplierDto>();
             try
             {
+                var UserName = ClaimHelper.GetClainByName(_httpContextAccessor, "UserName");
+                if (UserName == null)
+                {
+                    return result.BuildError("Cannot find Account by this user");
+                }
+
                 var request = _mapper.Map<Supplier>(supplier);
                 request.Id =  Guid.NewGuid();
+                request.CreatedBy = UserName;
                 _supplierRepository.Add(request);
 
                 supplier.Id = request.Id;

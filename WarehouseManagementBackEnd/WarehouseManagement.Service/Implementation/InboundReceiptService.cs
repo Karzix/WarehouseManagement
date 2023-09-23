@@ -5,7 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using MayNghien.Common.Helpers;
 using MayNghien.Models.Response.Base;
+using Microsoft.AspNetCore.Http;
 using WarehouseManagement.DAL.Contract;
 using WarehouseManagement.DAL.Models.Entity;
 using WarehouseManagement.Model.Dto;
@@ -19,14 +21,16 @@ namespace WarehouseManagement.Service.Implementation
         private IMapper _mapper;
         private ISupplierRepository _supplierRepository;
         private IWarehouseRepository _warehouseRepository;
+        private IHttpContextAccessor _httpContextAccessor;
 
         public InboundReceiptService(IInboundReceiptRepository inboundReceiptRepository, IMapper mapper,
-            ISupplierRepository supplierRepository, IWarehouseRepository warehouseRepository)
+            ISupplierRepository supplierRepository, IWarehouseRepository warehouseRepository, IHttpContextAccessor httpContextAccessor)
         {
             _inboundReceiptRepository = inboundReceiptRepository;
             _mapper = mapper;
             _supplierRepository = supplierRepository;
             _warehouseRepository = warehouseRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public AppResponse<InboundReceiptDto> CreateInboundReceipt(InboundReceiptDto request)
@@ -34,6 +38,11 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<InboundReceiptDto>();
             try
             {
+                var UserName = ClaimHelper.GetClainByName(_httpContextAccessor, "UserName");
+                if (UserName == null)
+                {
+                    return result.BuildError("Cannot find Account by this user");
+                }
                 if (request.SupplierId == null)
                 {
                     return result.BuildError("supplier cannot be null");
@@ -56,6 +65,7 @@ namespace WarehouseManagement.Service.Implementation
                     inboundReceipt.Id = Guid.NewGuid();
                     inboundReceipt.Warehouse = null;
                     inboundReceipt.Supplier = null;
+                    inboundReceipt.CreatedBy = UserName;
                     _inboundReceiptRepository.Add(inboundReceipt);
                     request.Id = inboundReceipt.Id;
                     result.BuildResult(request);    
@@ -131,8 +141,17 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<InboundReceiptDto>();
             try
             {
-                var inboundReceipt = _inboundReceiptRepository.FindBy(x=>x.Id == Id).First();
-                var data = _mapper.Map<InboundReceiptDto>(inboundReceipt);
+                var inboundReceipt = _inboundReceiptRepository.FindBy(x=>x.Id == Id)
+                    .Include(x=>x.Warehouse)
+                    .Include(x=>x.Supplier);
+                var data = inboundReceipt.Select(x=>new InboundReceiptDto
+                {
+                    Id = x.Id,
+                    SupplierId = x.SupplierId,
+                    SupplierName = x.Supplier.Name,
+                    WarehouseId = x.WarehouseId,
+                    WarehousName = x.Warehouse.Name
+                }).First();
                 result.BuildResult(data);
             }
             catch (Exception ex)

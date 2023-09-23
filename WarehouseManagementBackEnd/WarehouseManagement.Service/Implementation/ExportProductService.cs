@@ -5,7 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using MayNghien.Common.Helpers;
 using MayNghien.Models.Response.Base;
+using Microsoft.AspNetCore.Http;
 using WarehouseManagement.DAL.Contract;
 using WarehouseManagement.DAL.Implementation;
 using WarehouseManagement.DAL.Models.Entity;
@@ -20,13 +22,17 @@ namespace WarehouseManagement.Service.Implementation
         private readonly IMapper _mapper;
         private IOutboundReceiptRepository _outboundReceiptRepository;
         private ISupplierProductRepository _supplierProductRepository;
+        private IHttpContextAccessor _httpContextAccessor;
+
         public ExportProductService(IExportProductRepository repository, IMapper mapper
-            , IOutboundReceiptRepository outboundReceiptRepository, ISupplierProductRepository supplierProductRepository)
+            , IOutboundReceiptRepository outboundReceiptRepository, ISupplierProductRepository supplierProductRepository
+            ,IHttpContextAccessor httpContextAccessor)
         {
             _repository = repository;
             this._mapper = mapper;
             _outboundReceiptRepository = outboundReceiptRepository;
             _supplierProductRepository = supplierProductRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public AppResponse<ExportProductDto> CreateExportProduct(ExportProductDto request)
@@ -34,7 +40,12 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<ExportProductDto>();
             try
             {
-                if(request.SupplierProductId == null)
+                var UserName = ClaimHelper.GetClainByName(_httpContextAccessor, "UserName");
+                if (UserName == null)
+                {
+                    return result.BuildError("Cannot find Account by this user");
+                }
+                if (request.SupplierProductId == null)
                 {
                     return result.BuildError("SupplierProduct cannot null");
                 }
@@ -54,6 +65,7 @@ namespace WarehouseManagement.Service.Implementation
                 }
                 var exportProduct = _mapper.Map<ExportProduct>(request);
                 exportProduct.Id = Guid.NewGuid();
+                exportProduct.CreatedBy = UserName;
                 _repository.Add(exportProduct);
 
                 result.IsSuccess = true;

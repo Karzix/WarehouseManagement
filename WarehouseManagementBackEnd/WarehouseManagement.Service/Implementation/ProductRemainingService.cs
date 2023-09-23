@@ -5,7 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using MayNghien.Common.Helpers;
 using MayNghien.Models.Response.Base;
+using Microsoft.AspNetCore.Http;
 using WarehouseManagement.DAL.Contract;
 using WarehouseManagement.DAL.Implementation;
 using WarehouseManagement.DAL.Models.Entity;
@@ -20,13 +22,16 @@ namespace WarehouseManagement.Service.Implementation
         private IMapper _mapper;
         private IProductRepository _productRepository;
         private IWarehouseRepository _warehouseRepository;
+        private IHttpContextAccessor _httpContextAccessor;
 
-        public ProductRemainingService(IProductRemainingRepository productRemainingRepository, IMapper mapper, IProductRepository productRepository, IWarehouseRepository warehouseRepository)
+        public ProductRemainingService(IProductRemainingRepository productRemainingRepository,
+            IMapper mapper, IProductRepository productRepository, IWarehouseRepository warehouseRepository, IHttpContextAccessor httpContextAccessor)
         {
             _productRemainingRepository = productRemainingRepository;
             _mapper = mapper;
             _productRepository = productRepository;
             _warehouseRepository = warehouseRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public AppResponse<ProductRemainingDto> CreateProductRemaining(ProductRemainingDto request)
@@ -34,11 +39,16 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<ProductRemainingDto>();
             try
             {
-                if(request.ProductId == null)
+                var UserName = ClaimHelper.GetClainByName(_httpContextAccessor, "UserName");
+                if (UserName == null)
+                {
+                    return result.BuildError("Cannot find Account by this user");
+                }
+                if (request.ProductId == null)
                 {
                     return result.BuildError("product cannot null");
                 }
-                var product = _productRemainingRepository.FindBy(x=>x.Id == request.ProductId && x.IsDeleted == false);
+                var product = _productRepository.FindBy(x=>x.Id == request.ProductId && x.IsDeleted == false);
                 if (product.Count() == 0)
                 {
                     return result.BuildError("Cannot find product");
@@ -56,6 +66,7 @@ namespace WarehouseManagement.Service.Implementation
                     productREmaining.Id = Guid.NewGuid();
                     productREmaining.Product = null;
                     productREmaining.Warehouse = null;
+                    productREmaining.CreatedBy = UserName;
                     _productRemainingRepository.Add(productREmaining);
                     request.Id = productREmaining.Id;
                     result.IsSuccess = true;

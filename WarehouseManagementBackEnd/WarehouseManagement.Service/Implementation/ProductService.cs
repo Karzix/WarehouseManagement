@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using MayNghien.Common.Helpers;
 using MayNghien.Models.Response.Base;
+using Microsoft.AspNetCore.Http;
 using WarehouseManagement.DAL.Contract;
 using WarehouseManagement.DAL.Models.Entity;
 using WarehouseManagement.Model.Dto;
@@ -16,11 +18,13 @@ namespace WarehouseManagement.Service.Implementation
     {
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
+        private IHttpContextAccessor _httpContextAccessor;
 
-        public ProductService(IProductRepository productRepository, IMapper mapper)
+        public ProductService(IProductRepository productRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _productRepository = productRepository;
             _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public AppResponse<ProductDto> CreateProduct(ProductDto request)
@@ -28,10 +32,15 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<ProductDto>();
             try
             {
+                var UserName = ClaimHelper.GetClainByName(_httpContextAccessor, "UserName");
+                if (UserName == null)
+                {
+                    return result.BuildError("Cannot find Account by this user");
+                }
                 var product = new Product();
                 product = _mapper.Map<Product>(request);
                 product.Id = Guid.NewGuid();
-
+                product.CreatedBy = UserName;
                 _productRepository.Add(product);
 
                 result.IsSuccess = true;

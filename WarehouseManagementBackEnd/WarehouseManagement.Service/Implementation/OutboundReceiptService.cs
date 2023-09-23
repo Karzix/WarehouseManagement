@@ -1,6 +1,8 @@
 ﻿using System.Data.Entity;
 using AutoMapper;
+using MayNghien.Common.Helpers;
 using MayNghien.Models.Response.Base;
+using Microsoft.AspNetCore.Http;
 using WarehouseManagement.DAL.Contract;
 using WarehouseManagement.DAL.Models.Entity;
 using WarehouseManagement.Model.Dto;
@@ -13,12 +15,15 @@ namespace WarehouseManagement.Service.Implementation
         private IOutboundReceiptRepository _outboundReceiptRepository;
         private IMapper _mapper;
         private IWarehouseRepository _warehouseRepository;
+        private IHttpContextAccessor _httpContextAccessor;
 
-        public OutboundReceiptService(IOutboundReceiptRepository outboundReceiptRepository, IMapper mapper, IWarehouseRepository warehouseRepository)
+        public OutboundReceiptService(IOutboundReceiptRepository outboundReceiptRepository,
+            IMapper mapper, IWarehouseRepository warehouseRepository, IHttpContextAccessor httpContextAccessor)
         {
             _outboundReceiptRepository = outboundReceiptRepository;
             _mapper = mapper;
             _warehouseRepository = warehouseRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public AppResponse<OutboundReceiptDto> CreateOutboundReceipt(OutboundReceiptDto request)
@@ -26,6 +31,11 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<OutboundReceiptDto>();
             try
             {
+                var UserName = ClaimHelper.GetClainByName(_httpContextAccessor, "UserName");
+                if (UserName == null)
+                {
+                    return result.BuildError("Cannot find Account by this user");
+                }
                 if (request.WarehouseId == null)
                 {
                     return result.BuildError("warehouse cannot be null");

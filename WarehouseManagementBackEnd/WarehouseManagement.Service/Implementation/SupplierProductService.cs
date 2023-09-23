@@ -5,7 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using MayNghien.Common.Helpers;
 using MayNghien.Models.Response.Base;
+using Microsoft.AspNetCore.Http;
 using WarehouseManagement.DAL.Contract;
 using WarehouseManagement.DAL.Implementation;
 using WarehouseManagement.DAL.Models.Entity;
@@ -19,13 +21,16 @@ namespace WarehouseManagement.Service.Implementation
         private readonly ISupplierProductRepository _supplierProductRepository;
         private readonly IMapper _mapper;
         private ISupplierRepository _supplierRepository;
-        private IProductRepository _productRepository;  
-        public SupplierProductService(ISupplierProductRepository supplierProductRepository, IMapper mapper, ISupplierRepository supplierRepository, IProductRepository productRepository)
+        private IProductRepository _productRepository;
+        private IHttpContextAccessor _httpContextAccessor;
+        public SupplierProductService(ISupplierProductRepository supplierProductRepository, IMapper mapper,
+            ISupplierRepository supplierRepository, IProductRepository productRepository, IHttpContextAccessor httpContextAccessor)
         {
             _supplierProductRepository = supplierProductRepository;
             _mapper = mapper;
             _supplierRepository = supplierRepository;
             _productRepository = productRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public AppResponse<SupplierProductDto> CreateSupplierProduct(SupplierProductDto request)
@@ -33,6 +38,12 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<SupplierProductDto>();
             try
             {
+                var UserName = ClaimHelper.GetClainByName(_httpContextAccessor, "UserName");
+                if (UserName == null)
+                {
+                    return result.BuildError("Cannot find Account by this user");
+                }
+
                 var supplier = _supplierRepository.Get(request.SupplierId);
                 var product =_productRepository.Get(request.ProductId);
                 if (supplier == null && supplier.IsDeleted != false)
@@ -50,6 +61,7 @@ namespace WarehouseManagement.Service.Implementation
                     supplierproduct.Id = Guid.NewGuid();
                     supplierproduct.Product = product;
                     supplierproduct.Supplier = supplier;
+                    supplierproduct.CreatedBy = UserName;
                     _supplierProductRepository.Add(supplierproduct);
 
                     request.Id = supplierproduct.Id;
