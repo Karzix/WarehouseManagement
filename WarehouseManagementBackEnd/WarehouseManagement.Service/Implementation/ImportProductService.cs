@@ -100,7 +100,11 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<ImportProductDto>();
             try
             {
-
+                var inportProduct = _importProductRepository.Get(requets.Id.Value);
+                inportProduct.SupplierProductId = requets.SupplierProductId;
+                inportProduct.Quantity = requets.Quantity;
+                inportProduct.InboundReceiptId = requets.InboundReceiptId;
+                inportProduct.ModifiedOn = DateTime.UtcNow;
             }
             catch (Exception ex)
             {

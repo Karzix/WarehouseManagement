@@ -111,7 +111,7 @@ namespace WarehouseManagement.Service.Implementation
                 exportProduct.SupplierProductId = request.SupplierProductId;
                 exportProduct.OutboundReceiptId = request.OutboundReceiptId;
                 exportProduct.Quantity = request.Quantity;
-
+                exportProduct.ModifiedOn = DateTime.UtcNow;
                 _repository.Edit(exportProduct);
                 result.IsSuccess = true;
                 result.Data = request;

@@ -96,6 +96,7 @@ namespace WarehouseManagement.Service.Implementation
                 warehouse.Name = request.Name;
                 warehouse.Address = request.Address;
                 warehouse.Managent = request.Managent;
+                warehouse.ModifiedOn = DateTime.UtcNow;
                 //budgetcat.Id = Guid.NewGuid();
                 _warehouseRepository.Edit(warehouse);
 

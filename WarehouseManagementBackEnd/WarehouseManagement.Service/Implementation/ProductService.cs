@@ -126,7 +126,11 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<ProductDto>();
             try
             {
-                var product = _mapper.Map<Product>(request);
+                var product = _productRepository.Get(request.Id.Value);
+                product.Description = request.Description;
+                product.Quantity = request.Quantity;
+                product.Description = request.Description;
+                product.ModifiedOn = DateTime.UtcNow;
                 _productRepository.Edit(product);
                 result.Data = request;
                 result.IsSuccess = true;

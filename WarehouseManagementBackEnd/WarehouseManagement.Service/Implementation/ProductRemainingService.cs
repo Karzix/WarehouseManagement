@@ -104,11 +104,11 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<ProductRemainingDto>();
             try
             {
-                var productRemaining = new ProductRemaining();
+                var productRemaining = _productRemainingRepository.Get(request.Id.Value);
                 productRemaining.ProductId = request.ProductId;
                 productRemaining.Quantity = request.Quantity;
                 productRemaining.WarehouseId = request.WarehouseId;
-
+                productRemaining.ModifiedOn = DateTime.UtcNow;
                 productRemaining.Id = (Guid)request.Id;
 
                 result.IsSuccess = true;

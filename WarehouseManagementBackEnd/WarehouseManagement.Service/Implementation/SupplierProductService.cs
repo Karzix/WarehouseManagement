@@ -102,13 +102,10 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<SupplierProductDto>();
             try
             {
-                var supplierPoduct = new SupplierProduct
-                {
-                    Id = (Guid)request.Id,
-                    ProductId = request.ProductId,
-                    SupplierId = request.SupplierId,
-                    ModifiedOn = DateTime.UtcNow
-                };
+                var supplierPoduct = _supplierProductRepository.Get(request.Id.Value);
+                supplierPoduct.SupplierId = request.SupplierId;
+                supplierPoduct.ProductId = request.ProductId;
+                supplierPoduct.ModifiedOn = DateTime.UtcNow;
                 _supplierProductRepository.Edit(supplierPoduct);
                 result.IsSuccess = true;
                 result.Data = request;

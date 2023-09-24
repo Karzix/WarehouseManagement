@@ -90,8 +90,7 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<OutboundReceiptDto>();
             try
             {
-                var outboundReceipt = new OutboundReceipt();
-                outboundReceipt.Id = (Guid)request.Id;
+                var outboundReceipt = _outboundReceiptRepository.Get(request.Id.Value);
                 outboundReceipt.WarehouseId = request.WarehouseId;
                 outboundReceipt.To = request.To;
 

@@ -99,7 +99,10 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<InboundReceiptDto>();
             try
             {
-                var inboundReceipt = _mapper.Map<InboundReceipt>(request);
+                var inboundReceipt = _inboundReceiptRepository.Get(request.Id.Value);
+                inboundReceipt.WarehouseId = request.WarehouseId;
+                inboundReceipt.SupplierId = request.SupplierId;
+                inboundReceipt.ModifiedOn = DateTime.UtcNow;
                 _inboundReceiptRepository.Edit(inboundReceipt);
                 result.BuildResult(request);
             }

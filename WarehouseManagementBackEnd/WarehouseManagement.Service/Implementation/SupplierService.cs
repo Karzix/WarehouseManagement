@@ -1,4 +1,5 @@
 ﻿using System.Net.NetworkInformation;
+using System.Text.Unicode;
 using AutoMapper;
 using MayNghien.Common.Helpers;
 using MayNghien.Models.Response.Base;
@@ -78,8 +79,10 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<SupplierDto>();
             try
             {
-                var request = new Supplier();
-                request = _mapper.Map<Supplier>(supplier);
+                var request = _supplierRepository.Get(supplier.Id.Value);
+                request.Name = supplier.Name;
+                request.Email = supplier.Email;
+                request.ModifiedOn = DateTime.UtcNow;
                 _supplierRepository.Edit(request);
 
                 result.IsSuccess = true;
