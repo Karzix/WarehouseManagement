@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using AutoMapper;
+using LinqKit;
 using MayNghien.Common.Helpers;
+using MayNghien.Models.Request.Base;
 using MayNghien.Models.Response.Base;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using WarehouseManagement.DAL.Contract;
 using WarehouseManagement.DAL.Implementation;
 using WarehouseManagement.DAL.Models.Entity;
 using WarehouseManagement.Model.Dto;
+using WarehouseManagement.Model.Response.User;
 using WarehouseManagement.Service.Contract;
+using static Maynghien.Common.Helpers.SearchHelper;
 
 namespace WarehouseManagement.Service.Implementation
 {
@@ -169,6 +169,69 @@ namespace WarehouseManagement.Service.Implementation
                 result.IsSuccess = false;
                 result.Message = ex.Message + " " + ex.StackTrace;
                 return result;
+            }
+        }
+        public AppResponse<SearchResponse<ProductDto>> SearchProduct(SearchRequest request)
+        {
+            var result =new AppResponse<SearchResponse<ProductDto>>();
+            try
+            {
+                var query = BuildFilterExpression(request.Filters);
+                var numOfRecords = _supplierProductRepository.CountRecordsByPredicate(query);
+                var supplierProduct = _supplierProductRepository.FindByPredicate(query).Include(x=>x.Product);
+                int pageIndex = request.PageIndex ?? 1;
+                int pageSize = request.PageSize ?? 1;
+                int startIndex = (pageIndex - 1) * (int)pageSize;
+                var ProductList = supplierProduct.Skip(startIndex).Take(pageSize)
+                    .Select(x=> new ProductDto
+                    {
+                        Quantity = x.Product.Quantity,
+                        Description = x.Product.Description,
+                        Id = x.ProductId,
+                        Name = x.Product.Name,
+                    })
+                    .ToList();
+
+                
+                var searchUserResult = new SearchResponse<ProductDto>
+                {
+                    TotalRows = 0,
+                    TotalPages = CalculateNumOfPages(0, pageSize),
+                    CurrentPage = pageIndex,
+                    Data = ProductList,
+                };
+                result.BuildResult(searchUserResult);
+            }
+            catch(Exception ex)
+            {
+                result.BuildError(ex.Message);
+            }
+            return result;
+        }
+        private ExpressionStarter<SupplierProduct> BuildFilterExpression(IList<Filter> Filters)
+        {
+            try
+            {
+                var predicate = PredicateBuilder.New<SupplierProduct>(true);
+
+                foreach (var filter in Filters)
+                {
+                    switch (filter.FieldName)
+                    {
+                        case "SupplierId":
+                            predicate = predicate.And(m => m.SupplierId.Equals(Guid.Parse(filter.Value)));
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+                return predicate;
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
     }

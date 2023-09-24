@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MayNghien.Models.Request.Base;
+using MayNghien.Models.Response.Base;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WarehouseManagement.Model.Dto;
@@ -49,6 +51,13 @@ namespace WarehouseManagement.API.Controllers
         public IActionResult DeleteSupplierProduct(Guid Id)
         {
             var result= _supplierProductService.DeleteSupplierProduct(Id);
+            return Ok(result);
+        }
+        [HttpPost]
+        [Route("SearchProduct")]
+        public IActionResult FindProduct(SearchRequest search)
+        {
+            var result = _supplierProductService.SearchProduct(search);
             return Ok(result);
         }
     }
