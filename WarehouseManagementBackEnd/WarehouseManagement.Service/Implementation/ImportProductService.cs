@@ -8,6 +8,7 @@ using AutoMapper;
 using MayNghien.Common.Helpers;
 using MayNghien.Models.Response.Base;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging.Abstractions;
 using WarehouseManagement.DAL.Contract;
 using WarehouseManagement.DAL.Models.Entity;
 using WarehouseManagement.Model.Dto;
@@ -20,16 +21,17 @@ namespace WarehouseManagement.Service.Implementation
         private IImportProductRepository _importProductRepository;
         private IMapper _mapper;
         private IInboundReceiptRepository _inboundReceiptRepository;
-        private ISupplierProductRepository _supplierProductRepository;
+        private ISupplierRepository _supplierRepository;
+        private IProductRepository _productRepository;
         private IHttpContextAccessor _httpContextAccessor;
 
-        public ImportProductService(IImportProductRepository importProductRepository, IMapper mapper,
-            IInboundReceiptRepository inboundReceiptRepository, ISupplierProductRepository supplierProductRepository, IHttpContextAccessor httpContextAccessor)
+        public ImportProductService(IImportProductRepository importProductRepository, IMapper mapper, IInboundReceiptRepository inboundReceiptRepository, ISupplierRepository supplierRepository, IProductRepository productRepository, IHttpContextAccessor httpContextAccessor)
         {
             _importProductRepository = importProductRepository;
             _mapper = mapper;
             _inboundReceiptRepository = inboundReceiptRepository;
-            _supplierProductRepository = supplierProductRepository;
+            _supplierRepository = supplierRepository;
+            _productRepository = productRepository;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -43,16 +45,25 @@ namespace WarehouseManagement.Service.Implementation
                 {
                     return result.BuildError("Cannot find Account by this user");
                 }
-                if (requets.SupplierProductId == null)
+                if (requets.SupplierId == null)
                 {
-                    return result.BuildError("Supplier product cannot null");
+                    return result.BuildError("Supplier cannot null");
                 }
-                var supplierProduct =_supplierProductRepository.FindBy(x=>x.Id == requets.SupplierProductId && x.IsDeleted == false);
-                if(supplierProduct.Count() == 0)
+                var supplier =_supplierRepository.FindBy(x=>x.Id == requets.SupplierId && x.IsDeleted == false);
+                if(supplier.Count() == 0)
                 {
-                    return result.BuildError("Cannot find supplier product");
+                    return result.BuildError("Cannot find supplier");
                 }
-                if(requets.InboundReceiptId == null)
+                if (requets.ProductId == null)
+                {
+                    return result.BuildError("Product cannot null");
+                }
+                var product = _productRepository.FindBy(x => x.Id == requets.SupplierId && x.IsDeleted == false);
+                if (product.Count() == 0)
+                {
+                    return result.BuildError("Cannot find product");
+                }
+                if (requets.InboundReceiptId == null)
                 {
                     return result.BuildError("Inbound receipt cannot null");
                 }
@@ -63,7 +74,8 @@ namespace WarehouseManagement.Service.Implementation
                 }
                 var importProduct = _mapper.Map<ImportProduct>(requets);
                 importProduct.Id = Guid.NewGuid();
-                importProduct.SupplierProduct = null;
+                importProduct.Supplier = null;
+                importProduct.Product = null;
                 importProduct.InboundReceipt = null;
                 importProduct.CreatedBy = UserName;
                 _importProductRepository.Add(importProduct);
@@ -101,7 +113,8 @@ namespace WarehouseManagement.Service.Implementation
             try
             {
                 var inportProduct = _importProductRepository.Get(requets.Id.Value);
-                inportProduct.SupplierProductId = requets.SupplierProductId;
+                inportProduct.SupplierId = requets.SupplierId;
+                inportProduct.ProductId = requets.ProductId;
                 inportProduct.Quantity = requets.Quantity;
                 inportProduct.InboundReceiptId = requets.InboundReceiptId;
                 inportProduct.ModifiedOn = DateTime.UtcNow;
@@ -119,17 +132,17 @@ namespace WarehouseManagement.Service.Implementation
             try
             {
                 var query = _importProductRepository.GetAll()
-                    .Include(x=>x.SupplierProduct)
-                    .Include(x=>x.SupplierProduct.Supplier)
-                    .Include(x=>x.SupplierProduct.Product);
+                    .Include(x => x.Supplier)
+                    .Include(x => x.Product);
                 var list = query.Select(x=> new ImportProductDto
                 {
                     Quantity = x.Quantity,
                     Id = x.Id,
                     InboundReceiptId = x.InboundReceiptId,
-                    ProductName = x.SupplierProduct.Product.Name,
-                    SipplierName = x.SupplierProduct.Supplier.Name,
-                    SupplierProductId = x.SupplierProductId
+                    ProductName = x.Product.Name,
+                    SipplierName = x.Supplier.Name,
+                    SupplierId = x.SupplierId,
+                    ProductId = x.ProductId,
                 }).ToList();
 
                 result.BuildResult(list);
@@ -146,8 +159,19 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<ImportProductDto>();
             try
             {
-                var importProduct = _importProductRepository.Get(Id);
-                var data = _mapper.Map<ImportProductDto>(importProduct);
+                var query = _importProductRepository.FindBy(x=>x.Id == Id)
+                    .Include(x=>x.Supplier)
+                    .Include(x=>x.Product);
+                var data =  query.Select(x=> new ImportProductDto
+                {
+                    Quantity = x.Quantity,
+                    Id = x.Id,
+                    InboundReceiptId = x.InboundReceiptId,
+                    ProductId = x.ProductId,
+                    ProductName = x.Product.Name,
+                    SipplierName = x.Supplier.Name,
+                    SupplierId = x.SupplierId,
+                }).First();
                 result.BuildResult(data);
             }
             catch (Exception ex)

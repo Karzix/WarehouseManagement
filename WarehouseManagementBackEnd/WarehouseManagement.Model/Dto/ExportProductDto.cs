@@ -12,8 +12,9 @@ namespace WarehouseManagement.Model.Dto
     {
         public int Quantity { get; set; }
 
-        public Guid SupplierProductId { get; set; }
+        public Guid SupplierId { get; set; }
         public string? SupplierName { get; set; }
+        public Guid ProductId { get; set; }
         public string? ProductName { get; set; }
 
         public Guid OutboundReceiptId { get; set; }

@@ -21,17 +21,17 @@ namespace WarehouseManagement.Service.Implementation
         private readonly IExportProductRepository _repository;
         private readonly IMapper _mapper;
         private IOutboundReceiptRepository _outboundReceiptRepository;
-        private ISupplierProductRepository _supplierProductRepository;
+        private ISupplierRepository _supplierRepository;
+        private IProductRepository _productRepository;
         private IHttpContextAccessor _httpContextAccessor;
 
-        public ExportProductService(IExportProductRepository repository, IMapper mapper
-            , IOutboundReceiptRepository outboundReceiptRepository, ISupplierProductRepository supplierProductRepository
-            ,IHttpContextAccessor httpContextAccessor)
+        public ExportProductService(IExportProductRepository repository, IMapper mapper, IOutboundReceiptRepository outboundReceiptRepository, ISupplierRepository supplierRepository, IProductRepository productRepository, IHttpContextAccessor httpContextAccessor)
         {
             _repository = repository;
-            this._mapper = mapper;
+            _mapper = mapper;
             _outboundReceiptRepository = outboundReceiptRepository;
-            _supplierProductRepository = supplierProductRepository;
+            _supplierRepository = supplierRepository;
+            _productRepository = productRepository;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -45,16 +45,25 @@ namespace WarehouseManagement.Service.Implementation
                 {
                     return result.BuildError("Cannot find Account by this user");
                 }
-                if (request.SupplierProductId == null)
+                if (request.SupplierId == null)
                 {
-                    return result.BuildError("SupplierProduct cannot null");
+                    return result.BuildError("Supplier cannot null");
                 }
-                var supplierProduct =_supplierProductRepository.FindBy(x=>x.Id == request.SupplierProductId && x.IsDeleted == false);
-                if (supplierProduct.Count() == 0)
+                var supplier = _supplierRepository.FindBy(x => x.Id == request.SupplierId && x.IsDeleted == false);
+                if (supplier.Count() == 0)
                 {
-                    return result.BuildError("Cannot find supplier product");
+                    return result.BuildError("Cannot find supplier");
                 }
-                if(request.OutboundReceiptId == null)
+                if (request.ProductId == null)
+                {
+                    return result.BuildError("Product cannot null");
+                }
+                var product = _productRepository.FindBy(x => x.Id == request.SupplierId && x.IsDeleted == false);
+                if (product.Count() == 0)
+                {
+                    return result.BuildError("Cannot find product");
+                }
+                if (request.OutboundReceiptId == null)
                 {
                     return result.BuildError("Outbound receipt cannot null");
                 }
@@ -108,7 +117,8 @@ namespace WarehouseManagement.Service.Implementation
             {
                 var exportProduct = new ExportProduct();
                 exportProduct.Id = (Guid)request.Id;
-                exportProduct.SupplierProductId = request.SupplierProductId;
+                exportProduct.SupplierId = request.SupplierId;
+                exportProduct.ProductId = request.ProductId;
                 exportProduct.OutboundReceiptId = request.OutboundReceiptId;
                 exportProduct.Quantity = request.Quantity;
                 exportProduct.ModifiedOn = DateTime.UtcNow;
@@ -132,17 +142,17 @@ namespace WarehouseManagement.Service.Implementation
             try
             {
                 var query = _repository.GetAll()
-                    .Include(s => s.SupplierProduct)
-                    .Include(s=> s.SupplierProduct.Supplier)
-                    .Include(s=>s.SupplierProduct.Product);
+                    .Include(s=> s.Supplier)
+                    .Include(s=>s.Product);
                 var list = query.Select(m => new ExportProductDto
                 {
                     Quantity = m.Quantity,
-                    SupplierProductId = m.SupplierProductId,
+                    SupplierId = m.SupplierId,
+                    ProductId = m.ProductId,
                     OutboundReceiptId = m.OutboundReceiptId,
                     Id = m.Id,
-                    SupplierName = m.SupplierProduct.Supplier.Name,
-                    ProductName = m.SupplierProduct.Product.Name
+                    SupplierName = m.Supplier.Name,
+                    ProductName = m.Product.Name
                 }).ToList();
                 result.Data = list;
                 result.IsSuccess = true;
@@ -163,8 +173,8 @@ namespace WarehouseManagement.Service.Implementation
             {
                 var exportProduct = _repository.FindById(Id);
                 var exportProductDto = _mapper.Map<ExportProductDto>(exportProduct);
-                exportProductDto.SupplierName = exportProduct.SupplierProduct.Supplier.Name;
-                exportProductDto.ProductName = exportProduct.SupplierProduct.Product.Name;
+                exportProductDto.SupplierName = exportProduct.Supplier.Name;
+                exportProductDto.ProductName = exportProduct.Product.Name;
 
                 result.IsSuccess = true;
                 result.Data = exportProductDto;

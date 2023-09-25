@@ -244,17 +244,22 @@ namespace WarehouseManagement.DAL.Migrations
                     b.Property<Guid>("OutboundReceiptId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("SupplierProductId")
+                    b.Property<Guid>("SupplierId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OutboundReceiptId");
 
-                    b.HasIndex("SupplierProductId");
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("SupplierId");
 
                     b.ToTable("ExportProduct");
                 });
@@ -283,17 +288,22 @@ namespace WarehouseManagement.DAL.Migrations
                     b.Property<string>("Modifiedby")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("SupplierProductId")
+                    b.Property<Guid>("SupplierId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("InboundReceiptId");
 
-                    b.HasIndex("SupplierProductId");
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("SupplierId");
 
                     b.ToTable("ImportProduct");
                 });
@@ -607,15 +617,23 @@ namespace WarehouseManagement.DAL.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("WarehouseManagement.DAL.Models.Entity.SupplierProduct", "SupplierProduct")
+                    b.HasOne("WarehouseManagement.DAL.Models.Entity.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("SupplierProductId")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagement.DAL.Models.Entity.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("OutboundReceipt");
 
-                    b.Navigation("SupplierProduct");
+                    b.Navigation("Product");
+
+                    b.Navigation("Supplier");
                 });
 
             modelBuilder.Entity("WarehouseManagement.DAL.Models.Entity.ImportProduct", b =>
@@ -626,15 +644,23 @@ namespace WarehouseManagement.DAL.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("WarehouseManagement.DAL.Models.Entity.SupplierProduct", "SupplierProduct")
+                    b.HasOne("WarehouseManagement.DAL.Models.Entity.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("SupplierProductId")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagement.DAL.Models.Entity.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("InboundReceipt");
 
-                    b.Navigation("SupplierProduct");
+                    b.Navigation("Product");
+
+                    b.Navigation("Supplier");
                 });
 
             modelBuilder.Entity("WarehouseManagement.DAL.Models.Entity.InboundReceipt", b =>

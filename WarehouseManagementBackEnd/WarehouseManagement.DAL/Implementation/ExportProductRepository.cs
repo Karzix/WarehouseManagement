@@ -21,8 +21,8 @@ namespace WarehouseManagement.DAL.Implementation
         public ExportProduct FindById(Guid Id)
         {
             var exportProduct = _context.ExportProduct.Where(x => x.Id == Id)
-                .Include(x => x.SupplierProduct)
-                .Include(x => x.SupplierProduct.Supplier)
+                .Include(x => x.Supplier)
+                .Include(x => x.Product)
                 .FirstOrDefault();
             return exportProduct;
         }

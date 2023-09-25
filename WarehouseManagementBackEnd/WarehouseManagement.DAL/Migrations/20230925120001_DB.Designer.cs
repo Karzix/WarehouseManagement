@@ -12,8 +12,8 @@ using WarehouseManagement.DAL.Models.Context;
 namespace WarehouseManagement.DAL.Migrations
 {
     [DbContext(typeof(WarehouseManagementDbContext))]
-    [Migration("20230807053349_Db")]
-    partial class Db
+    [Migration("20230925120001_DB")]
+    partial class DB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -222,7 +222,7 @@ namespace WarehouseManagement.DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("WarehouseManagement.DAL.Models.Entity.Consignment", b =>
+            modelBuilder.Entity("WarehouseManagement.DAL.Models.Entity.ExportProduct", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -234,11 +234,129 @@ namespace WarehouseManagement.DAL.Migrations
                     b.Property<DateTime?>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("ExportProduct")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("From")
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Modifiedby")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("OutboundReceiptId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("SupplierId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OutboundReceiptId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("ExportProduct");
+                });
+
+            modelBuilder.Entity("WarehouseManagement.DAL.Models.Entity.ImportProduct", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("InboundReceiptId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Modifiedby")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("SupplierId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InboundReceiptId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("ImportProduct");
+                });
+
+            modelBuilder.Entity("WarehouseManagement.DAL.Models.Entity.InboundReceipt", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Modifiedby")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("SupplierId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("WarehouseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SupplierId");
+
+                    b.HasIndex("WarehouseId");
+
+                    b.ToTable("InboundReceipt");
+                });
+
+            modelBuilder.Entity("WarehouseManagement.DAL.Models.Entity.OutboundReceipt", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -259,7 +377,7 @@ namespace WarehouseManagement.DAL.Migrations
 
                     b.HasIndex("WarehouseId");
 
-                    b.ToTable("Consignment");
+                    b.ToTable("OutboundReceipt");
                 });
 
             modelBuilder.Entity("WarehouseManagement.DAL.Models.Entity.Product", b =>
@@ -275,7 +393,6 @@ namespace WarehouseManagement.DAL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -288,51 +405,14 @@ namespace WarehouseManagement.DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Product");
-                });
-
-            modelBuilder.Entity("WarehouseManagement.DAL.Models.Entity.ProductReceipt", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ConsignmentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Modifiedby")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("SupplierProductId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ConsignmentId");
-
-                    b.HasIndex("SupplierProductId");
-
-                    b.ToTable("ProductReceipt");
+                    b.ToTable("Product");
                 });
 
             modelBuilder.Entity("WarehouseManagement.DAL.Models.Entity.ProductRemaining", b =>
@@ -387,7 +467,6 @@ namespace WarehouseManagement.DAL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -400,7 +479,6 @@ namespace WarehouseManagement.DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -533,7 +611,80 @@ namespace WarehouseManagement.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WarehouseManagement.DAL.Models.Entity.Consignment", b =>
+            modelBuilder.Entity("WarehouseManagement.DAL.Models.Entity.ExportProduct", b =>
+                {
+                    b.HasOne("WarehouseManagement.DAL.Models.Entity.OutboundReceipt", "OutboundReceipt")
+                        .WithMany()
+                        .HasForeignKey("OutboundReceiptId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagement.DAL.Models.Entity.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagement.DAL.Models.Entity.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("OutboundReceipt");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("WarehouseManagement.DAL.Models.Entity.ImportProduct", b =>
+                {
+                    b.HasOne("WarehouseManagement.DAL.Models.Entity.InboundReceipt", "InboundReceipt")
+                        .WithMany()
+                        .HasForeignKey("InboundReceiptId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagement.DAL.Models.Entity.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagement.DAL.Models.Entity.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("InboundReceipt");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("WarehouseManagement.DAL.Models.Entity.InboundReceipt", b =>
+                {
+                    b.HasOne("WarehouseManagement.DAL.Models.Entity.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagement.DAL.Models.Entity.Warehouse", "Warehouse")
+                        .WithMany()
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Supplier");
+
+                    b.Navigation("Warehouse");
+                });
+
+            modelBuilder.Entity("WarehouseManagement.DAL.Models.Entity.OutboundReceipt", b =>
                 {
                     b.HasOne("WarehouseManagement.DAL.Models.Entity.Warehouse", "Warehouse")
                         .WithMany()
@@ -542,25 +693,6 @@ namespace WarehouseManagement.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Warehouse");
-                });
-
-            modelBuilder.Entity("WarehouseManagement.DAL.Models.Entity.ProductReceipt", b =>
-                {
-                    b.HasOne("WarehouseManagement.DAL.Models.Entity.Consignment", "Consignment")
-                        .WithMany()
-                        .HasForeignKey("ConsignmentId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("WarehouseManagement.DAL.Models.Entity.SupplierProduct", "SupplierProduct")
-                        .WithMany()
-                        .HasForeignKey("SupplierProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Consignment");
-
-                    b.Navigation("SupplierProduct");
                 });
 
             modelBuilder.Entity("WarehouseManagement.DAL.Models.Entity.ProductRemaining", b =>
