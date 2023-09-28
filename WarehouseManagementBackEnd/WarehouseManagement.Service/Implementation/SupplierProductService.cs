@@ -5,18 +5,15 @@ using MayNghien.Common.Helpers;
 using MayNghien.Models.Request.Base;
 using MayNghien.Models.Response.Base;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using WarehouseManagement.DAL.Contract;
-using WarehouseManagement.DAL.Implementation;
 using WarehouseManagement.DAL.Models.Entity;
 using WarehouseManagement.Model.Dto;
-using WarehouseManagement.Model.Response.User;
 using WarehouseManagement.Service.Contract;
 using static Maynghien.Common.Helpers.SearchHelper;
 
 namespace WarehouseManagement.Service.Implementation
 {
-    public class SupplierProductService : ISupplierProductService
+	public class SupplierProductService : ISupplierProductService
     {
         private readonly ISupplierProductRepository _supplierProductRepository;
         private readonly IMapper _mapper;
@@ -171,7 +168,7 @@ namespace WarehouseManagement.Service.Implementation
                 return result;
             }
         }
-        public AppResponse<SearchResponse<ProductDto>> SearchProduct(SearchRequest request)
+        public AppResponse<SearchResponse<ProductDto>> Search(SearchRequest request)
         {
             var result =new AppResponse<SearchResponse<ProductDto>>();
             try
@@ -219,9 +216,8 @@ namespace WarehouseManagement.Service.Implementation
                     switch (filter.FieldName)
                     {
                         case "SupplierId":
-                            predicate = predicate.And(m => m.SupplierId.Equals(Guid.Parse(filter.Value)));
+                            predicate = predicate.And(m => m.Id.Equals(Guid.Parse(filter.Value)));
                             break;
-
                         default:
                             break;
                     }

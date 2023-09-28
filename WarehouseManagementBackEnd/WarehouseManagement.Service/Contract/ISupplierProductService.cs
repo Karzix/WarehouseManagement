@@ -17,7 +17,7 @@ namespace WarehouseManagement.Service.Contract
         AppResponse<SupplierProductDto> CreateSupplierProduct(SupplierProductDto request);
         AppResponse<SupplierProductDto> EditSupplierProduct(SupplierProductDto request);
         AppResponse<string> DeleteSupplierProduct(Guid Id);
-        AppResponse<SearchResponse<ProductDto>> SearchProduct(SearchRequest request);
+        AppResponse<SearchResponse<ProductDto>> Search(SearchRequest request);
 
     }
 }

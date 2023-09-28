@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MayNghien.Models.Request.Base;
 using MayNghien.Models.Response.Base;
 using WarehouseManagement.DAL.Models.Entity;
 using WarehouseManagement.Model.Dto;
@@ -16,5 +17,7 @@ namespace WarehouseManagement.Service.Contract
         AppResponse<ProductRemainingDto> CreateProductRemaining(ProductRemainingDto request);
         AppResponse<ProductRemainingDto> EditProductRemaining(ProductRemainingDto request);
         AppResponse<string> DeleteProductRemaining(Guid Id);
-    }
+        AppResponse<SearchResponse<ProductRemainingDto>> Search(SearchRequest request);
+
+	}
 }

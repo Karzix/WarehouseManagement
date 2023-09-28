@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MayNghien.Models.Request.Base;
 using MayNghien.Models.Response.Base;
 using WarehouseManagement.Model.Dto;
 
@@ -15,5 +16,7 @@ namespace WarehouseManagement.Service.Contract
         AppResponse<string> DeleteSupplier(Guid Id);
         AppResponse<List<SupplierDto>> GetAllSupplier();
         AppResponse<SupplierDto> GetSupplier(Guid Id);
-    }
+        AppResponse<SearchResponse<SupplierDto>> Search(SearchRequest request);
+
+	}
 }

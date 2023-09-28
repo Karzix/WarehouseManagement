@@ -4,17 +4,15 @@ using MayNghien.Common.Helpers;
 using MayNghien.Models.Request.Base;
 using MayNghien.Models.Response.Base;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using WarehouseManagement.DAL.Contract;
-using WarehouseManagement.DAL.Implementation;
 using WarehouseManagement.DAL.Models.Entity;
 using WarehouseManagement.Model.Dto;
-using WarehouseManagement.Model.Response.User;
 using WarehouseManagement.Service.Contract;
+using static Maynghien.Common.Helpers.SearchHelper;
 
 namespace WarehouseManagement.Service.Implementation
 {
-    public class WarehouseService : IWarehouseService
+	public class WarehouseService : IWarehouseService
     {
         private readonly IWarehouseRepository _warehouseRepository;
         private readonly IMapper _mapper;
@@ -159,76 +157,68 @@ namespace WarehouseManagement.Service.Implementation
 
             }
         }
-        //public async Task<AppResponse<SearchUserResponse>> Search(SearchRequest request)
-        //{
-        //    var result = new AppResponse<SearchUserResponse>();
-        //    try
-        //    {
-        //        var query = BuildFilterExpression(request.Filters);
-        //        var numOfRecords = _userManagementRepository.CountRecordsByPredicate(query);
-
-        //        var users = _userManagementRepository.FindByPredicate(query);
-        //        int pageIndex = request.PageIndex ?? 1;
-        //        int pageSize = request.PageSize ?? 1;
-        //        int startIndex = (pageIndex - 1) * (int)pageSize;
-        //        var UserList = users.Skip(startIndex).Take(pageSize).ToList();
-        //        var dtoList = _mapper.Map<List<UserModel>>(UserList);
-        //        if (dtoList != null && dtoList.Count > 0)
-        //        {
-        //            for (int i = 0; i < UserList.Count; i++)
-        //            {
-        //                var dtouser = dtoList[i];
-        //                var identityUser = UserList[i];
-        //                dtouser.Role = (await _userManager.GetRolesAsync(identityUser)).First();
-        //            }
-        //        }
-        //        var searchUserResult = new SearchUserResponse
-        //        {
-        //            TotalRows = numOfRecords,
-        //            TotalPages = CalculateNumOfPages(numOfRecords, pageSize),
-        //            CurrentPage = pageIndex,
-        //            Data = dtoList,
-        //        };
-
-        //        result.Data = searchUserResult;
-        //        result.IsSuccess = true;
-
-        //        return result;
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        return result.BuildError(ex.ToString());
-        //    }
-        //}
+		public AppResponse<SearchResponse<WarehouseDto>> Search(SearchRequest request)
+		{
+			var result = new AppResponse<SearchResponse<WarehouseDto>>();
+			try
+			{
+				var query = BuildFilterExpression(request.Filters);
+				var numOfRecords = _warehouseRepository.CountRecordsByPredicate(query);
+				var model = _warehouseRepository.FindByPredicate(query);
+				int pageIndex = request.PageIndex ?? 1;
+				int pageSize = request.PageSize ?? 1;
+				int startIndex = (pageIndex - 1) * (int)pageSize;
+				var List = model.Skip(startIndex).Take(pageSize)
+					.Select(x => new WarehouseDto
+					{
+						Id = x.Id,
+						Name = x.Name,
+						Email = x.Email,
+                        Address = x.Address,
+                        Managent = x.Managent,
+					})
+					.ToList();
 
 
-        //private ExpressionStarter<IdentityUser> BuildFilterExpression(IList<Filter> Filters)
-        //{
-        //    try
-        //    {
-        //        var predicate = PredicateBuilder.New<IdentityUser>(true);
+				var searchUserResult = new SearchResponse<WarehouseDto>
+				{
+					TotalRows = 0,
+					TotalPages = CalculateNumOfPages(0, pageSize),
+					CurrentPage = pageIndex,
+					Data = List,
+				};
+				result.BuildResult(searchUserResult);
+			}
+			catch (Exception ex)
+			{
+				result.BuildError(ex.Message);
+			}
+			return result;
+		}
+		private ExpressionStarter<Warehouse> BuildFilterExpression(IList<Filter> Filters)
+		{
+			try
+			{
+				var predicate = PredicateBuilder.New<Warehouse>(true);
 
-        //        foreach (var filter in Filters)
-        //        {
-        //            switch (filter.FieldName)
-        //            {
-        //                case "Email":
-        //                    predicate = predicate.And(m => m.Email.Equals(filter.Value));
-        //                    break;
+				foreach (var filter in Filters)
+				{
+					switch (filter.FieldName)
+					{
+						case "Name":
+							predicate = predicate.And(m => m.Name.Contains(filter.Value));
+							break;
+						default:
+							break;
+					}
+				}
+				return predicate;
+			}
+			catch (Exception)
+			{
 
-        //                default:
-        //                    break;
-        //            }
-        //        }
-        //        return predicate;
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
-    }
+				throw;
+			}
+		}
+	}
 }

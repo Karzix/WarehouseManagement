@@ -1,17 +1,18 @@
-﻿using System.Net.NetworkInformation;
-using System.Text.Unicode;
-using AutoMapper;
+﻿using AutoMapper;
+using LinqKit;
 using MayNghien.Common.Helpers;
+using MayNghien.Models.Request.Base;
 using MayNghien.Models.Response.Base;
 using Microsoft.AspNetCore.Http;
 using WarehouseManagement.DAL.Contract;
 using WarehouseManagement.DAL.Models.Entity;
 using WarehouseManagement.Model.Dto;
 using WarehouseManagement.Service.Contract;
+using static Maynghien.Common.Helpers.SearchHelper;
 
 namespace WarehouseManagement.Service.Implementation
 {
-    public class SupplierService : ISupplierService
+	public class SupplierService : ISupplierService
     {
         private readonly ISupplierRepository _supplierRepository;
         private readonly IMapper _mapper;
@@ -141,5 +142,66 @@ namespace WarehouseManagement.Service.Implementation
             }
 
         }
-    }
+		public AppResponse<SearchResponse<SupplierDto>> Search(SearchRequest request)
+		{
+			var result = new AppResponse<SearchResponse<SupplierDto>>();
+			try
+			{
+				var query = BuildFilterExpression(request.Filters);
+				var numOfRecords = _supplierRepository.CountRecordsByPredicate(query);
+				var model = _supplierRepository.FindByPredicate(query);
+				int pageIndex = request.PageIndex ?? 1;
+				int pageSize = request.PageSize ?? 1;
+				int startIndex = (pageIndex - 1) * (int)pageSize;
+				var List = model.Skip(startIndex).Take(pageSize)
+					.Select(x => new SupplierDto
+					{
+						Id = x.Id,
+						Name = x.Name,
+                        Email = x.Email,
+					})
+					.ToList();
+
+
+				var searchUserResult = new SearchResponse<SupplierDto>
+				{
+					TotalRows = 0,
+					TotalPages = CalculateNumOfPages(0, pageSize),
+					CurrentPage = pageIndex,
+					Data = List,
+				};
+				result.BuildResult(searchUserResult);
+			}
+			catch (Exception ex)
+			{
+				result.BuildError(ex.Message);
+			}
+			return result;
+		}
+		private ExpressionStarter<Supplier> BuildFilterExpression(IList<Filter> Filters)
+		{
+			try
+			{
+				var predicate = PredicateBuilder.New<Supplier>(true);
+
+				foreach (var filter in Filters)
+				{
+					switch (filter.FieldName)
+					{
+						case "SupplierName":
+							predicate = predicate.And(m => m.Name.Contains(filter.Value));
+							break;
+						default:
+							break;
+					}
+				}
+				return predicate;
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
+		}
+	}
 }

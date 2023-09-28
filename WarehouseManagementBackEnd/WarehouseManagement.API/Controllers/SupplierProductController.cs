@@ -57,7 +57,7 @@ namespace WarehouseManagement.API.Controllers
         [Route("SearchProduct")]
         public IActionResult FindProduct(SearchRequest search)
         {
-            var result = _supplierProductService.SearchProduct(search);
+            var result = _supplierProductService.Search(search);
             return Ok(result);
         }
     }

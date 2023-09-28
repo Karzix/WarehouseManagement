@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using AutoMapper;
+using LinqKit;
 using MayNghien.Common.Helpers;
+using MayNghien.Models.Request.Base;
 using MayNghien.Models.Response.Base;
 using Microsoft.AspNetCore.Http;
 using WarehouseManagement.DAL.Contract;
-using WarehouseManagement.DAL.Implementation;
 using WarehouseManagement.DAL.Models.Entity;
 using WarehouseManagement.Model.Dto;
 using WarehouseManagement.Service.Contract;
+using static Maynghien.Common.Helpers.SearchHelper;
 
 namespace WarehouseManagement.Service.Implementation
 {
-    public class ExportProductService : IExportProductService
+	public class ExportProductService : IExportProductService
     {
         private readonly IExportProductRepository _repository;
         private readonly IMapper _mapper;
@@ -187,5 +184,78 @@ namespace WarehouseManagement.Service.Implementation
                 return result;
             }
         }
-    }
+		public AppResponse<SearchResponse<ExportProductDto>> Search(SearchRequest request)
+		{
+			var result = new AppResponse<SearchResponse<ExportProductDto>>();
+			try
+			{
+				var query = BuildFilterExpression(request.Filters);
+				var numOfRecords = _repository.CountRecordsByPredicate(query);
+				var model = _repository.FindByPredicate(query)
+					.Include(x => x.Supplier)
+					.Include(x => x.Product)
+					.Include(x => x.OutboundReceipt);
+				int pageIndex = request.PageIndex ?? 1;
+				int pageSize = request.PageSize ?? 1;
+				int startIndex = (pageIndex - 1) * (int)pageSize;
+				var List = model.Skip(startIndex).Take(pageSize)
+					.Select(x => new ExportProductDto
+					{
+						Id = x.Id,
+						SupplierId = x.SupplierId,
+                        Quantity = x.Quantity,
+                        OutboundReceiptId = x.OutboundReceiptId,
+                        ProductId = x.ProductId,
+                        ProductName = x.Product.Name,
+                        SupplierName = x.Supplier.Name,
+					})
+					.ToList();
+
+
+				var searchUserResult = new SearchResponse<ExportProductDto>
+				{
+					TotalRows = 0,
+					TotalPages = CalculateNumOfPages(0, pageSize),
+					CurrentPage = pageIndex,
+					Data = List,
+				};
+				result.BuildResult(searchUserResult);
+			}
+			catch (Exception ex)
+			{
+				result.BuildError(ex.Message);
+			}
+			return result;
+		}
+		private ExpressionStarter<ExportProduct> BuildFilterExpression(IList<Filter> Filters)
+		{
+			try
+			{
+				var predicate = PredicateBuilder.New<ExportProduct>(true);
+
+				foreach (var filter in Filters)
+				{
+					switch (filter.FieldName)
+					{
+						case "SupplierName":
+							predicate = predicate.And(m => m.Supplier.Name.Contains(filter.Value));
+							break;
+						case "OutboundReceiptId":
+							predicate = predicate.And(x => x.OutboundReceipt.Equals(filter.Value));
+							break;
+						case "ProductName":
+							predicate = predicate.And(x => x.Product.Name.Contains(filter.Value));
+							break;
+						default:
+							break;
+					}
+				}
+				return predicate;
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+		}
+	}
 }

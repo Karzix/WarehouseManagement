@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MayNghien.Models.Request.Base;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WarehouseManagement.Model.Dto;
 using WarehouseManagement.Service.Contract;
+using WarehouseManagement.Service.Implementation;
 
 namespace WarehouseManagement.API.Controllers
 {
@@ -51,5 +53,12 @@ namespace WarehouseManagement.API.Controllers
             return Ok(result);
 
         }
-    }
+		[HttpPost]
+		[Route("SearchProduct")]
+		public IActionResult FindProduct(SearchRequest search)
+		{
+			var result = _warehouseService.Search(search);
+			return Ok(result);
+		}
+	}
 }

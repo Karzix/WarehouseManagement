@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using AutoMapper;
+using LinqKit;
 using MayNghien.Common.Helpers;
+using MayNghien.Models.Request.Base;
 using MayNghien.Models.Response.Base;
 using Microsoft.AspNetCore.Http;
 using WarehouseManagement.DAL.Contract;
-using WarehouseManagement.DAL.Implementation;
 using WarehouseManagement.DAL.Models.Entity;
 using WarehouseManagement.Model.Dto;
 using WarehouseManagement.Service.Contract;
+using static Maynghien.Common.Helpers.SearchHelper;
 
 namespace WarehouseManagement.Service.Implementation
 {
-    public class ProductRemainingService: IProductRemainingService
+	public class ProductRemainingService: IProductRemainingService
     {
         private readonly IProductRemainingRepository _productRemainingRepository;
         private IMapper _mapper;
@@ -174,5 +171,73 @@ namespace WarehouseManagement.Service.Implementation
             }
             return result;
         }
-    }
+		public AppResponse<SearchResponse<ProductRemainingDto>> Search(SearchRequest request)
+		{
+			var result = new AppResponse<SearchResponse<ProductRemainingDto>>();
+			try
+			{
+				var query = BuildFilterExpression(request.Filters);
+				var numOfRecords = _productRemainingRepository.CountRecordsByPredicate(query);
+				var model = _productRemainingRepository.FindByPredicate(query)
+                    .Include(x=>x.Product)
+                    .Include(x=>x.Warehouse);
+				int pageIndex = request.PageIndex ?? 1;
+				int pageSize = request.PageSize ?? 1;
+				int startIndex = (pageIndex - 1) * (int)pageSize;
+                var List = model.Skip(startIndex).Take(pageSize)
+                    .Select(x => new ProductRemainingDto
+                    {
+                        Id = x.Id,
+                        Quantity = x.Quantity,
+                        ProductId = x.ProductId,
+                        ProductName = x.Product.Name,
+                        WarehouseId = x.WarehouseId,
+                        WarehouseName = x.Warehouse.Name
+                    })
+					.ToList();
+
+
+				var searchUserResult = new SearchResponse<ProductRemainingDto>
+				{
+					TotalRows = 0,
+					TotalPages = CalculateNumOfPages(0, pageSize),
+					CurrentPage = pageIndex,
+					Data = List,
+				};
+				result.BuildResult(searchUserResult);
+			}
+			catch (Exception ex)
+			{
+				result.BuildError(ex.Message);
+			}
+			return result;
+		}
+		private ExpressionStarter<ProductRemaining> BuildFilterExpression(IList<Filter> Filters)
+		{
+			try
+			{
+				var predicate = PredicateBuilder.New<ProductRemaining>(true);
+
+				foreach (var filter in Filters)
+				{
+					switch (filter.FieldName)
+					{
+						case "ProductName":
+							predicate = predicate.And(m => m.Product.Name.Contains(filter.Value));
+							break;
+						case "WarehouseName":
+							predicate = predicate.And(m => m.Warehouse.Name.Contains(filter.Value));
+							break;
+						default:
+							break;
+					}
+				}
+				return predicate;
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+		}
+	}
 }

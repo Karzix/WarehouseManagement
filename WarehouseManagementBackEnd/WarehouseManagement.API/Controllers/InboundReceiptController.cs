@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MayNghien.Models.Request.Base;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WarehouseManagement.Model.Dto;
 using WarehouseManagement.Service.Contract;
+using WarehouseManagement.Service.Implementation;
 
 namespace WarehouseManagement.API.Controllers
 {
@@ -49,5 +51,12 @@ namespace WarehouseManagement.API.Controllers
             var result = _inboundReceiptService.DeleteInboundReceipt(Id);
             return Ok(result);
         }
-    }
+		[HttpPost]
+		[Route("search")]
+		public IActionResult Search(SearchRequest request)
+		{
+			var result = _inboundReceiptService.Search(request);
+			return Ok(result);
+		}
+	}
 }

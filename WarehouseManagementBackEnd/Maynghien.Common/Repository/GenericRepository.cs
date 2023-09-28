@@ -183,6 +183,14 @@ namespace Maynghien.Common.Repository
             return GetSet().AsQueryable();
         }
 
-        #endregion
-    }
+		#endregion
+		public IQueryable<TEntity> FindByPredicate(Expression<Func<TEntity, bool>> predicate)
+		{
+			return GetSet().Where(predicate).AsQueryable();
+		}
+		public int CountRecordsByPredicate(Expression<Func<TEntity, bool>> predicate)
+		{
+			return GetSet().Where(predicate).Count();
+		}
+	}
 }

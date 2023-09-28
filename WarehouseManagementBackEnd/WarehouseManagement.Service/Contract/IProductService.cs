@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MayNghien.Models.Request.Base;
 using MayNghien.Models.Response.Base;
 using WarehouseManagement.Model.Dto;
 
@@ -15,5 +16,6 @@ namespace WarehouseManagement.Service.Contract
         AppResponse<ProductDto> CreateProduct(ProductDto request);
         AppResponse<ProductDto> EditProduct(ProductDto request);
         AppResponse<string> DeleteProduct(Guid Id);
+        AppResponse<SearchResponse<ProductDto>> Search(SearchRequest request);
     }
 }
