@@ -216,7 +216,7 @@ namespace WarehouseManagement.Service.Implementation
                     switch (filter.FieldName)
                     {
                         case "SupplierId":
-                            predicate = predicate.And(m => m.Id.Equals(Guid.Parse(filter.Value)));
+                            predicate = predicate.And(m => m.Supplier.Id.Equals(Guid.Parse(filter.Value)));
                             break;
                         default:
                             break;
