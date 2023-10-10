@@ -67,6 +67,9 @@ namespace WarehouseManagement.Service.Implementation
                     _inboundReceiptRepository.Add(inboundReceipt);
                     request.Id = inboundReceipt.Id;
                     result.BuildResult(request);    
+
+
+
             }
             catch (Exception ex)
             {
