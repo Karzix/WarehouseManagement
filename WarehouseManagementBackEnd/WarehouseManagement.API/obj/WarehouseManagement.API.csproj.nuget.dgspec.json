@@ -48,6 +48,10 @@
               "target": "Package",
               "version": "[6.7.12, )"
             },
+            "Microsoft.AspNetCore": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
               "version": "[6.0.19, )"
@@ -136,7 +140,7 @@
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
-              "version": "[6.0.19, )"
+              "version": "[6.0.20, )"
             },
             "Microsoft.AspNetCore.Authentication.OpenIdConnect": {
               "target": "Package",
@@ -283,6 +287,9 @@
             "projectReferences": {
               "D:\\GitHub\\WarehouseManagement\\WarehouseManagementBackEnd\\Maynghien.Common\\Maynghien.Common.csproj": {
                 "projectPath": "D:\\GitHub\\WarehouseManagement\\WarehouseManagementBackEnd\\Maynghien.Common\\Maynghien.Common.csproj"
+              },
+              "D:\\GitHub\\WarehouseManagement\\WarehouseManagementBackEnd\\WarehouseManagement.Model\\WarehouseManagement.Model.csproj": {
+                "projectPath": "D:\\GitHub\\WarehouseManagement\\WarehouseManagementBackEnd\\WarehouseManagement.Model\\WarehouseManagement.Model.csproj"
               }
             }
           }
@@ -461,6 +468,10 @@
             "LinqKit": {
               "target": "Package",
               "version": "[1.2.4, )"
+            },
+            "Microsoft.AspNetCore.Http.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
             }
           },
           "imports": [
