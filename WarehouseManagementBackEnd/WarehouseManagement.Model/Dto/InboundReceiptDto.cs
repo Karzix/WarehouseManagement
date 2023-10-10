@@ -14,5 +14,7 @@ namespace WarehouseManagement.Model.Dto
         public string? SupplierName { get; set; }
         public Guid WarehouseId { get; set; }
         public string? WarehousName { get; set; }
+
+        public List<ImportProductDto> ListImportProductDto { get; set; }
     }
 }

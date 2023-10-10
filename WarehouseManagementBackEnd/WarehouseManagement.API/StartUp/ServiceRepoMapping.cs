@@ -19,7 +19,7 @@ namespace WarehouseManagement.API.StartUp
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<ISupplierProductService, SupplierProductService>();
             builder.Services.AddScoped<IOutboundReceiptService, OutboundReceiptService>();
-            builder.Services.AddScoped<IExportProductService, ExportProductService>();
+            builder.Services.AddScoped<Service.Contract.IExportProductService, ExportProductService>();
             builder.Services.AddScoped<IProductRemainingService, ProductRemainingService>();
             builder.Services.AddScoped<IInboundReceiptService, InboundReceiptService>();
             builder.Services.AddScoped<IImportProductService, ImportProductService>();
@@ -32,7 +32,7 @@ namespace WarehouseManagement.API.StartUp
             builder.Services.AddScoped<IProductRepository,ProductRepository>();
             builder.Services.AddScoped<ISupplierProductRepository,SupplierProductRepositor>();
             builder.Services.AddScoped<IOutboundReceiptRepository, OutboundReceiptRepository>();
-            builder.Services.AddScoped<IExportProductRepository, ExportProductRepository>();
+            builder.Services.AddScoped<DAL.Contract.IExportProductRepository, ExportProductRepository>();
             builder.Services.AddScoped<IProductRemainingRepository, ProductRemainingRepository>();
             builder.Services.AddScoped<IInboundReceiptRepository, InboundReceiptRepository>();
             builder.Services.AddScoped<IImportProductRepository, ImportProductRepository>();
