@@ -15,14 +15,14 @@ namespace WarehouseManagement.Service.Implementation
 {
 	public class ExportProductService : IExportProductService
     {
-        private readonly IExportProductRepository _repository;
+        private readonly DAL.Contract.IExportProductRepository _repository;
         private readonly IMapper _mapper;
         private IOutboundReceiptRepository _outboundReceiptRepository;
         private ISupplierRepository _supplierRepository;
         private IProductRepository _productRepository;
         private IHttpContextAccessor _httpContextAccessor;
 
-        public ExportProductService(IExportProductRepository repository, IMapper mapper, IOutboundReceiptRepository outboundReceiptRepository, ISupplierRepository supplierRepository, IProductRepository productRepository, IHttpContextAccessor httpContextAccessor)
+        public ExportProductService(DAL.Contract.IExportProductRepository repository, IMapper mapper, IOutboundReceiptRepository outboundReceiptRepository, ISupplierRepository supplierRepository, IProductRepository productRepository, IHttpContextAccessor httpContextAccessor)
         {
             _repository = repository;
             _mapper = mapper;

@@ -55,7 +55,7 @@ namespace WarehouseManagement.Service.Implementation
                 {
                     return result.BuildError("Product cannot null");
                 }
-                var product = _productRepository.FindBy(x => x.Id == requets.SupplierId && x.IsDeleted == false);
+                var product = _productRepository.FindBy(x => x.Id == requets.ProductId && x.IsDeleted == false);
                 if (product.Count() == 0)
                 {
                     return result.BuildError("Cannot find product");

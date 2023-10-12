@@ -54,6 +54,13 @@ namespace WarehouseManagement.Service.Implementation
                 }
                 else
                 {
+                    var supplierProduct =_supplierProductRepository.FindBy(
+                        x=>x.SupplierId == request.SupplierId
+                        && x.ProductId == request.ProductId);
+                    if (supplierProduct.Count() != 0)
+                    {
+                        return result.BuildError("Supplier product already exist");
+                    }
                     var supplierproduct = _mapper.Map<SupplierProduct>(request);
                     supplierproduct.Id = Guid.NewGuid();
                     supplierproduct.Product = product;
