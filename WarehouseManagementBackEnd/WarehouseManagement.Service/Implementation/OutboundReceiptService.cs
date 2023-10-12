@@ -60,12 +60,11 @@ namespace WarehouseManagement.Service.Implementation
                     Quantity = x.Quantity,
                     CreatedBy = UserName,
                     CreatedOn = DateTime.UtcNow,
-                    OutboundReceiptId = x.OutboundReceiptId,
+                    OutboundReceiptId = (int)x.OutboundReceiptId,
                     ProductId = x.ProductId,
                     SupplierId = x.SupplierId,
-                    
-                });
-
+                }).ToList();
+                _exportProductRepository.AddRange(list);
                     request.Id = outboundReceipt.Id;
                     result.IsSuccess = true;
                     result.Data = request;

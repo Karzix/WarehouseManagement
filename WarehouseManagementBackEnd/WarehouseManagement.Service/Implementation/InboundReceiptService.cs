@@ -71,20 +71,20 @@ namespace WarehouseManagement.Service.Implementation
                     inboundReceipt.Supplier = null;
                     inboundReceipt.CreatedBy = UserName;
                     
-                request.ListImportProductDto.ForEach(item =>
-                {
-                    var product = new ImportProduct()
-                    {
-                        InboundReceiptId = inboundReceipt.Id,
-                        Quantity = item.Quantity,
-                        CreatedBy = UserName,
-                        CreatedOn = DateTime.Now,
-                        ProductId = item.ProductId,
-                        SupplierId = item.SupplierId,
-                    };
-                    listImportProduct.Add(product);
-                });
 				_inboundReceiptRepository.Add(inboundReceipt);
+				request.ListImportProductDto.ForEach(item =>
+				{
+					var product = new ImportProduct()
+					{
+						InboundReceiptId = inboundReceipt.Id,
+						Quantity = item.Quantity,
+						CreatedBy = UserName,
+						CreatedOn = DateTime.Now,
+						ProductId = item.ProductId,
+						SupplierId = item.SupplierId,
+					};
+					listImportProduct.Add(product);
+				});
 				_importProductRepository.AddRange(listImportProduct);
                 request.Id = inboundReceipt.Id;
                     result.BuildResult(request);    

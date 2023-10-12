@@ -17,6 +17,6 @@ namespace WarehouseManagement.Model.Dto
         public int ProductId { get; set; }
         public string? ProductName { get; set; }
 
-        public int InboundReceiptId { get; set; }
+        public int? InboundReceiptId { get; set; }
     }
 }

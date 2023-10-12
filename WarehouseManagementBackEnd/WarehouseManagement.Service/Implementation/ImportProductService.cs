@@ -112,7 +112,7 @@ namespace WarehouseManagement.Service.Implementation
                 inportProduct.SupplierId = requets.SupplierId;
                 inportProduct.ProductId = requets.ProductId;
                 inportProduct.Quantity = requets.Quantity;
-                inportProduct.InboundReceiptId = requets.InboundReceiptId;
+                inportProduct.InboundReceiptId = (int)requets.InboundReceiptId;
                 inportProduct.ModifiedOn = DateTime.UtcNow;
             }
             catch (Exception ex)
@@ -134,7 +134,7 @@ namespace WarehouseManagement.Service.Implementation
                 {
                     Quantity = x.Quantity,
                     Id = x.Id,
-                    InboundReceiptId = x.InboundReceiptId,
+                    InboundReceiptId = (int)x.InboundReceiptId,
                     ProductName = x.Product.Name,
                     SipplierName = x.Supplier.Name,
                     SupplierId = x.SupplierId,
@@ -162,7 +162,7 @@ namespace WarehouseManagement.Service.Implementation
                 {
                     Quantity = x.Quantity,
                     Id = x.Id,
-                    InboundReceiptId = x.InboundReceiptId,
+                    InboundReceiptId = (int)x.InboundReceiptId,
                     ProductId = x.ProductId,
                     ProductName = x.Product.Name,
                     SipplierName = x.Supplier.Name,
@@ -196,7 +196,7 @@ namespace WarehouseManagement.Service.Implementation
 						Id = x.Id,
 						SupplierId = x.SupplierId,
                         Quantity = x.Quantity,
-                        InboundReceiptId = x.InboundReceiptId,
+                        InboundReceiptId = (int)x.InboundReceiptId,
                         ProductId = x.ProductId,
                         ProductName = x.Product.Name,
                         SipplierName = x.Supplier.Name,
