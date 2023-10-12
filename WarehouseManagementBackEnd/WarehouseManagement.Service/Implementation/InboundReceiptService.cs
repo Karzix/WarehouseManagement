@@ -65,8 +65,8 @@ namespace WarehouseManagement.Service.Implementation
                     return result.BuildError("Cannot find warehouse");
                 }
                 var listImportProduct= new List<ImportProduct>();
-                var listImportProductEdit= new List<ImportProduct>();
-                var listImportProductRemove= new List<ImportProduct>();
+                //var listImportProductEdit= new List<ImportProduct>();
+                //var listImportProductRemove= new List<ImportProduct>();
 
                 var inboundReceipt = _mapper.Map<InboundReceipt>(request);
                     inboundReceipt.Id = Guid.NewGuid();
@@ -80,7 +80,11 @@ namespace WarehouseManagement.Service.Implementation
                     {
                         Id = Guid.NewGuid(),
                         InboundReceiptId = inboundReceipt.Id,
-                        ///
+                        Quantity = item.Quantity,
+                        CreatedBy = UserName,
+                        CreatedOn = DateTime.Now,
+                        ProductId = item.ProductId,
+                        SupplierId = item.SupplierId,
                     };
                     listImportProduct.Add(product);
                 });
