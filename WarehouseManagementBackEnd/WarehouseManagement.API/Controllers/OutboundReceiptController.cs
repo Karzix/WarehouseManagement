@@ -29,7 +29,7 @@ namespace WarehouseManagement.API.Controllers
 
         [HttpGet]
         [Route("{Id}")]
-        public IActionResult GetOutboundReceipt(Guid Id)
+        public IActionResult GetOutboundReceipt(int Id)
         {
             var result = _outboundReceiptService.GetOutboundReceipt(Id);
             return Ok(result);
@@ -52,7 +52,7 @@ namespace WarehouseManagement.API.Controllers
 
         [HttpDelete]
         [Route("Id")]
-        public IActionResult DeleteOutboundReceipt(Guid Id)
+        public IActionResult DeleteOutboundReceipt(int Id)
         {
             var result = _outboundReceiptService.DeleteOutboundReceipt(Id);
             return Ok(result);

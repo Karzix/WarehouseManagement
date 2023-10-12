@@ -13,9 +13,9 @@ namespace WarehouseManagement.Service.Contract
     {
         AppResponse<SupplierDto> CreateSupplier(SupplierDto supplier);
         AppResponse<SupplierDto> EditSupplier(SupplierDto supplier);
-        AppResponse<string> DeleteSupplier(Guid Id);
+        AppResponse<string> DeleteSupplier(int Id);
         AppResponse<List<SupplierDto>> GetAllSupplier();
-        AppResponse<SupplierDto> GetSupplier(Guid Id);
+        AppResponse<SupplierDto> GetSupplier(int Id);
         AppResponse<SearchResponse<SupplierDto>> Search(SearchRequest request);
 
 	}

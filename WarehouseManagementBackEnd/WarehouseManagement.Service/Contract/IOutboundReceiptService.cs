@@ -12,10 +12,10 @@ namespace WarehouseManagement.Service.Contract
     public interface IOutboundReceiptService
     {
         AppResponse<List<OutboundReceiptDto>> GetAllOutboundReceipt();
-        AppResponse<OutboundReceiptDto> GetOutboundReceipt(Guid Id);
+        AppResponse<OutboundReceiptDto> GetOutboundReceipt(int Id);
         AppResponse<OutboundReceiptDto> CreateOutboundReceipt(OutboundReceiptDto request);
         AppResponse<OutboundReceiptDto> EditOutbountReceipt(OutboundReceiptDto request);
-        AppResponse<string> DeleteOutboundReceipt(Guid Id);
+        AppResponse<string> DeleteOutboundReceipt(int Id);
         AppResponse<SearchResponse<OutboundReceiptDto>> Search(SearchRequest request);
 
 	}

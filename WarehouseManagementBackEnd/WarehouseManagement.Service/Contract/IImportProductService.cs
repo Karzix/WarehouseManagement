@@ -12,10 +12,10 @@ namespace WarehouseManagement.Service.Contract
     public interface IImportProductService
     {
         AppResponse<List<ImportProductDto>> GetAllImportProduct();
-        AppResponse<ImportProductDto> GetImportProduct(Guid Id);
+        AppResponse<ImportProductDto> GetImportProduct(int Id);
         AppResponse<ImportProductDto> CreateImportProduct(ImportProductDto requets);
         AppResponse<ImportProductDto> EditImportProduct(ImportProductDto requets);
-        AppResponse<string> DeleteImportProduct(Guid Id);
+        AppResponse<string> DeleteImportProduct(int Id);
         AppResponse<SearchResponse<ImportProductDto>> Search(SearchRequest request);
 
 	}

@@ -25,7 +25,7 @@ namespace WarehouseManagement.API.Controllers
         }
         [HttpGet]
         [Route("{Id}")]
-        public IActionResult GetProduct(Guid Id)
+        public IActionResult GetProduct(int Id)
         {
             var result = _productService.GetProduct(Id);
             return Ok(result);
@@ -38,7 +38,7 @@ namespace WarehouseManagement.API.Controllers
         }
         [HttpDelete]
         [Route("{Id}")]
-        public IActionResult DeleteProduct(Guid Id)
+        public IActionResult DeleteProduct(int Id)
         {
             var result = _productService.DeleteProduct(Id);
             return Ok(result);

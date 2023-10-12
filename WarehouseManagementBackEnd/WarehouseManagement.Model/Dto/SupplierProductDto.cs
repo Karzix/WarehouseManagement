@@ -10,10 +10,10 @@ namespace WarehouseManagement.Model.Dto
 {
     public class SupplierProductDto:BaseDto
     {
-        public Guid ProductId { get; set; }
+        public int ProductId { get; set; }
         public string? ProductName { get; set; }
 
-        public Guid SupplierId { get; set; }
+        public int SupplierId { get; set; }
         public string? SupplierName { get; set; }
     }
 }

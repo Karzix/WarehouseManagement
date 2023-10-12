@@ -11,6 +11,6 @@ namespace WarehouseManagement.DAL.Contract
 {
     public interface IExportProductRepository : IGenericRepository<ExportProduct, WarehouseManagementDbContext>
     {
-        ExportProduct FindById(Guid Id);
+        ExportProduct FindById(int Id);
     }
 }

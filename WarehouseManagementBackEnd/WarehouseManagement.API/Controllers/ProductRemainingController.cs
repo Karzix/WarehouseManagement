@@ -28,7 +28,7 @@ namespace WarehouseManagement.API.Controllers
         }
         [HttpGet]
         [Route("{Id}")]
-        public IActionResult GetProductRemaining(Guid Id)
+        public IActionResult GetProductRemaining(int Id)
         {
             var result= _productRemainingService.GetProductRemaining(Id);
             return Ok(result);
@@ -41,7 +41,7 @@ namespace WarehouseManagement.API.Controllers
         }
         [HttpDelete]
         [Route("{Id}")]
-        public IActionResult DeleteProductRemaining(Guid Id)
+        public IActionResult DeleteProductRemaining(int Id)
         {
             var result = _productRemainingService.DeleteProductRemaining(Id);
             return Ok(result);

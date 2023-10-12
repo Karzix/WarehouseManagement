@@ -11,6 +11,6 @@ namespace WarehouseManagement.DAL.Contract
 {
     public interface IOutboundReceiptRepository:IGenericRepository<OutboundReceipt, WarehouseManagementDbContext>
     {
-        OutboundReceipt FindById(Guid id); 
+        OutboundReceipt FindById(int id); 
     }
 }

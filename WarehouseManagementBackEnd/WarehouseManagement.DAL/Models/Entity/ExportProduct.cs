@@ -13,17 +13,17 @@ namespace WarehouseManagement.DAL.Models.Entity
         public int Quantity { get; set; }
 
         [ForeignKey("Product")]
-        public Guid ProductId { get; set; }
+        public int ProductId { get; set; }
         [ForeignKey("ProductId")]
         public Product? Product { get; set; }
 
         [ForeignKey("Supplier")]
-        public Guid SupplierId { get; set; }
+        public int SupplierId { get; set; }
         [ForeignKey("SupplierId")]
         public Supplier Supplier { get; set; }
 
         [ForeignKey("OutboundReceipt")]
-        public Guid OutboundReceiptId { get; set; }
+        public int OutboundReceiptId { get; set; }
         [ForeignKey("OutboundReceiptId")]
         public OutboundReceipt OutboundReceipt { get; set; }
     }

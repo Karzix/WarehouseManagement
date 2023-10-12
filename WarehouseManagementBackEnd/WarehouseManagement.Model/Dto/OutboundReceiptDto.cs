@@ -12,7 +12,7 @@ namespace WarehouseManagement.Model.Dto
     {
         public string? To { get; set; }
 
-        public Guid WarehouseId { get; set; }
+        public int WarehouseId { get; set; }
         public string? WarehouseName { get; set; }
 
         public List<ExportProductDto> ListExportProductDtos { get; set; }

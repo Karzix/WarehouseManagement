@@ -11,6 +11,6 @@ namespace WarehouseManagement.DAL.Contract
 {
     public interface IProductRemainingRepository:IGenericRepository<ProductRemaining, WarehouseManagementDbContext>
     {
-        ProductRemaining FindById(Guid id);
+        ProductRemaining FindById(int id);
     }
 }

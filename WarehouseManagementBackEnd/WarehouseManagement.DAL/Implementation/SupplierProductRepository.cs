@@ -21,7 +21,7 @@ namespace WarehouseManagement.DAL.Implementation
             _context = unitOfWork;
         }
 
-        public SupplierProduct FindById(Guid Id)
+        public SupplierProduct FindById(int Id)
         {
             var supplierProduct = _context.SupplierProduct.Where(x => x.Id == Id)
                 .Include(x=>x.Supplier)
@@ -30,7 +30,7 @@ namespace WarehouseManagement.DAL.Implementation
             return supplierProduct;
         }
 
-        public List<ProductDto> FindProductBySupplier(Guid SupplierId)
+        public List<ProductDto> FindProductBySupplier(int SupplierId)
         {
             var listSupplierProduct = _context.SupplierProduct.Where(x => x.SupplierId == SupplierId)
                 .Include(x=>x.Product);

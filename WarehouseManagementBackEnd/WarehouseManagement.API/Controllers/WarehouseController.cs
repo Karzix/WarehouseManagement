@@ -26,7 +26,7 @@ namespace WarehouseManagement.API.Controllers
         }
         [HttpGet]
         [Route("{Id}")]
-        public IActionResult GetWarehouse(Guid Id)
+        public IActionResult GetWarehouse(int Id)
         {
             var result = _warehouseService.GetWarehouseById(Id);
             return Ok(result);
@@ -45,7 +45,7 @@ namespace WarehouseManagement.API.Controllers
             return Ok(result);
         }
         [HttpDelete]
-        public IActionResult DeleteWarehouse(Guid id)
+        public IActionResult DeleteWarehouse(int id)
         {
 
             var result = _warehouseService.DeleteWarehouse(id);

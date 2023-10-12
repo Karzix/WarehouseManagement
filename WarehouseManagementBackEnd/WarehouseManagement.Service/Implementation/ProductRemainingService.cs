@@ -60,7 +60,6 @@ namespace WarehouseManagement.Service.Implementation
                     return result.BuildError("Cannot find warehouse");
                 }
                     var productREmaining = _mapper.Map<ProductRemaining>(request);
-                    productREmaining.Id = Guid.NewGuid();
                     productREmaining.Product = null;
                     productREmaining.Warehouse = null;
                     productREmaining.CreatedBy = UserName;
@@ -77,7 +76,7 @@ namespace WarehouseManagement.Service.Implementation
             return result;
         }
 
-        public AppResponse<string> DeleteProductRemaining(Guid Id)
+        public AppResponse<string> DeleteProductRemaining(int Id)
         {
             var result = new AppResponse<string>();
             try
@@ -106,7 +105,7 @@ namespace WarehouseManagement.Service.Implementation
                 productRemaining.Quantity = request.Quantity;
                 productRemaining.WarehouseId = request.WarehouseId;
                 productRemaining.ModifiedOn = DateTime.UtcNow;
-                productRemaining.Id = (Guid)request.Id;
+                productRemaining.Id = (int)request.Id;
 
                 result.IsSuccess = true;
                 result.Data = request;
@@ -152,7 +151,7 @@ namespace WarehouseManagement.Service.Implementation
             return result;
         }
 
-        public AppResponse<ProductRemainingDto> GetProductRemaining(Guid Id)
+        public AppResponse<ProductRemainingDto> GetProductRemaining(int Id)
         {
             var result = new AppResponse<ProductRemainingDto>();
             try

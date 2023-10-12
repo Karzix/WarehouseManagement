@@ -11,13 +11,13 @@ namespace WarehouseManagement.DAL.Models.Entity
     public class InboundReceipt :BaseEntity
     {
         [ForeignKey("Supplier")]
-        public Guid SupplierId { get; set; }
+        public int SupplierId { get; set; }
         [ForeignKey("SupplierId")]
         public Supplier Supplier { get; set; }
         //public string? From { get; set; }
 
         [ForeignKey("Warehouse")]
-        public Guid WarehouseId { get; set; }
+        public int WarehouseId { get; set; }
         [ForeignKey("WarehouseId")]
         public virtual Warehouse Warehouse { get; set; }
     }

@@ -19,18 +19,19 @@ namespace WarehouseManagement.Service.Implementation
         private IMapper _mapper;
         private IWarehouseRepository _warehouseRepository;
         private IHttpContextAccessor _httpContextAccessor;
-        private IExportProductService _exportProductService;
+        private IExportProductRepository _exportProductRepository;
 
         public OutboundReceiptService(IOutboundReceiptRepository outboundReceiptRepository,
             IMapper mapper, IWarehouseRepository warehouseRepository, IHttpContextAccessor httpContextAccessory,
-            IExportProductService exportProductService)
+			IExportProductRepository exportProductRepository)
         {
             _outboundReceiptRepository = outboundReceiptRepository;
             _mapper = mapper;
             _warehouseRepository = warehouseRepository;
             _httpContextAccessor = httpContextAccessory;
-            _exportProductService = exportProductService;
-        }
+			_exportProductRepository = exportProductRepository;
+
+		}
 
         public AppResponse<OutboundReceiptDto> CreateOutboundReceipt(OutboundReceiptDto request)
         {
@@ -53,9 +54,17 @@ namespace WarehouseManagement.Service.Implementation
                 }
                     var outboundReceipt = _mapper.Map<OutboundReceipt>(request);
                     outboundReceipt.Warehouse = null;
-                    outboundReceipt.Id = Guid.NewGuid();
                     _outboundReceiptRepository.Add(outboundReceipt);
-                request.ListExportProductDtos.ForEach(item => _exportProductService.CreateExportProduct(item));
+                var list =  request.ListExportProductDtos.Select(x=> new ExportProduct
+                {
+                    Quantity = x.Quantity,
+                    CreatedBy = UserName,
+                    CreatedOn = DateTime.UtcNow,
+                    OutboundReceiptId = x.OutboundReceiptId,
+                    ProductId = x.ProductId,
+                    SupplierId = x.SupplierId,
+                    
+                });
 
                     request.Id = outboundReceipt.Id;
                     result.IsSuccess = true;
@@ -70,7 +79,7 @@ namespace WarehouseManagement.Service.Implementation
             }
         }
 
-        public AppResponse<string> DeleteOutboundReceipt(Guid Id)
+        public AppResponse<string> DeleteOutboundReceipt(int Id)
         {
             var result = new AppResponse<string>();
             try
@@ -97,7 +106,7 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<OutboundReceiptDto>();
             try
             {
-                var outboundReceipt = _outboundReceiptRepository.Get(request.Id.Value);
+                var outboundReceipt = _outboundReceiptRepository.Get((int)request.Id);
                 outboundReceipt.WarehouseId = request.WarehouseId;
                 outboundReceipt.To = request.To;
 
@@ -142,7 +151,7 @@ namespace WarehouseManagement.Service.Implementation
             }
         }
 
-        public AppResponse<OutboundReceiptDto> GetOutboundReceipt(Guid Id)
+        public AppResponse<OutboundReceiptDto> GetOutboundReceipt(int Id)
         {
             var result = new AppResponse<OutboundReceiptDto>();
             try

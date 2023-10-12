@@ -8,10 +8,10 @@ namespace WarehouseManagement.Service.Contract
     public interface IWarehouseService
     {
         AppResponse<List<WarehouseDto>> GetAllWarehouse();
-        AppResponse<WarehouseDto> GetWarehouseById(Guid Id);
+        AppResponse<WarehouseDto> GetWarehouseById(int Id);
         AppResponse<WarehouseDto> CreateWarehouse(WarehouseDto request);
         AppResponse<WarehouseDto> EditWarehouse(WarehouseDto request);
-        AppResponse<string> DeleteWarehouse(Guid Id);
+        AppResponse<string> DeleteWarehouse(int Id);
         AppResponse<SearchResponse<WarehouseDto>> Search(SearchRequest request);
 
 	}

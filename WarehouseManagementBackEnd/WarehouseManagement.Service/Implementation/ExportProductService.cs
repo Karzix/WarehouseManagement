@@ -22,7 +22,7 @@ namespace WarehouseManagement.Service.Implementation
         private IProductRepository _productRepository;
         private IHttpContextAccessor _httpContextAccessor;
 
-        public ExportProductService(DAL.Contract.IExportProductRepository repository, IMapper mapper, IOutboundReceiptRepository outboundReceiptRepository, ISupplierRepository supplierRepository, IProductRepository productRepository, IHttpContextAccessor httpContextAccessor)
+        public ExportProductService(IExportProductRepository repository, IMapper mapper, IOutboundReceiptRepository outboundReceiptRepository, ISupplierRepository supplierRepository, IProductRepository productRepository, IHttpContextAccessor httpContextAccessor)
         {
             _repository = repository;
             _mapper = mapper;
@@ -70,7 +70,6 @@ namespace WarehouseManagement.Service.Implementation
                     return result.BuildError("Cannot find outbound receipt");
                 }
                 var exportProduct = _mapper.Map<ExportProduct>(request);
-                exportProduct.Id = Guid.NewGuid();
                 exportProduct.CreatedBy = UserName;
                 _repository.Add(exportProduct);
 
@@ -86,7 +85,7 @@ namespace WarehouseManagement.Service.Implementation
             }
         }
 
-        public AppResponse<string> DeleteExportProduct(Guid Id)
+        public AppResponse<string> DeleteExportProduct(int Id)
         {
             var result = new AppResponse<string>();
             try
@@ -113,7 +112,7 @@ namespace WarehouseManagement.Service.Implementation
             try
             {
                 var exportProduct = new ExportProduct();
-                exportProduct.Id = (Guid)request.Id;
+                exportProduct.Id = (int)request.Id;
                 exportProduct.SupplierId = request.SupplierId;
                 exportProduct.ProductId = request.ProductId;
                 exportProduct.OutboundReceiptId = request.OutboundReceiptId;
@@ -163,7 +162,7 @@ namespace WarehouseManagement.Service.Implementation
             }
         }
 
-        public AppResponse<ExportProductDto> GetExportProduct(Guid Id)
+        public AppResponse<ExportProductDto> GetExportProduct(int Id)
         {
             var result = new AppResponse<ExportProductDto>();
             try

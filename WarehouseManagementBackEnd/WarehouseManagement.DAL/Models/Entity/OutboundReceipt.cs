@@ -13,7 +13,7 @@ namespace WarehouseManagement.DAL.Models.Entity
         public string? To { get; set; }
 
         [ForeignKey("Warehouse")]
-        public Guid WarehouseId { get; set; }
+        public int WarehouseId { get; set; }
         [ForeignKey("WarehouseId")]
         public virtual Warehouse Warehouse { get; set; }
     }

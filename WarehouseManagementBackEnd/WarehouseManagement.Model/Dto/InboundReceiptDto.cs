@@ -10,9 +10,9 @@ namespace WarehouseManagement.Model.Dto
 {
     public class InboundReceiptDto:BaseDto
     {
-        public Guid SupplierId { get; set; }
+        public int SupplierId { get; set; }
         public string? SupplierName { get; set; }
-        public Guid WarehouseId { get; set; }
+        public int WarehouseId { get; set; }
         public string? WarehousName { get; set; }
 
         public List<ImportProductDto> ListImportProductDto { get; set; }

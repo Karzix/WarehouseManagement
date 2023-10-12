@@ -37,7 +37,6 @@ namespace WarehouseManagement.Service.Implementation
                 }
 
                 var request = _mapper.Map<Supplier>(supplier);
-                request.Id =  Guid.NewGuid();
                 request.CreatedBy = UserName;
                 _supplierRepository.Add(request);
 
@@ -54,7 +53,7 @@ namespace WarehouseManagement.Service.Implementation
             }
         }
 
-        public AppResponse<string> DeleteSupplier(Guid Id)
+        public AppResponse<string> DeleteSupplier(int Id)
         {
             var result =  new AppResponse<string>();
             try
@@ -122,7 +121,7 @@ namespace WarehouseManagement.Service.Implementation
             }
         }
 
-        public AppResponse<SupplierDto> GetSupplier(Guid Id)
+        public AppResponse<SupplierDto> GetSupplier(int Id)
         {
             var result =  new AppResponse<SupplierDto>();
             try
@@ -215,4 +214,3 @@ namespace WarehouseManagement.Service.Implementation
 		}
 	}
 }
-    

@@ -70,7 +70,6 @@ namespace WarehouseManagement.Service.Implementation
                     return result.BuildError("Cannot find inbound receipt");
                 }
                 var importProduct = _mapper.Map<ImportProduct>(requets);
-                importProduct.Id = Guid.NewGuid();
                 importProduct.Supplier = null;
                 importProduct.Product = null;
                 importProduct.InboundReceipt = null;
@@ -87,7 +86,7 @@ namespace WarehouseManagement.Service.Implementation
             return result;
         }
 
-        public AppResponse<string> DeleteImportProduct(Guid Id)
+        public AppResponse<string> DeleteImportProduct(int Id)
         {
             var result =  new AppResponse<string>();
             try
@@ -151,7 +150,7 @@ namespace WarehouseManagement.Service.Implementation
             return result;
         }
 
-        public AppResponse<ImportProductDto> GetImportProduct(Guid Id)
+        public AppResponse<ImportProductDto> GetImportProduct(int Id)
         {
             var result = new AppResponse<ImportProductDto>();
             try

@@ -37,7 +37,6 @@ namespace WarehouseManagement.Service.Implementation
                 }
                 var warehouse = new Warehouse();
                 warehouse = _mapper.Map<Warehouse>(request);
-                warehouse.Id = Guid.NewGuid();
                 warehouse.CreatedBy = UserName;
                 _warehouseRepository.Add(warehouse);
 
@@ -54,7 +53,7 @@ namespace WarehouseManagement.Service.Implementation
             }
         }
 
-        public AppResponse<string> DeleteWarehouse(Guid Id)
+        public AppResponse<string> DeleteWarehouse(int Id)
         {
             var result = new AppResponse<string>();
             try
@@ -138,7 +137,7 @@ namespace WarehouseManagement.Service.Implementation
             }
         }
 
-        public AppResponse<WarehouseDto> GetWarehouseById(Guid Id)
+        public AppResponse<WarehouseDto> GetWarehouseById(int Id)
         {
             var result = new AppResponse<WarehouseDto>();
             try

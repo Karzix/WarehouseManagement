@@ -18,7 +18,7 @@ namespace WarehouseManagement.DAL.Implementation
             _context = unitOfWork;
         }
 
-        public ExportProduct FindById(Guid Id)
+        public ExportProduct FindById(int Id)
         {
             var exportProduct = _context.ExportProduct.Where(x => x.Id == Id)
                 .Include(x => x.Supplier)

@@ -21,18 +21,16 @@ namespace WarehouseManagement.Service.Implementation
         private IWarehouseRepository _warehouseRepository;
         private IImportProductRepository _importProductRepository;
         private IHttpContextAccessor _httpContextAccessor;
-        private IImportProductService _importProductService;
 
         public InboundReceiptService(IInboundReceiptRepository inboundReceiptRepository, IMapper mapper,
             ISupplierRepository supplierRepository, IWarehouseRepository warehouseRepository, IHttpContextAccessor httpContextAccessor
-            , IImportProductService importProductService, IImportProductRepository importProductRepository)
+            , IImportProductRepository importProductRepository)
         {
             _inboundReceiptRepository = inboundReceiptRepository;
             _mapper = mapper;
             _supplierRepository = supplierRepository;
             _warehouseRepository = warehouseRepository;
             _httpContextAccessor = httpContextAccessor;
-            _importProductService = importProductService;
             _importProductRepository = importProductRepository;
         }
 
@@ -69,7 +67,6 @@ namespace WarehouseManagement.Service.Implementation
                 //var listImportProductRemove= new List<ImportProduct>();
 
                 var inboundReceipt = _mapper.Map<InboundReceipt>(request);
-                    inboundReceipt.Id = Guid.NewGuid();
                     inboundReceipt.Warehouse = null;
                     inboundReceipt.Supplier = null;
                     inboundReceipt.CreatedBy = UserName;
@@ -78,7 +75,6 @@ namespace WarehouseManagement.Service.Implementation
                 {
                     var product = new ImportProduct()
                     {
-                        Id = Guid.NewGuid(),
                         InboundReceiptId = inboundReceipt.Id,
                         Quantity = item.Quantity,
                         CreatedBy = UserName,
@@ -103,7 +99,7 @@ namespace WarehouseManagement.Service.Implementation
             return result;
         }
 
-        public AppResponse<string> DeleteInboundReceipt(Guid Id)
+        public AppResponse<string> DeleteInboundReceipt(int Id)
         {
             var result = new AppResponse<string>();
             try
@@ -165,7 +161,7 @@ namespace WarehouseManagement.Service.Implementation
             return result;
         }
 
-        public AppResponse<InboundReceiptDto> GetInboundReceipt(Guid Id)
+        public AppResponse<InboundReceiptDto> GetInboundReceipt(int Id)
         {
             var result = new AppResponse<InboundReceiptDto>();
             try

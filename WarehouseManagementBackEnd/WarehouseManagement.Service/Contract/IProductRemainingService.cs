@@ -12,11 +12,11 @@ namespace WarehouseManagement.Service.Contract
 {
     public interface IProductRemainingService
     {
-        AppResponse<ProductRemainingDto> GetProductRemaining(Guid Id);
+        AppResponse<ProductRemainingDto> GetProductRemaining(int Id);
         AppResponse<List<ProductRemainingDto>> GetAllProductRemaining();
         AppResponse<ProductRemainingDto> CreateProductRemaining(ProductRemainingDto request);
         AppResponse<ProductRemainingDto> EditProductRemaining(ProductRemainingDto request);
-        AppResponse<string> DeleteProductRemaining(Guid Id);
+        AppResponse<string> DeleteProductRemaining(int Id);
         AppResponse<SearchResponse<ProductRemainingDto>> Search(SearchRequest request);
 
 	}

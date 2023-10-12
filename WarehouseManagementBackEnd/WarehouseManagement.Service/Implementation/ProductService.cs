@@ -43,7 +43,6 @@ namespace WarehouseManagement.Service.Implementation
                 }
                 var product = new Product();
                 product = _mapper.Map<Product>(request);
-                product.Id = Guid.NewGuid();
                 product.CreatedBy = UserName;
                 _productRepository.Add(product);
 
@@ -60,7 +59,7 @@ namespace WarehouseManagement.Service.Implementation
             }
         }
 
-        public AppResponse<string> DeleteProduct(Guid Id)
+        public AppResponse<string> DeleteProduct(int Id)
         {
             var result = new AppResponse<string>();
             try
@@ -107,7 +106,7 @@ namespace WarehouseManagement.Service.Implementation
             }
         }
 
-        public AppResponse<ProductDto> GetProduct(Guid Id)
+        public AppResponse<ProductDto> GetProduct(int Id)
         {
             var result = new AppResponse<ProductDto>();
             try

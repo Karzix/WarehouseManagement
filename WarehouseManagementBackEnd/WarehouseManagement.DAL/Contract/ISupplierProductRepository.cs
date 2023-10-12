@@ -14,8 +14,8 @@ namespace WarehouseManagement.DAL.Contract
 {
     public interface ISupplierProductRepository:IGenericRepository<SupplierProduct, WarehouseManagementDbContext>
     {
-        SupplierProduct FindById(Guid Id);
-        List<ProductDto> FindProductBySupplier(Guid SupplierId);
+        SupplierProduct FindById(int Id);
+        List<ProductDto> FindProductBySupplier(int SupplierId);
         IQueryable<SupplierProduct> FindByPredicate(Expression<Func<SupplierProduct, bool>> predicate);
         int CountRecordsByPredicate(Expression<Func<SupplierProduct, bool>> predicate);
     }

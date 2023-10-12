@@ -18,7 +18,7 @@ namespace WarehouseManagement.DAL.Implementation
             _context = unitOfWork;
         }
 
-        public ProductRemaining FindById(Guid id)
+        public ProductRemaining FindById(int id)
         {
             var productRemaining = _context.ProductRemaining.Where(x => x.Id == id)
                 .Include(x => x.Product)

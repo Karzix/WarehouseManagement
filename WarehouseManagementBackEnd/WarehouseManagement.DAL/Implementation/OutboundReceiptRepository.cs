@@ -18,7 +18,7 @@ namespace WarehouseManagement.DAL.Implementation
             _context = unitOfWork;
         }
 
-        public OutboundReceipt FindById(Guid id)
+        public OutboundReceipt FindById(int id)
         {
             var outboundReceipt = _context.OutboundReceipt.Where(x=>x.Id == id)
                 .Include(x=>x.Warehouse)

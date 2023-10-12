@@ -62,7 +62,6 @@ namespace WarehouseManagement.Service.Implementation
                         return result.BuildError("Supplier product already exist");
                     }
                     var supplierproduct = _mapper.Map<SupplierProduct>(request);
-                    supplierproduct.Id = Guid.NewGuid();
                     supplierproduct.Product = product;
                     supplierproduct.Supplier = supplier;
                     supplierproduct.CreatedBy = UserName;
@@ -82,7 +81,7 @@ namespace WarehouseManagement.Service.Implementation
             }
         }
 
-        public AppResponse<string> DeleteSupplierProduct(Guid Id)
+        public AppResponse<string> DeleteSupplierProduct(int Id)
         {
             var result = new AppResponse<string>();
             try
@@ -152,7 +151,7 @@ namespace WarehouseManagement.Service.Implementation
             }
         }
 
-        public AppResponse<SupplierProductDto> GetSupplierProduct(Guid Id)
+        public AppResponse<SupplierProductDto> GetSupplierProduct(int Id)
         {
             var result = new AppResponse<SupplierProductDto>();
             try
