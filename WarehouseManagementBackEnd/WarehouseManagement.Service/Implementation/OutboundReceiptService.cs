@@ -19,14 +19,17 @@ namespace WarehouseManagement.Service.Implementation
         private IMapper _mapper;
         private IWarehouseRepository _warehouseRepository;
         private IHttpContextAccessor _httpContextAccessor;
+        private IExportProductService _exportProductService;
 
         public OutboundReceiptService(IOutboundReceiptRepository outboundReceiptRepository,
-            IMapper mapper, IWarehouseRepository warehouseRepository, IHttpContextAccessor httpContextAccessor)
+            IMapper mapper, IWarehouseRepository warehouseRepository, IHttpContextAccessor httpContextAccessory,
+            IExportProductService exportProductService)
         {
             _outboundReceiptRepository = outboundReceiptRepository;
             _mapper = mapper;
             _warehouseRepository = warehouseRepository;
-            _httpContextAccessor = httpContextAccessor;
+            _httpContextAccessor = httpContextAccessory;
+            _exportProductService = exportProductService;
         }
 
         public AppResponse<OutboundReceiptDto> CreateOutboundReceipt(OutboundReceiptDto request)
@@ -52,6 +55,7 @@ namespace WarehouseManagement.Service.Implementation
                     outboundReceipt.Warehouse = null;
                     outboundReceipt.Id = Guid.NewGuid();
                     _outboundReceiptRepository.Add(outboundReceipt);
+                request.ListExportProductDtos.ForEach(item => _exportProductService.CreateExportProduct(item));
 
                     request.Id = outboundReceipt.Id;
                     result.IsSuccess = true;

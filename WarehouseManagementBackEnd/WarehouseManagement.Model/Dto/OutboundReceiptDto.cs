@@ -14,5 +14,7 @@ namespace WarehouseManagement.Model.Dto
 
         public Guid WarehouseId { get; set; }
         public string? WarehouseName { get; set; }
+
+        public List<ExportProductDto> ListExportProductDtos { get; set; }
     }
 }

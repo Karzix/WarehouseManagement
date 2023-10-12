@@ -19,16 +19,21 @@ namespace WarehouseManagement.Service.Implementation
         private IMapper _mapper;
         private ISupplierRepository _supplierRepository;
         private IWarehouseRepository _warehouseRepository;
+        private IImportProductRepository _importProductRepository;
         private IHttpContextAccessor _httpContextAccessor;
+        private IImportProductService _importProductService;
 
         public InboundReceiptService(IInboundReceiptRepository inboundReceiptRepository, IMapper mapper,
-            ISupplierRepository supplierRepository, IWarehouseRepository warehouseRepository, IHttpContextAccessor httpContextAccessor)
+            ISupplierRepository supplierRepository, IWarehouseRepository warehouseRepository, IHttpContextAccessor httpContextAccessor
+            , IImportProductService importProductService, IImportProductRepository importProductRepository)
         {
             _inboundReceiptRepository = inboundReceiptRepository;
             _mapper = mapper;
             _supplierRepository = supplierRepository;
             _warehouseRepository = warehouseRepository;
             _httpContextAccessor = httpContextAccessor;
+            _importProductService = importProductService;
+            _importProductRepository = importProductRepository;
         }
 
         public AppResponse<InboundReceiptDto> CreateInboundReceipt(InboundReceiptDto request)
@@ -59,13 +64,33 @@ namespace WarehouseManagement.Service.Implementation
                 {
                     return result.BuildError("Cannot find warehouse");
                 }
+                var listImportProduct= new List<ImportProduct>();
+                //var listImportProductEdit= new List<ImportProduct>();
+                //var listImportProductRemove= new List<ImportProduct>();
+
                 var inboundReceipt = _mapper.Map<InboundReceipt>(request);
                     inboundReceipt.Id = Guid.NewGuid();
                     inboundReceipt.Warehouse = null;
                     inboundReceipt.Supplier = null;
                     inboundReceipt.CreatedBy = UserName;
-                    _inboundReceiptRepository.Add(inboundReceipt);
-                    request.Id = inboundReceipt.Id;
+                    
+                request.ListImportProductDto.ForEach(item =>
+                {
+                    var product = new ImportProduct()
+                    {
+                        Id = Guid.NewGuid(),
+                        InboundReceiptId = inboundReceipt.Id,
+                        Quantity = item.Quantity,
+                        CreatedBy = UserName,
+                        CreatedOn = DateTime.Now,
+                        ProductId = item.ProductId,
+                        SupplierId = item.SupplierId,
+                    };
+                    listImportProduct.Add(product);
+                });
+				_inboundReceiptRepository.Add(inboundReceipt);
+				_importProductRepository.AddRange(listImportProduct);
+                request.Id = inboundReceipt.Id;
                     result.BuildResult(request);    
 
 
