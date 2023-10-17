@@ -174,29 +174,30 @@ namespace WarehouseManagement.Service.Implementation
                 return result;
             }
         }
-        public AppResponse<SearchResponse<ProductDto>> Search(SearchRequest request)
+        public AppResponse<SearchResponse<SupplierProductDto>> Search(SearchRequest request)
         {
-            var result =new AppResponse<SearchResponse<ProductDto>>();
+            var result =new AppResponse<SearchResponse<SupplierProductDto>>();
             try
             {
                 var query = BuildFilterExpression(request.Filters);
                 var numOfRecords = _supplierProductRepository.CountRecordsByPredicate(query);
-                var supplierProduct = _supplierProductRepository.FindByPredicate(query).Include(x=>x.Product);
+                var supplierProduct = _supplierProductRepository.FindByPredicate(query).Include(x=>x.Product).Include(x=>x.Supplier);
                 int pageIndex = request.PageIndex ?? 1;
                 int pageSize = request.PageSize ?? 1;
                 int startIndex = (pageIndex - 1) * (int)pageSize;
                 var ProductList = supplierProduct.Skip(startIndex).Take(pageSize)
-                    .Select(x=> new ProductDto
+                    .Select(x=> new SupplierProductDto
                     {
-                        Quantity = x.Product.Quantity,
-                        Description = x.Product.Description,
-                        Id = x.ProductId,
-                        Name = x.Product.Name,
+                        Id = x.Id,
+                        ProductId = x.ProductId,
+                        ProductName = x.Product.Name,
+                        SupplierId = x.SupplierId,
+                        SupplierName = x.Supplier.Name
                     })
                     .ToList();
 
                 
-                var searchUserResult = new SearchResponse<ProductDto>
+                var searchUserResult = new SearchResponse<SupplierProductDto>
                 {
                     TotalRows = 0,
                     TotalPages = CalculateNumOfPages(0, pageSize),
@@ -222,9 +223,19 @@ namespace WarehouseManagement.Service.Implementation
                     switch (filter.FieldName)
                     {
                         case "SupplierId":
-                            predicate = predicate.And(m => m.Supplier.Id.Equals(Guid.Parse(filter.Value)));
+                            predicate = predicate.And(m => m.Supplier.Id.Equals(int.Parse(filter.Value)));
                             break;
-                        default:
+						case "IsDelete":
+							{
+								bool isDetete = false;
+								if (filter.Value == "True" || filter.Value == "true")
+								{
+									isDetete = true;
+								}
+								predicate = predicate.And(m => m.IsDeleted == isDetete);
+							}
+							break;
+						default:
                             break;
                     }
                 }

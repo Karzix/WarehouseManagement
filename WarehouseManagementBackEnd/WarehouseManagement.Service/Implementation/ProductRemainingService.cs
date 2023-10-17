@@ -227,6 +227,21 @@ namespace WarehouseManagement.Service.Implementation
 						case "WarehouseName":
 							predicate = predicate.And(m => m.Warehouse.Name.Contains(filter.Value));
 							break;
+                        case "WarehouseId":
+                            {
+								predicate = predicate.And(m => m.Warehouse.Id.Equals(filter.Value));
+								break;
+							}
+						case "IsDelete":
+							{
+								bool isDetete = false;
+								if (filter.Value == "True" || filter.Value == "true")
+								{
+									isDetete = true;
+								}
+								predicate = predicate.And(m => m.IsDeleted == isDetete);
+							}
+							break;
 						default:
 							break;
 					}

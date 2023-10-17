@@ -14,7 +14,8 @@ namespace WarehouseManagement.Model.Dto
 
         public int WarehouseId { get; set; }
         public string? WarehouseName { get; set; }
+		public DateTime? CreatedOn { get; set; }
 
-        public List<ExportProductDto> ListExportProductDtos { get; set; }
+		public List<ExportProductDto> ListExportProductDtos { get; set; }
     }
 }

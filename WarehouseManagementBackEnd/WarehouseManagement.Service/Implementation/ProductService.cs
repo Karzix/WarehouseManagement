@@ -197,7 +197,17 @@ namespace WarehouseManagement.Service.Implementation
                         case "ProductName":
                             predicate = predicate.And(m => m.Name.Contains(filter.Value));
                             break;
-                        default:
+						case "IsDelete":
+							{
+								bool isDetete = false;
+								if (filter.Value == "True" || filter.Value == "true")
+								{
+									isDetete = true;
+								}
+								predicate = predicate.And(m => m.IsDeleted == isDetete);
+							}
+							break;
+						default:
                             break;
                     }
                 }

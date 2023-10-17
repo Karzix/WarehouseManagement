@@ -45,6 +45,7 @@ namespace WarehouseManagement.API.Controllers
             return Ok(result);
         }
         [HttpDelete]
+        [Route("{id}")]
         public IActionResult DeleteWarehouse(int id)
         {
 
@@ -54,7 +55,7 @@ namespace WarehouseManagement.API.Controllers
 
         }
 		[HttpPost]
-		[Route("SearchProduct")]
+		[Route("search")]
 		public IActionResult FindProduct(SearchRequest search)
 		{
 			var result = _warehouseService.Search(search);

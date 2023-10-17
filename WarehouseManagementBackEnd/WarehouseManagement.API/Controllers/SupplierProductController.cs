@@ -54,10 +54,10 @@ namespace WarehouseManagement.API.Controllers
             return Ok(result);
         }
         [HttpPost]
-        [Route("SearchProduct")]
-        public IActionResult FindProduct(SearchRequest search)
+        [Route("search")]
+        public IActionResult FindProduct(SearchRequest request)
         {
-            var result = _supplierProductService.Search(search);
+            var result = _supplierProductService.Search(request);
             return Ok(result);
         }
     }

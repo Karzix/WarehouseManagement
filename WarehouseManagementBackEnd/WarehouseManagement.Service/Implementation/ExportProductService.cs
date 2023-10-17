@@ -115,7 +115,7 @@ namespace WarehouseManagement.Service.Implementation
                 exportProduct.Id = (int)request.Id;
                 exportProduct.SupplierId = request.SupplierId;
                 exportProduct.ProductId = request.ProductId;
-                exportProduct.OutboundReceiptId = request.OutboundReceiptId;
+                exportProduct.OutboundReceiptId = (int)request.OutboundReceiptId;
                 exportProduct.Quantity = request.Quantity;
                 exportProduct.ModifiedOn = DateTime.UtcNow;
                 _repository.Edit(exportProduct);
@@ -148,7 +148,8 @@ namespace WarehouseManagement.Service.Implementation
                     OutboundReceiptId = m.OutboundReceiptId,
                     Id = m.Id,
                     SupplierName = m.Supplier.Name,
-                    ProductName = m.Product.Name
+                    ProductName = m.Product.Name,
+                    CreatedOn = m.CreatedOn
                 }).ToList();
                 result.Data = list;
                 result.IsSuccess = true;
@@ -244,6 +245,16 @@ namespace WarehouseManagement.Service.Implementation
 							break;
 						case "ProductName":
 							predicate = predicate.And(x => x.Product.Name.Contains(filter.Value));
+							break;
+						case "IsDelete":
+							{
+								bool isDetete = false;
+								if (filter.Value == "True" || filter.Value == "true")
+								{
+									isDetete = true;
+								}
+								predicate = predicate.And(m => m.IsDeleted == isDetete);
+							}
 							break;
 						default:
 							break;

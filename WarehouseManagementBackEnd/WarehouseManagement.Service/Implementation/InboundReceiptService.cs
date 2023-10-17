@@ -149,7 +149,8 @@ namespace WarehouseManagement.Service.Implementation
                         SupplierId = x.SupplierId,
                         SupplierName = x.Supplier.Name,
                         WarehouseId = x.WarehouseId,
-                        WarehousName = x.Warehouse.Name
+                        WarehouseName = x.Warehouse.Name,
+                        CreatedOn = x.CreatedOn,
                     }).ToList();
 
                 result.BuildResult(list);
@@ -175,7 +176,8 @@ namespace WarehouseManagement.Service.Implementation
                     SupplierId = x.SupplierId,
                     SupplierName = x.Supplier.Name,
                     WarehouseId = x.WarehouseId,
-                    WarehousName = x.Warehouse.Name
+                    WarehouseName = x.Warehouse.Name,
+                    CreatedOn = x.CreatedOn,
                 }).First();
                 result.BuildResult(data);
             }
@@ -205,7 +207,8 @@ namespace WarehouseManagement.Service.Implementation
 						SupplierId = x.SupplierId,
                         SupplierName = x.Supplier.Name,
                         WarehouseId = x.WarehouseId,
-                        WarehousName = x.Warehouse.Name,
+                        WarehouseName = x.Warehouse.Name,
+                        CreatedOn = x.CreatedOn
 					})
 					.ToList();
 
@@ -240,6 +243,16 @@ namespace WarehouseManagement.Service.Implementation
 							break;
 						case "WarehouseName":
 							predicate = predicate.And(m => m.Warehouse.Name.Contains(filter.Value));
+							break;
+						case "IsDelete":
+							{
+								bool isDetete = false;
+								if (filter.Value == "True" || filter.Value == "true")
+								{
+									isDetete = true;
+								}
+								predicate = predicate.And(m => m.IsDeleted == isDetete);
+							}
 							break;
 						default:
 							break;

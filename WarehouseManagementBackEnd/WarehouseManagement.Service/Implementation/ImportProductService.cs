@@ -139,6 +139,7 @@ namespace WarehouseManagement.Service.Implementation
                     SipplierName = x.Supplier.Name,
                     SupplierId = x.SupplierId,
                     ProductId = x.ProductId,
+                    CreatedOn = x.CreatedOn,
                 }).ToList();
 
                 result.BuildResult(list);
@@ -167,6 +168,7 @@ namespace WarehouseManagement.Service.Implementation
                     ProductName = x.Product.Name,
                     SipplierName = x.Supplier.Name,
                     SupplierId = x.SupplierId,
+                    CreatedOn= x.CreatedOn,
                 }).First();
                 result.BuildResult(data);
             }
@@ -237,6 +239,16 @@ namespace WarehouseManagement.Service.Implementation
                             break;
 						case "ProductName":
 							predicate = predicate.And(x => x.Product.Name.Contains(filter.Value));
+							break;
+						case "IsDelete":
+							{
+								bool isDetete = false;
+								if (filter.Value == "True" || filter.Value == "true")
+								{
+									isDetete = true;
+								}
+								predicate = predicate.And(m => m.IsDeleted == isDetete);
+							}
 							break;
 						default:
 							break;

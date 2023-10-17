@@ -16,6 +16,7 @@ namespace WarehouseManagement.Model.Dto
         public string? SupplierName { get; set; }
         public int ProductId { get; set; }
         public string? ProductName { get; set; }
+        public DateTime? CreatedOn { get; set; }
 
         public int? OutboundReceiptId { get; set; }
     }

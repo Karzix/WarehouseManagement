@@ -135,7 +135,7 @@ namespace WarehouseManagement.Service.Implementation
                     To = m.To,
                     WarehouseName = m.Warehouse.Name,
                     WarehouseId = m.Id,
-
+                    CreatedOn = m.CreatedOn,
                 }).ToList();
 
                 result.Data = list;
@@ -161,6 +161,7 @@ namespace WarehouseManagement.Service.Implementation
                 data.To = outboundReceipt.To;
                 data.WarehouseId = outboundReceipt.WarehouseId;
                 data.WarehouseName = outboundReceipt.Warehouse.Name;
+                data.CreatedOn = outboundReceipt.CreatedOn;
 
                 result.IsSuccess = true;
                 result.Data = data;
@@ -222,6 +223,16 @@ namespace WarehouseManagement.Service.Implementation
 					{
 						case "WarehouseName":
 							predicate = predicate.And(m => m.Warehouse.Name.Contains(filter.Value));
+							break;
+						case "IsDelete":
+							{
+								bool isDetete = false;
+								if (filter.Value == "True" || filter.Value == "true")
+								{
+									isDetete = true;
+								}
+								predicate = predicate.And(m => m.IsDeleted == isDetete);
+							}
 							break;
 						default:
 							break;
