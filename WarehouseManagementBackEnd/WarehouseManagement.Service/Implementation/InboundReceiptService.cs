@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Data;
+using System.Data.Entity;
 using AutoMapper;
 using LinqKit;
 using MayNghien.Common.Helpers;
@@ -79,7 +80,7 @@ namespace WarehouseManagement.Service.Implementation
 						InboundReceiptId = inboundReceipt.Id,
 						Quantity = item.Quantity,
 						CreatedBy = UserName,
-						CreatedOn = DateTime.Now,
+						CreatedOn = DateTime.UtcNow,
 						ProductId = item.ProductId,
 						SupplierId = item.SupplierId,
 					};
@@ -135,7 +136,9 @@ namespace WarehouseManagement.Service.Implementation
             return result;
         }
 
-        public AppResponse<List<InboundReceiptDto>> GetAllInboundReceipt()
+		
+
+		public AppResponse<List<InboundReceiptDto>> GetAllInboundReceipt()
         {
             var result = new AppResponse<List<InboundReceiptDto>>();
             try
@@ -150,7 +153,7 @@ namespace WarehouseManagement.Service.Implementation
                         SupplierName = x.Supplier.Name,
                         WarehouseId = x.WarehouseId,
                         WarehouseName = x.Warehouse.Name,
-                        CreatedOn = x.CreatedOn,
+                        CreatedOn = TimeZoneInfo.ConvertTimeBySystemTimeZoneId((DateTime)x.CreatedOn, TimeZoneInfo.Local.Id),
                     }).ToList();
 
                 result.BuildResult(list);
@@ -177,7 +180,7 @@ namespace WarehouseManagement.Service.Implementation
                     SupplierName = x.Supplier.Name,
                     WarehouseId = x.WarehouseId,
                     WarehouseName = x.Warehouse.Name,
-                    CreatedOn = x.CreatedOn,
+                    CreatedOn = x.CreatedOn
                 }).First();
                 result.BuildResult(data);
             }
@@ -208,7 +211,7 @@ namespace WarehouseManagement.Service.Implementation
                         SupplierName = x.Supplier.Name,
                         WarehouseId = x.WarehouseId,
                         WarehouseName = x.Warehouse.Name,
-                        CreatedOn = x.CreatedOn
+                        CreatedOn = x.CreatedOn,
 					})
 					.ToList();
 
@@ -254,6 +257,27 @@ namespace WarehouseManagement.Service.Implementation
 								predicate = predicate.And(m => m.IsDeleted == isDetete);
 							}
 							break;
+                        case "Month":
+                            {
+								var day = DateTime.Parse(filter.Value);
+								//if (filter.Value!="")
+                                predicate = predicate.And(m => m.CreatedOn.Value.Month.Equals(day.Month) && m.CreatedOn.Value.Year.Equals(day.Year));
+                            }
+                            break;
+                        case "Day":
+                            {
+                                var day =  DateTime.Parse(filter.Value);
+								//if (filter.Value != "")
+									predicate = predicate.And(m => m.CreatedOn.Value.Day.Equals(day.Day) && m.CreatedOn.Value.Month.Equals(day.Month) && m.CreatedOn.Value.Year.Equals(day.Year));
+							}
+                            break;
+                        case "Year":
+                            {
+								var day = DateTime.Parse(filter.Value);
+								//if (filter.Value != "")
+								predicate = predicate.And(m => m.CreatedOn.Value.Year.Equals(day.Year));
+							}
+                            break;
 						default:
 							break;
 					}
@@ -264,6 +288,13 @@ namespace WarehouseManagement.Service.Implementation
 			{
 				throw;
 			}
+		}
+
+		public void ExportRecordtoExcel(SearchRequest request)
+		{
+            request.PageSize = int.MaxValue;
+            var respone = Search(request);
+            
 		}
 	}
 }

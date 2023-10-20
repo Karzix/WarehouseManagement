@@ -18,5 +18,7 @@ namespace WarehouseManagement.Service.Contract
         AppResponse<string> DeleteInboundReceipt(int Id);
         AppResponse<SearchResponse<InboundReceiptDto>> Search(SearchRequest request);
 
+        void ExportRecordtoExcel(SearchRequest request);
+
 	}
 }

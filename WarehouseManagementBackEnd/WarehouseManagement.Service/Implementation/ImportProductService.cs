@@ -139,7 +139,7 @@ namespace WarehouseManagement.Service.Implementation
                     SipplierName = x.Supplier.Name,
                     SupplierId = x.SupplierId,
                     ProductId = x.ProductId,
-                    CreatedOn = x.CreatedOn,
+                    //CreatedOn = x.CreatedOn,
                 }).ToList();
 
                 result.BuildResult(list);
@@ -168,7 +168,7 @@ namespace WarehouseManagement.Service.Implementation
                     ProductName = x.Product.Name,
                     SipplierName = x.Supplier.Name,
                     SupplierId = x.SupplierId,
-                    CreatedOn= x.CreatedOn,
+                    //CreatedOn= x.CreatedOn,
                 }).First();
                 result.BuildResult(data);
             }
@@ -235,7 +235,7 @@ namespace WarehouseManagement.Service.Implementation
 							predicate = predicate.And(m => m.Supplier.Name.Contains(filter.Value));
 							break;
                         case "InboundReceiptId":
-                            predicate = predicate.And(x=>x.InboundReceiptId.Equals(filter.Value));
+                            predicate = predicate.And(x=>x.InboundReceiptId.Equals(int.Parse(filter.Value)));
                             break;
 						case "ProductName":
 							predicate = predicate.And(x => x.Product.Name.Contains(filter.Value));
