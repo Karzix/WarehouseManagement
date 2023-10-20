@@ -12,7 +12,7 @@ namespace WarehouseManagement.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-	//[Authorize(AuthenticationSchemes = "Bearer")]
+	[Authorize(AuthenticationSchemes = "Bearer")]
 	public class InboundReceiptController : Controller
     {
         private IInboundReceiptService _inboundReceiptService;
@@ -78,7 +78,7 @@ namespace WarehouseManagement.API.Controllers
 				{
 					worksheet.Cells[row + 1, 1].Value = "Kho: " + listInboundReceipt[i].WarehouseName;
 					worksheet.Cells[row + 2, 1].Value = "Nhà cung cấp: " + listInboundReceipt[i].SupplierName;
-
+					worksheet.Cells[row +2,3].Value="Thời gian nhập: " + listInboundReceipt[i].CreatedOn.ToString();
 					var searchImportProduct = new SearchRequest
 					{
 						PageIndex = 1,
