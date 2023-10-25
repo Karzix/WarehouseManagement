@@ -235,7 +235,7 @@ namespace WarehouseManagement.Service.Implementation
 			try
 			{
 				var predicate = PredicateBuilder.New<ProductRemaining>(true);
-
+                if (Filters!=null)
 				foreach (var filter in Filters)
 				{
 					switch (filter.FieldName)

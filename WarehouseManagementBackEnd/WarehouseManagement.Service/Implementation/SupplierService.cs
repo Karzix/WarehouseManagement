@@ -182,7 +182,7 @@ namespace WarehouseManagement.Service.Implementation
 			try
 			{
 				var predicate = PredicateBuilder.New<Supplier>(true);
-
+                if (Filters!=null)
 				foreach (var filter in Filters)
 				{
 					switch (filter.FieldName)

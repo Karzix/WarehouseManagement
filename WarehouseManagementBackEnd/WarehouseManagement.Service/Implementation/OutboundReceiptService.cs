@@ -222,7 +222,7 @@ namespace WarehouseManagement.Service.Implementation
 			try
 			{
 				var predicate = PredicateBuilder.New<OutboundReceipt>(true);
-
+                if (Filters!=null)
 				foreach (var filter in Filters)
 				{
 					switch (filter.FieldName)

@@ -189,12 +189,12 @@ namespace WarehouseManagement.Service.Implementation
             try
             {
                 var predicate = PredicateBuilder.New<Product>(true);
-
+                if (Filters!=null)
                 foreach (var filter in Filters)
                 {
                     switch (filter.FieldName)
                     {
-                        case "ProductName":
+                        case "name":
                             predicate = predicate.And(m => m.Name.Contains(filter.Value));
                             break;
 						case "IsDelete":

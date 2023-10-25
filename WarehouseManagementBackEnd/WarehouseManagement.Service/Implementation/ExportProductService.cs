@@ -231,7 +231,7 @@ namespace WarehouseManagement.Service.Implementation
 			try
 			{
 				var predicate = PredicateBuilder.New<ExportProduct>(true);
-
+                if (Filters!=null)
 				foreach (var filter in Filters)
 				{
 					switch (filter.FieldName)

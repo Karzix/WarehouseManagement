@@ -20,13 +20,15 @@ namespace WarehouseManagement.Service.Implementation
         private readonly IMapper _mapper;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IUserManagementRepository _userManagementRepository;
+		private readonly RoleManager<IdentityRole> _roleManager;
 
-        public UserManagamentService(IMapper mapper,UserManager<IdentityUser> userManager, IUserManagementRepository userManagementRepository)
+		public UserManagamentService(IMapper mapper,UserManager<IdentityUser> userManager, IUserManagementRepository userManagementRepository, RoleManager<IdentityRole> roleManager)
         {
             
             _mapper = mapper;
             _userManager = userManager;
             _userManagementRepository = userManagementRepository;
+            _roleManager = roleManager;
         }
 
 
@@ -82,7 +84,7 @@ namespace WarehouseManagement.Service.Implementation
                 {
                     return result.BuildError(ERR_MSG_EmailIsNullOrEmpty);
                 }
-                var identityUser = await _userManager.FindByNameAsync(user.UserName);
+                var identityUser = await _userManager.FindByNameAsync(user.Email);
                 if (identityUser != null)
                 {
                     return result.BuildError(ERR_MSG_UserExisted);
@@ -90,7 +92,13 @@ namespace WarehouseManagement.Service.Implementation
                 var newIdentityUser = new IdentityUser { Email = user.Email, UserName = user.Email };
                 var createResult = await _userManager.CreateAsync(newIdentityUser);
                 await _userManager.AddPasswordAsync(newIdentityUser, user.Password);
-                return result.BuildResult(INFO_MSG_UserCreated);
+				if (!(await _roleManager.RoleExistsAsync(user.Role)))
+				{
+					IdentityRole role = new IdentityRole { Name = user.Role };
+					await _roleManager.CreateAsync(role);
+				}
+				await _userManager.AddToRoleAsync(newIdentityUser, user.Role);
+				return result.BuildResult(INFO_MSG_UserCreated);
             }
             catch (Exception ex)
             {
@@ -137,7 +145,11 @@ namespace WarehouseManagement.Service.Implementation
                 int pageSize = request.PageSize ?? 1;
                 int startIndex = (pageIndex - 1) * (int)pageSize;
                 var UserList = users.Skip(startIndex).Take(pageSize).ToList();
-                var dtoList = _mapper.Map<List<UserModel>>(UserList);
+                var dtoList = UserList.Select(x => new UserModel
+                {
+                    Email = x.Email,
+                    UserName = x.UserName,
+                }).ToList();
                 if (dtoList != null && dtoList.Count > 0)
                 {
                     for (int i = 0; i < UserList.Count; i++)
@@ -169,12 +181,12 @@ namespace WarehouseManagement.Service.Implementation
         }
 
 
-        private ExpressionStarter<IdentityUser> BuildFilterExpression(IList<Filter> Filters)
+        private ExpressionStarter<IdentityUser> BuildFilterExpression(List<Filter> Filters)
         {
             try
             {
                 var predicate = PredicateBuilder.New<IdentityUser>(true);
-
+                if (Filters!=null)
                 foreach (var filter in Filters)
                 {
                     switch (filter.FieldName)
