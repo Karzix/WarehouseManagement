@@ -55,16 +55,21 @@ namespace WarehouseManagement.Service.Implementation
                     var outboundReceipt = _mapper.Map<OutboundReceipt>(request);
                     outboundReceipt.Warehouse = null;
                     _outboundReceiptRepository.Add(outboundReceipt);
-                var list =  request.ListExportProductDtos.Select(x=> new ExportProduct
-                {
-                    Quantity = x.Quantity,
-                    CreatedBy = UserName,
-                    CreatedOn = DateTime.UtcNow,
-                    OutboundReceiptId = (int)x.OutboundReceiptId,
-                    ProductId = x.ProductId,
-                    SupplierId = x.SupplierId,
-                }).ToList();
-                _exportProductRepository.AddRange(list);
+				var list = new List<ExportProduct>();
+				request.ListExportProductDtos.ForEach(item =>
+				{
+					var product = new ExportProduct()
+					{
+						OutboundReceiptId = outboundReceipt.Id,
+						Quantity = item.Quantity,
+						CreatedBy = UserName,
+						CreatedOn = DateTime.UtcNow,
+						ProductId = item.ProductId,
+						SupplierId = item.SupplierId,
+					};
+					list.Add(product);
+				});
+				_exportProductRepository.AddRange(list);
                     request.Id = outboundReceipt.Id;
                     result.IsSuccess = true;
                     result.Data = request;
@@ -191,7 +196,8 @@ namespace WarehouseManagement.Service.Implementation
 						Id = x.Id,
                         To = x.To,
                         WarehouseId = x.WarehouseId,
-                        WarehouseName = x.Warehouse.Name
+                        WarehouseName = x.Warehouse.Name,
+                        CreatedOn = x.CreatedOn,
 					})
 					.ToList();
 

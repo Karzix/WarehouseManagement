@@ -6,6 +6,7 @@ using MayNghien.Models.Request.Base;
 using MayNghien.Models.Response.Base;
 using Microsoft.AspNetCore.Http;
 using WarehouseManagement.DAL.Contract;
+using WarehouseManagement.DAL.Implementation;
 using WarehouseManagement.DAL.Models.Entity;
 using WarehouseManagement.Model.Dto;
 using WarehouseManagement.Service.Contract;
@@ -20,15 +21,18 @@ namespace WarehouseManagement.Service.Implementation
         private IProductRepository _productRepository;
         private IWarehouseRepository _warehouseRepository;
         private IHttpContextAccessor _httpContextAccessor;
+        private ISupplierRepository _supplierRepository;
 
         public ProductRemainingService(IProductRemainingRepository productRemainingRepository,
-            IMapper mapper, IProductRepository productRepository, IWarehouseRepository warehouseRepository, IHttpContextAccessor httpContextAccessor)
+            IMapper mapper, IProductRepository productRepository, IWarehouseRepository warehouseRepository, IHttpContextAccessor httpContextAccessor
+            ,ISupplierRepository supplierRepository)
         {
             _productRemainingRepository = productRemainingRepository;
             _mapper = mapper;
             _productRepository = productRepository;
             _warehouseRepository = warehouseRepository;
             _httpContextAccessor = httpContextAccessor;
+            _supplierRepository = supplierRepository;
         }
 
         public AppResponse<ProductRemainingDto> CreateProductRemaining(ProductRemainingDto request)
@@ -59,9 +63,19 @@ namespace WarehouseManagement.Service.Implementation
                 {
                     return result.BuildError("Cannot find warehouse");
                 }
-                    var productREmaining = _mapper.Map<ProductRemaining>(request);
+				if (request.SupplierId == null)
+				{
+					return result.BuildError("supplier cannot be null");
+				}
+				var supplier = _supplierRepository.FindBy(x => x.Id == request.SupplierId && x.IsDeleted == false);
+				if (supplier.Count() == 0)
+				{
+					return result.BuildError("Cannot find supplier");
+				}
+				var productREmaining = _mapper.Map<ProductRemaining>(request);
                     productREmaining.Product = null;
                     productREmaining.Warehouse = null;
+                    productREmaining.Supplier = null;
                     productREmaining.CreatedBy = UserName;
                     _productRemainingRepository.Add(productREmaining);
                     request.Id = productREmaining.Id;
@@ -100,13 +114,14 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<ProductRemainingDto>();
             try
             {
-                var productRemaining = _productRemainingRepository.Get(request.Id.Value);
+                var productRemaining = _productRemainingRepository.Get((int)request.Id);
                 productRemaining.ProductId = request.ProductId;
                 productRemaining.Quantity = request.Quantity;
                 productRemaining.WarehouseId = request.WarehouseId;
+                productRemaining.SupplierId = request.SupplierId;
                 productRemaining.ModifiedOn = DateTime.UtcNow;
                 productRemaining.Id = (int)request.Id;
-
+                _productRemainingRepository.Edit(productRemaining);
                 result.IsSuccess = true;
                 result.Data = request;
 
@@ -136,6 +151,8 @@ namespace WarehouseManagement.Service.Implementation
                     ProductId = m.ProductId,
                     ProductName = m.Product.Name,
                     Quantity = m.Quantity,
+                    SupplierId = m.SupplierId,
+                    SupplierName = m.Supplier.Name
                 })
                 .ToList();
 
@@ -191,7 +208,9 @@ namespace WarehouseManagement.Service.Implementation
                         ProductId = x.ProductId,
                         ProductName = x.Product.Name,
                         WarehouseId = x.WarehouseId,
-                        WarehouseName = x.Warehouse.Name
+                        WarehouseName = x.Warehouse.Name,
+                        SupplierId = x.SupplierId,
+                        SupplierName = x.Supplier.Name
                     })
 					.ToList();
 
@@ -229,7 +248,7 @@ namespace WarehouseManagement.Service.Implementation
 							break;
                         case "WarehouseId":
                             {
-								predicate = predicate.And(m => m.Warehouse.Id.Equals(filter.Value));
+								predicate = predicate.And(m => m.Warehouse.Id.Equals(int.Parse(filter.Value)));
 								break;
 							}
 						case "IsDelete":
@@ -241,6 +260,9 @@ namespace WarehouseManagement.Service.Implementation
 								}
 								predicate = predicate.And(m => m.IsDeleted == isDetete);
 							}
+							break;
+						case "ProductId":
+							predicate = predicate.And(m => m.ProductId.Equals(int.Parse(filter.Value)));
 							break;
 						default:
 							break;

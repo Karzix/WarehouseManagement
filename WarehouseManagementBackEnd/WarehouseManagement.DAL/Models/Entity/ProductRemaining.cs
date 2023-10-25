@@ -21,5 +21,10 @@ namespace WarehouseManagement.DAL.Models.Entity
         public int WarehouseId { get; set; }
         [ForeignKey("WarehouseId")]
         public Warehouse Warehouse { get; set; }
-    }
+
+		[ForeignKey("Supplier")]
+		public int SupplierId { get; set; }
+		[ForeignKey("SupplierId")]
+		public Supplier Supplier { get; set; }
+	}
 }

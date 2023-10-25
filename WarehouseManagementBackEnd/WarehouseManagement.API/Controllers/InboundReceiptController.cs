@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
+using WarehouseManagement.DAL.Models.Entity;
 using WarehouseManagement.Model.Dto;
 using WarehouseManagement.Service.Contract;
 using WarehouseManagement.Service.Implementation;
@@ -68,7 +69,8 @@ namespace WarehouseManagement.API.Controllers
 		{
 			request.PageSize = int.MaxValue;
 			request.PageIndex = 1;
-			var listInboundReceipt = _inboundReceiptService.Search(request).Data.Data;
+			var listInboundReceipt = new List<InboundReceiptDto>();
+			listInboundReceipt	= _inboundReceiptService.Search(request).Data.Data;
 
 			using (var package = new ExcelPackage())
 			{

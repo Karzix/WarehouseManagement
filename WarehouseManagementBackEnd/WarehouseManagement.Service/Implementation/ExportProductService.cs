@@ -149,7 +149,6 @@ namespace WarehouseManagement.Service.Implementation
                     Id = m.Id,
                     SupplierName = m.Supplier.Name,
                     ProductName = m.Product.Name,
-                    CreatedOn = m.CreatedOn
                 }).ToList();
                 result.Data = list;
                 result.IsSuccess = true;
@@ -241,7 +240,7 @@ namespace WarehouseManagement.Service.Implementation
 							predicate = predicate.And(m => m.Supplier.Name.Contains(filter.Value));
 							break;
 						case "OutboundReceiptId":
-							predicate = predicate.And(x => x.OutboundReceipt.Equals(filter.Value));
+							predicate = predicate.And(x => x.OutboundReceiptId.Equals(int.Parse(filter.Value)));
 							break;
 						case "ProductName":
 							predicate = predicate.And(x => x.Product.Name.Contains(filter.Value));
