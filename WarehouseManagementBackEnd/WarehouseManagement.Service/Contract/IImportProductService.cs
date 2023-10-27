@@ -17,6 +17,5 @@ namespace WarehouseManagement.Service.Contract
         AppResponse<ImportProductDto> EditImportProduct(ImportProductDto requets);
         AppResponse<string> DeleteImportProduct(int Id);
         AppResponse<SearchResponse<ImportProductDto>> Search(SearchRequest request);
-
 	}
 }

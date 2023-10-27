@@ -1,4 +1,5 @@
-﻿using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
+﻿using System.Collections.Generic;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using MayNghien.Models.Request.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -13,8 +14,8 @@ namespace WarehouseManagement.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-	[Authorize(AuthenticationSchemes = "Bearer")]
-	public class InboundReceiptController : Controller
+    //[Authorize(AuthenticationSchemes = "Bearer")]
+    public class InboundReceiptController : Controller
     {
         private IInboundReceiptService _inboundReceiptService;
         private IImportProductService _importProductService;
@@ -71,49 +72,87 @@ namespace WarehouseManagement.API.Controllers
 			request.PageIndex = 1;
 			var listInboundReceipt = new List<InboundReceiptDto>();
 			listInboundReceipt	= _inboundReceiptService.Search(request).Data.Data;
-
 			using (var package = new ExcelPackage())
 			{
 				var worksheet = package.Workbook.Worksheets.Add("SelectedRows");
 				int row = 0;
-				for (int i = 0; i < listInboundReceipt.Count; i++)
+				int countInboundReceipt = 0;
+				var listWarehouseId = listInboundReceipt.Select(x=>x.WarehouseId).Distinct().ToList(); 
+				for (int i = 0; i < listWarehouseId.Count; i++)
 				{
-					worksheet.Cells[row + 1, 1].Value = "Kho: " + listInboundReceipt[i].WarehouseName;
-					worksheet.Cells[row + 2, 1].Value = "Nhà cung cấp: " + listInboundReceipt[i].SupplierName;
-					worksheet.Cells[row +2,3].Value="Thời gian nhập: " + listInboundReceipt[i].CreatedOn.ToString();
-					var searchImportProduct = new SearchRequest
-					{
-						PageIndex = 1,
-						PageSize = int.MaxValue
-					};
-
-					searchImportProduct.Filters = new List<Filter>();
-					searchImportProduct.Filters.Add(new Filter
-					{
-						FieldName = "IsDelete",
-						Value = "False"
-					});
-
-					searchImportProduct.Filters.Add(new Filter
-					{
-						FieldName = "InboundReceiptId",
-						Value = listInboundReceipt[i].Id.ToString()
-					});
-
-					var listImportProduct = _importProductService.Search(searchImportProduct).Data.Data;
-
-					worksheet.Cells[row + 3, 1].Value = "Sản phẩm";
-					worksheet.Cells[row + 3, 2].Value = "Số lượng";
-
-					row += 4;
-
-					for (int j = 0; j < listImportProduct.Count; j++)
-					{
-						worksheet.Cells[row + j, 1].Value = listImportProduct[j].ProductName;
-						worksheet.Cells[row + j, 2].Value = listImportProduct[j].Quantity.ToString();
+					var listInboundReceiptForWarehouseID = listInboundReceipt.Where(x=>x.WarehouseId == listWarehouseId[i]).OrderBy(x=>x.CreatedOn).ToList();
+					worksheet.Cells[row + 1, 1].Value = "Kho: " + listInboundReceiptForWarehouseID[0].WarehouseName;
+                    worksheet.Cells[row + 2, 1].Value = "Ngày nhập";
+                    worksheet.Cells[row + 2, 2].Value = "Nhà cung cấp";
+                    worksheet.Cells[row + 2, 3].Value = "Sản phẩm";
+                    worksheet.Cells[row + 2, 4].Value = "Số lượng";
+                    var listDate = listInboundReceiptForWarehouseID.Select(x => x.CreatedOn.Value.ToString("dd/MM/yyyy")).Distinct().ToList();
+                    for(int j = 0; j < listDate.Count; j++)
+                    {
+                        
+                        var listImportProduct = new List<ImportProductDto>();
+                        for(int z =0;z < listInboundReceiptForWarehouseID.Count; z++)
+                        {
+                            if (listInboundReceiptForWarehouseID[z].CreatedOn.Value.ToString("dd/MM/yyyy") == listDate[j])
+                            {
+								var searchImportProduct = new SearchRequest();
+								searchImportProduct.Filters = new List<Filter>();
+								searchImportProduct.PageSize = int.MaxValue;
+								searchImportProduct.PageIndex = 1;
+								searchImportProduct.Filters.Add(new Filter
+								{
+									FieldName = "Day",
+									Value = listDate[j],
+									Operation = ""
+								});
+								searchImportProduct.Filters.Add(new Filter
+								{
+									FieldName = "IsDelete",
+									Value = "false",
+									Operation = ""
+								});
+                                searchImportProduct.Filters.Add(new Filter
+								{
+									FieldName = "InboundReceiptId",
+									Value = listInboundReceiptForWarehouseID[z].Id.ToString(),
+									Operation = ""
+								});
+                                var resultImportProduct = _importProductService.Search(searchImportProduct).Data.Data;
+								listImportProduct.AddRange(resultImportProduct);
+							}
+                        }
+                        
+                        var listImportProductDistinct = listImportProduct.Select(x=> new ImportProductDto
+                        {
+                            Quantity = 0,
+                            Id = -1,
+                            InboundReceiptId = x.InboundReceiptId,
+                            ProductId = x.ProductId,
+                            ProductName = x.ProductName,
+                            SipplierName = x.SipplierName,
+                            SupplierId = x.SupplierId,
+                        }).DistinctBy(x=> new {x.SupplierId, x.ProductId }).ToList();
+                        foreach(var item in listImportProductDistinct)
+                        {
+                            foreach(var item2 in listImportProduct)
+                            {
+                                if(item.ProductId == item2.ProductId && item.SupplierId == item2.SupplierId)
+                                {
+                                    item.Quantity += item2.Quantity;
+                                }
+                            }
+                        }
+                        worksheet.Cells[row + 3, 1].Value = listDate[j];
+                        for(int k = 0;k< listImportProductDistinct.Count; k++)
+                        {
+                            worksheet.Cells[row + 3 + k, 2].Value = listImportProductDistinct[k].SipplierName;
+                            worksheet.Cells[row + 3 + k, 3].Value = listImportProductDistinct[k].ProductName;
+                            worksheet.Cells[row + 3 + k, 4].Value = listImportProductDistinct[k].Quantity;
+                        }
+                        row += listImportProductDistinct.Count;
 					}
+                    row += 3;
 
-					row += listImportProduct.Count;
 				}
 
 				// Stream the Excel package to the client

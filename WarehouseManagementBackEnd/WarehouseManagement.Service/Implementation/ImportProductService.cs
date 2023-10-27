@@ -250,7 +250,28 @@ namespace WarehouseManagement.Service.Implementation
 								predicate = predicate.And(m => m.IsDeleted == isDetete);
 							}
 							break;
-						default:
+							case "Month":
+								{
+									var day = DateTime.Parse(filter.Value);
+									//if (filter.Value!="")
+									predicate = predicate.And(m => m.CreatedOn.Value.Month.Equals(day.Month) && m.CreatedOn.Value.Year.Equals(day.Year));
+								}
+								break;
+							case "Day":
+								{
+									var day = DateTime.Parse(filter.Value);
+									//if (filter.Value != "")
+									predicate = predicate.And(m => m.CreatedOn.Value.Day.Equals(day.Day) && m.CreatedOn.Value.Month.Equals(day.Month) && m.CreatedOn.Value.Year.Equals(day.Year));
+								}
+								break;
+							case "Year":
+								{
+									var day = DateTime.Parse(filter.Value);
+									//if (filter.Value != "")
+									predicate = predicate.And(m => m.CreatedOn.Value.Year.Equals(day.Year));
+								}
+								break;
+							default:
 							break;
 					}
 				}
@@ -261,6 +282,7 @@ namespace WarehouseManagement.Service.Implementation
 				throw;
 			}
 		}
+        
 
 	}
 }

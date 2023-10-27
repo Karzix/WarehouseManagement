@@ -136,8 +136,6 @@ namespace WarehouseManagement.Service.Implementation
             return result;
         }
 
-		
-
 		public AppResponse<List<InboundReceiptDto>> GetAllInboundReceipt()
         {
             var result = new AppResponse<List<InboundReceiptDto>>();
@@ -241,11 +239,11 @@ namespace WarehouseManagement.Service.Implementation
 				{
 					switch (filter.FieldName)
 					{
-						case "SupplierName":
-							predicate = predicate.And(m => m.Supplier.Name.Contains(filter.Value));
+						case "SupplierId":
+							predicate = predicate.And(m => m.Supplier.Name.Equals((filter.Value)));
 							break;
-						case "WarehouseName":
-							predicate = predicate.And(m => m.Warehouse.Name.Contains(filter.Value));
+						case "WarehouseId":
+							predicate = predicate.And(m => m.Warehouse.Name.Equals((filter.Value)));
 							break;
 						case "IsDelete":
 							{
@@ -288,13 +286,6 @@ namespace WarehouseManagement.Service.Implementation
 			{
 				throw;
 			}
-		}
-
-		public void ExportRecordtoExcel(SearchRequest request)
-		{
-            request.PageSize = int.MaxValue;
-            var respone = Search(request);
-            
 		}
 	}
 }

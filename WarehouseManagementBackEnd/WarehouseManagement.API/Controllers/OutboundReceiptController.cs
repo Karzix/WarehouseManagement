@@ -72,54 +72,89 @@ namespace WarehouseManagement.API.Controllers
         {
 			request.PageSize = int.MaxValue;
 			request.PageIndex = 1;
-			var listOutboundReceipt = new List<OutboundReceiptDto>();
-			listOutboundReceipt = _outboundReceiptService.Search(request).Data.Data;
-
+			var listInboundReceipt = new List<OutboundReceiptDto>();
+			listInboundReceipt = _outboundReceiptService.Search(request).Data.Data;
 			using (var package = new ExcelPackage())
 			{
 				var worksheet = package.Workbook.Worksheets.Add("SelectedRows");
 				int row = 0;
-				for (int i = 0; i < listOutboundReceipt.Count; i++)
+				int countInboundReceipt = 0;
+				var listWarehouseId = listInboundReceipt.Select(x => x.WarehouseId).Distinct().ToList();
+				for (int i = 0; i < listWarehouseId.Count; i++)
 				{
-					worksheet.Cells[row + 1, 1].Value = "Kho: " + listOutboundReceipt[i].WarehouseName;
-					worksheet.Cells[row + 2, 1].Value = "Nơi đến: " + listOutboundReceipt[i].To;
-					worksheet.Cells[row + 2, 3].Value = "Thời gian nhập: " + listOutboundReceipt[i].CreatedOn.ToString();
-					var searchExportProduct = new SearchRequest
+					var listOutboundReceiptForWarehouseID = listInboundReceipt.Where(x => x.WarehouseId == listWarehouseId[i]).OrderBy(x => x.CreatedOn).ToList();
+					worksheet.Cells[row + 1, 1].Value = "Kho: " + listOutboundReceiptForWarehouseID[0].WarehouseName;
+					worksheet.Cells[row + 2, 1].Value = "Ngày nhập";
+					worksheet.Cells[row + 2, 2].Value = "Nhà cung cấp";
+					worksheet.Cells[row + 2, 3].Value = "Sản phẩm";
+					worksheet.Cells[row + 2, 4].Value = "Số lượng";
+					var listDate = listOutboundReceiptForWarehouseID.Select(x => x.CreatedOn.Value.ToString("dd/MM/yyyy")).Distinct().ToList();
+					for (int j = 0; j < listDate.Count; j++)
 					{
-						PageIndex = 1,
-						PageSize = int.MaxValue
-					};
 
-					searchExportProduct.Filters = new List<Filter>();
-					searchExportProduct.Filters.Add(new Filter
-					{
-						FieldName = "IsDelete",
-						Value = "False"
-					});
+						var listExportProduct = new List<ExportProductDto>();
+						for (int z = 0; z < listOutboundReceiptForWarehouseID.Count; z++)
+						{
+							if (listOutboundReceiptForWarehouseID[z].CreatedOn.Value.ToString("dd/MM/yyyy") == listDate[j])
+							{
+								var searchExportProduct = new SearchRequest();
+								searchExportProduct.Filters = new List<Filter>();
+								searchExportProduct.PageSize = int.MaxValue;
+								searchExportProduct.PageIndex = 1;
+								searchExportProduct.Filters.Add(new Filter
+								{
+									FieldName = "Day",
+									Value = listDate[j],
+									Operation = ""
+								});
+								searchExportProduct.Filters.Add(new Filter
+								{
+									FieldName = "IsDelete",
+									Value = "false",
+									Operation = ""
+								});
+								searchExportProduct.Filters.Add(new Filter
+								{
+									FieldName = "OutboundReceiptId",
+									Value = listOutboundReceiptForWarehouseID[z].Id.ToString(),
+									Operation = ""
+								});
+								var resultExportProduct = _exportProductService.Search(searchExportProduct).Data.Data;
+								listExportProduct.AddRange(resultExportProduct);
+							}
+						}
 
-					searchExportProduct.Filters.Add(new Filter
-					{
-						FieldName = "OutboundReceiptId",
-						Value = listOutboundReceipt[i].Id.ToString()
-					});
-
-					var listExportProduct = new List<ExportProductDto>();
-					listExportProduct  =  _exportProductService.Search(searchExportProduct).Data.Data;
-
-					worksheet.Cells[row + 3, 1].Value = "Sản phẩm";
-					worksheet.Cells[row + 3, 2].Value = "Nhà cung cấp";
-					worksheet.Cells[row + 3, 3].Value = "Số lượng";
-
-					row += 4;
-
-					for (int j = 0; j < listExportProduct.Count; j++)
-					{
-						worksheet.Cells[row + j, 1].Value = listExportProduct[j].ProductName;
-						worksheet.Cells[row + j, 2].Value = listExportProduct[j].SupplierName;
-						worksheet.Cells[row + j, 3].Value = listExportProduct[j].Quantity.ToString();
+						var listExportProductDistinct = listExportProduct.Select(x => new ExportProductDto
+						{
+							Quantity = 0,
+							Id = -1,
+							OutboundReceiptId = x.OutboundReceiptId,
+							ProductName = x.ProductName,
+							SupplierName = x.SupplierName,
+							SupplierId = x.SupplierId,
+							ProductId = x.ProductId,
+						}).DistinctBy(x => new { x.SupplierId, x.ProductId }).ToList();
+						foreach (var item in listExportProductDistinct)
+						{
+							foreach (var item2 in listExportProduct)
+							{
+								if (item.ProductId == item2.ProductId && item.SupplierId == item2.SupplierId)
+								{
+									item.Quantity += item2.Quantity;
+								}
+							}
+						}
+						worksheet.Cells[row + 3, 1].Value = listDate[j];
+						for (int k = 0; k < listExportProductDistinct.Count; k++)
+						{
+							worksheet.Cells[row + 3 + k, 2].Value = listExportProductDistinct[k].SupplierName;
+							worksheet.Cells[row + 3 + k, 3].Value = listExportProductDistinct[k].ProductName;
+							worksheet.Cells[row + 3 + k, 4].Value = listExportProductDistinct[k].Quantity;
+						}
+						row += listExportProductDistinct.Count;
 					}
+					row += 3;
 
-					row += listExportProduct.Count;
 				}
 
 				// Stream the Excel package to the client
