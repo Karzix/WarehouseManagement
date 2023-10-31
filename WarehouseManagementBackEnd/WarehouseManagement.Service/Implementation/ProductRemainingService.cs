@@ -217,8 +217,8 @@ namespace WarehouseManagement.Service.Implementation
 
 				var searchUserResult = new SearchResponse<ProductRemainingDto>
 				{
-					TotalRows = 0,
-					TotalPages = CalculateNumOfPages(0, pageSize),
+					TotalRows = numOfRecords,
+					TotalPages = CalculateNumOfPages(numOfRecords, pageSize),
 					CurrentPage = pageIndex,
 					Data = List,
 				};

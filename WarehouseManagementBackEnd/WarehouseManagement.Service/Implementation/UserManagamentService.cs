@@ -191,7 +191,7 @@ namespace WarehouseManagement.Service.Implementation
                 {
                     switch (filter.FieldName)
                     {
-                        case "Email":
+                        case "userName":
                             predicate = predicate.And(m => m.Email.Equals(filter.Value));
                             break;
 

@@ -46,7 +46,7 @@ namespace WarehouseManagement.Service.Implementation
                     }
                     if (await _userManager.CheckPasswordAsync(identityUser, login.Password))
                     {
-                        user = new UserModel { UserName = identityUser.UserName, Email = identityUser.Email };
+                        user = new UserModel { UserName = identityUser.UserName, Email = identityUser.Email, Role= "superadmin" };
 
                     }
 
@@ -91,7 +91,7 @@ namespace WarehouseManagement.Service.Implementation
               _config["Jwt:Issuer"],
               claims: await GetClaims(userInfo, identityUser),
               expires: DateTime.Now.AddHours(18),
-              // subject: new ClaimsIdentity( await _userManager.GetClaimsAsync(userInfo)),
+			   //subject: new ClaimsIdentity(await _userManager.GetClaimsAsync(userInfo)),
               signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
@@ -111,7 +111,11 @@ namespace WarehouseManagement.Service.Implementation
             {
                 claims.Add(new Claim("Role", role));
             }
-            return claims;
+			foreach (var role in roles)
+			{
+				claims.Add(new Claim(ClaimTypes.Role, role));
+			}
+			return claims;
 
         }
 
