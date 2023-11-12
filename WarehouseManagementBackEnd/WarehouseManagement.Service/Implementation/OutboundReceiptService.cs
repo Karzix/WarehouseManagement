@@ -98,7 +98,7 @@ namespace WarehouseManagement.Service.Implementation
                 foreach (var product in listExportProduct)
                 {
                     var productRemainming = _productRemainingRepository.FindBy(x => x.ProductId == product.ProductId && x.SupplierId == product.SupplierId).First();
-                    productRemainming.Quantity -= product.Quantity;
+                    productRemainming.Quantity += product.Quantity;
                     _productRemainingRepository.Edit(productRemainming);
                 }
                 result.IsSuccess = true;
