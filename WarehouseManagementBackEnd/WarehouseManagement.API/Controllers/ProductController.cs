@@ -46,7 +46,7 @@ namespace WarehouseManagement.API.Controllers
         }
 
         [HttpPut]
-        [Route("{Id}")]
+        //[Route("{Id}")]
         public IActionResult EditProduct(ProductDto request)
         {
             var result = _productService.EditProduct(request);

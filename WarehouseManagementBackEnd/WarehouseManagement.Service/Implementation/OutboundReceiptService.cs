@@ -6,6 +6,7 @@ using MayNghien.Models.Request.Base;
 using MayNghien.Models.Response.Base;
 using Microsoft.AspNetCore.Http;
 using WarehouseManagement.DAL.Contract;
+using WarehouseManagement.DAL.Implementation;
 using WarehouseManagement.DAL.Models.Entity;
 using WarehouseManagement.Model.Dto;
 using WarehouseManagement.Service.Contract;
@@ -20,17 +21,18 @@ namespace WarehouseManagement.Service.Implementation
         private IWarehouseRepository _warehouseRepository;
         private IHttpContextAccessor _httpContextAccessor;
         private IExportProductRepository _exportProductRepository;
+        private IProductRemainingRepository _productRemainingRepository;
 
         public OutboundReceiptService(IOutboundReceiptRepository outboundReceiptRepository,
             IMapper mapper, IWarehouseRepository warehouseRepository, IHttpContextAccessor httpContextAccessory,
-			IExportProductRepository exportProductRepository)
+			IExportProductRepository exportProductRepository, IProductRemainingRepository productRemainingRepository)
         {
             _outboundReceiptRepository = outboundReceiptRepository;
             _mapper = mapper;
             _warehouseRepository = warehouseRepository;
             _httpContextAccessor = httpContextAccessory;
 			_exportProductRepository = exportProductRepository;
-
+            _productRemainingRepository = productRemainingRepository;
 		}
 
         public AppResponse<OutboundReceiptDto> CreateOutboundReceipt(OutboundReceiptDto request)
@@ -92,7 +94,13 @@ namespace WarehouseManagement.Service.Implementation
                 outboundReceipt.IsDeleted = true;
 
                 _outboundReceiptRepository.Edit(outboundReceipt);
-
+                var listExportProduct = _exportProductRepository.GetAll().Where(x => x.OutboundReceiptId == outboundReceipt.Id).ToList();
+                foreach (var product in listExportProduct)
+                {
+                    var productRemainming = _productRemainingRepository.FindBy(x => x.ProductId == product.ProductId && x.SupplierId == product.SupplierId).First();
+                    productRemainming.Quantity -= product.Quantity;
+                    _productRemainingRepository.Edit(productRemainming);
+                }
                 result.IsSuccess = true;
                 result.Data = "đã xóa";
                 return result;

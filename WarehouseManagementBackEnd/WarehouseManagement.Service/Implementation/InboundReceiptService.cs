@@ -22,10 +22,11 @@ namespace WarehouseManagement.Service.Implementation
         private IWarehouseRepository _warehouseRepository;
         private IImportProductRepository _importProductRepository;
         private IHttpContextAccessor _httpContextAccessor;
+        private IProductRemainingRepository _productRemainingRepository;
 
         public InboundReceiptService(IInboundReceiptRepository inboundReceiptRepository, IMapper mapper,
             ISupplierRepository supplierRepository, IWarehouseRepository warehouseRepository, IHttpContextAccessor httpContextAccessor
-            , IImportProductRepository importProductRepository)
+            , IImportProductRepository importProductRepository, IProductRemainingRepository productRemainingRepository)
         {
             _inboundReceiptRepository = inboundReceiptRepository;
             _mapper = mapper;
@@ -33,6 +34,7 @@ namespace WarehouseManagement.Service.Implementation
             _warehouseRepository = warehouseRepository;
             _httpContextAccessor = httpContextAccessor;
             _importProductRepository = importProductRepository;
+            _productRemainingRepository = productRemainingRepository;
         }
 
         public AppResponse<InboundReceiptDto> CreateInboundReceipt(InboundReceiptDto request)
@@ -108,6 +110,15 @@ namespace WarehouseManagement.Service.Implementation
                 var inboundReceipt =_inboundReceiptRepository.Get(Id);
                 inboundReceipt.IsDeleted = true;
                 _inboundReceiptRepository.Edit(inboundReceipt);
+
+                var listImportProduct = _importProductRepository.GetAll().Where(x=>x.InboundReceiptId == inboundReceipt.Id).ToList();
+                foreach(var product in listImportProduct)
+                {
+                    var productRemainming =_productRemainingRepository.FindBy(x=>x.ProductId == product.ProductId && x.SupplierId == product.SupplierId).First();
+                    productRemainming.Quantity -= product.Quantity;
+                    _productRemainingRepository.Edit(productRemainming);
+                }
+
                 result.BuildResult("đã xóa");
             }
             catch (Exception ex)

@@ -134,6 +134,7 @@ namespace WarehouseManagement.Service.Implementation
                 product.Description = request.Description;
                 product.Quantity = request.Quantity;
                 product.Description = request.Description;
+                product.Name = request.Name;
                 product.ModifiedOn = DateTime.UtcNow;
                 _productRepository.Edit(product);
                 result.Data = request;
