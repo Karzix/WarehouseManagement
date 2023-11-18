@@ -59,7 +59,7 @@ namespace WarehouseManagement.Service.Implementation
                         && x.ProductId == request.ProductId);
                     if (supplierProduct.Count() != 0)
                     {
-                        return result.BuildError("Supplier product already exist");
+                        return result.BuildError("sản phẩm này đã có trong danh sách");
                     }
                     var supplierproduct = _mapper.Map<SupplierProduct>(request);
                     supplierproduct.Product = product;

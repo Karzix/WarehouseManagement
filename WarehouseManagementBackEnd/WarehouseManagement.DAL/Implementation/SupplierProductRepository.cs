@@ -36,7 +36,6 @@ namespace WarehouseManagement.DAL.Implementation
                 .Include(x=>x.Product);
             var listProduct = listSupplierProduct.Select(x=> new ProductDto
             {
-                Quantity = x.Product.Quantity,
                 Description = x.Product.Description,
                 Id = x.ProductId,
                 Name = x.Product.Name,

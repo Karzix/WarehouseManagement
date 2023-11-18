@@ -70,7 +70,12 @@ namespace WarehouseManagement.Service.Implementation
 						SupplierId = item.SupplierId,
 					};
 					list.Add(product);
+                    var productRemainming = _productRemainingRepository.FindBy(x => x.ProductId == item.ProductId && x.WarehouseId == request.WarehouseId && x.SupplierId == item.SupplierId).First();
+                    productRemainming.Quantity -= item.Quantity;
+                    _productRemainingRepository.Edit(productRemainming);
 				});
+
+
 				_exportProductRepository.AddRange(list);
                     request.Id = outboundReceipt.Id;
                     result.IsSuccess = true;
