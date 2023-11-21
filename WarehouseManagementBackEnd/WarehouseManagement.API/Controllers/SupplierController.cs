@@ -51,7 +51,7 @@ namespace WarehouseManagement.API.Controllers
         }
 
         [HttpPut]
-        [Route("{Id}")]
+        //[Route("{Id}")]
         public IActionResult EditSupplier(SupplierDto supplier)
         {
             var result = _supplierService.EditSupplier(supplier);

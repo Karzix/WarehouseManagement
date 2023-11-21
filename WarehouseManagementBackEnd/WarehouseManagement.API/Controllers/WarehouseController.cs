@@ -38,7 +38,7 @@ namespace WarehouseManagement.API.Controllers
             return Ok(result);
         }
         [HttpPut]
-        [Route("{id}")]
+        //[Route("{id}")]
         public IActionResult EditWarehouse(WarehouseDto request)
         {
             var result = _warehouseService.EditWarehouse(request);
