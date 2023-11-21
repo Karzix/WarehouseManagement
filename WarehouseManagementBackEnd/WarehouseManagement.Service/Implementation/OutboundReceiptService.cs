@@ -199,7 +199,7 @@ namespace WarehouseManagement.Service.Implementation
 			{
 				var query = BuildFilterExpression(request.Filters);
 				var numOfRecords = _outboundReceiptRepository.CountRecordsByPredicate(query);
-				var product = _outboundReceiptRepository.FindByPredicate(query);
+				var product = _outboundReceiptRepository.FindByPredicate(query).OrderByDescending(x => x.CreatedOn);
 				int pageIndex = request.PageIndex ?? 1;
 				int pageSize = request.PageSize ?? 1;
 				int startIndex = (pageIndex - 1) * (int)pageSize;
@@ -253,11 +253,33 @@ namespace WarehouseManagement.Service.Implementation
 								predicate = predicate.And(m => m.IsDeleted == isDetete);
 							}
 							break;
-						default:
+                            case "Month":
+                                {
+                                    var day = DateTime.Parse(filter.Value);
+                                    //if (filter.Value!="")
+                                    predicate = predicate.And(m => m.CreatedOn.Value.Month.Equals(day.Month) && m.CreatedOn.Value.Year.Equals(day.Year));
+                                }
+                                break;
+                            case "Day":
+                                {
+                                    var day = DateTime.Parse(filter.Value);
+                                    //if (filter.Value != "")
+                                    predicate = predicate.And(m => m.CreatedOn.Value.Day.Equals(day.Day) && m.CreatedOn.Value.Month.Equals(day.Month) && m.CreatedOn.Value.Year.Equals(day.Year));
+                                }
+                                break;
+                            case "Year":
+                                {
+                                    var day = DateTime.Parse(filter.Value);
+                                    //if (filter.Value != "")
+                                    predicate = predicate.And(m => m.CreatedOn.Value.Year.Equals(day.Year));
+                                }
+                                break;
+                            default:
 							break;
 					}
 				}
-				return predicate;
+                predicate = predicate.And(m => m.IsDeleted == false);
+                return predicate;
 			}
 			catch (Exception)
 			{

@@ -11,7 +11,7 @@ namespace WarehouseManagement.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-	//[Authorize(AuthenticationSchemes = "Bearer")]
+	[Authorize(AuthenticationSchemes = "Bearer")]
 	public class OutboundReceiptController : Controller
     {
         private IOutboundReceiptService _outboundReceiptService;
@@ -54,7 +54,7 @@ namespace WarehouseManagement.API.Controllers
         }
 
         [HttpDelete]
-        [Route("Id")]
+        [Route("{Id}")]
         public IActionResult DeleteOutboundReceipt(int Id)
         {
             var result = _outboundReceiptService.DeleteOutboundReceipt(Id);

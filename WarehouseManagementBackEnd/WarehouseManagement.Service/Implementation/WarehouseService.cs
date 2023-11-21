@@ -163,7 +163,7 @@ namespace WarehouseManagement.Service.Implementation
 			{
 				var query = BuildFilterExpression(request.Filters);
 				var numOfRecords = _warehouseRepository.CountRecordsByPredicate(query);
-				var model = _warehouseRepository.FindByPredicate(query);
+				var model = _warehouseRepository.FindByPredicate(query).OrderByDescending(x=>x.CreatedOn);
 				int pageIndex = request.PageIndex ?? 1;
 				int pageSize = request.PageSize ?? 1;
 				int startIndex = (pageIndex - 1) * (int)pageSize;
@@ -204,7 +204,7 @@ namespace WarehouseManagement.Service.Implementation
 				{
 					switch (filter.FieldName)
 					{
-						case "Name":
+						case "name":
 							predicate = predicate.And(m => m.Name.Contains(filter.Value));
 							break;
 						case "IsDelete":

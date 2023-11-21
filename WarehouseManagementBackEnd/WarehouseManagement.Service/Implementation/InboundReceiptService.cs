@@ -206,8 +206,8 @@ namespace WarehouseManagement.Service.Implementation
 			{
 				var query = BuildFilterExpression(request.Filters);
 				var numOfRecords = _inboundReceiptRepository.CountRecordsByPredicate(query);
-				var model = _inboundReceiptRepository.FindByPredicate(query)
-					.Include(x => x.Supplier)
+				var model = _inboundReceiptRepository.FindByPredicate(query).OrderByDescending(x => x.CreatedOn)
+                    .Include(x => x.Supplier)
 					.Include(x => x.Warehouse);
 				int pageIndex = request.PageIndex ?? 1;
 				int pageSize = request.PageSize ?? 1;
@@ -291,7 +291,8 @@ namespace WarehouseManagement.Service.Implementation
 							break;
 					}
 				}
-				return predicate;
+                predicate = predicate.And(m => m.IsDeleted == false);
+                return predicate;
 			}
 			catch (Exception)
 			{

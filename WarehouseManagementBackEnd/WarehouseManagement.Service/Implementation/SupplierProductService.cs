@@ -239,6 +239,7 @@ namespace WarehouseManagement.Service.Implementation
                             break;
                     }
                 }
+                predicate = predicate.And(m => m.IsDeleted == false);
                 return predicate;
             }
             catch (Exception)

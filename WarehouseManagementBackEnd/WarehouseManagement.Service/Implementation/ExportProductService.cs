@@ -190,7 +190,7 @@ namespace WarehouseManagement.Service.Implementation
 			{
 				var query = BuildFilterExpression(request.Filters);
 				var numOfRecords = _repository.CountRecordsByPredicate(query);
-				var model = _repository.FindByPredicate(query)
+				var model = _repository.FindByPredicate(query).OrderByDescending(x => x.CreatedOn)
 					.Include(x => x.Supplier)
 					.Include(x => x.Product)
 					.Include(x => x.OutboundReceipt);
@@ -259,7 +259,8 @@ namespace WarehouseManagement.Service.Implementation
 							break;
 					}
 				}
-				return predicate;
+                predicate = predicate.And(m => m.IsDeleted == false);
+                return predicate;
 			}
 			catch (Exception)
 			{

@@ -196,7 +196,7 @@ namespace WarehouseManagement.Service.Implementation
 				var numOfRecords = _productRemainingRepository.CountRecordsByPredicate(query);
 				var model = _productRemainingRepository.FindByPredicate(query)
                     .Include(x=>x.Product)
-                    .Include(x=>x.Warehouse);
+                    .Include(x=>x.Warehouse).OrderByDescending(x => x.CreatedOn);
 				int pageIndex = request.PageIndex ?? 1;
 				int pageSize = request.PageSize ?? 1;
 				int startIndex = (pageIndex - 1) * (int)pageSize;
@@ -268,7 +268,8 @@ namespace WarehouseManagement.Service.Implementation
 							break;
 					}
 				}
-				return predicate;
+                predicate = predicate.And(m => m.IsDeleted == false);
+                return predicate;
 			}
 			catch (Exception)
 			{

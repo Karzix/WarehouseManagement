@@ -9,7 +9,7 @@ namespace WarehouseManagement.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "superadmin, Admin")]
     public class UserManagementController : Controller
     {
         IUserManagementService _userManagementService;

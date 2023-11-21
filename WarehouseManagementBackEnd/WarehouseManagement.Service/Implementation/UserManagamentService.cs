@@ -149,6 +149,7 @@ namespace WarehouseManagement.Service.Implementation
                 {
                     Email = x.Email,
                     UserName = x.UserName,
+                    Id = x.Id
                 }).ToList();
                 if (dtoList != null && dtoList.Count > 0)
                 {
