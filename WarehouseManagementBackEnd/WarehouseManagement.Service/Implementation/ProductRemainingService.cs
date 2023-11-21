@@ -140,7 +140,7 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<List<ProductRemainingDto>>();
             try
             {
-                var query = _productRemainingRepository.GetAll()
+                var query = _productRemainingRepository.GetAll().Where(m => m.IsDeleted == false)
                     .Include(x => x.Product)
                     .Include(x => x.Warehouse);
                 var list = query.Select(m => new ProductRemainingDto

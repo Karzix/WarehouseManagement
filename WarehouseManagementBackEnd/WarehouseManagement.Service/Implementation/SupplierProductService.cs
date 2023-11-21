@@ -57,9 +57,16 @@ namespace WarehouseManagement.Service.Implementation
                     var supplierProduct =_supplierProductRepository.FindBy(
                         x=>x.SupplierId == request.SupplierId
                         && x.ProductId == request.ProductId);
-                    if (supplierProduct.Count() != 0)
+                    if (supplierProduct.Count() != 0 && supplierProduct.First().IsDeleted == false)
                     {
                         return result.BuildError("sản phẩm này đã có trong danh sách");
+                    }
+                    else if(supplierProduct.First().IsDeleted == true)
+                    {
+                        var data =  supplierProduct.First();
+                        data.IsDeleted = false;
+                        _supplierProductRepository.Edit(data);
+                        return result.BuildResult(request);
                     }
                     var supplierproduct = _mapper.Map<SupplierProduct>(request);
                     supplierproduct.Product = product;
@@ -89,6 +96,7 @@ namespace WarehouseManagement.Service.Implementation
                 var supplierProduct = _supplierProductRepository.Get(Id);
                 supplierProduct.IsDeleted = true;
                 result.IsSuccess = true;
+                _supplierProductRepository.Edit(supplierProduct);
                 result.Data = "đã xóa";
                 return result;
             }
