@@ -89,7 +89,7 @@ namespace WarehouseManagement.Service.Implementation
                 {
                     return result.BuildError(ERR_MSG_UserExisted);
                 }
-                var newIdentityUser = new IdentityUser { Email = user.Email, UserName = user.Email };
+                var newIdentityUser = new IdentityUser { Email = user.Email, UserName = user.UserName };
                 var createResult = await _userManager.CreateAsync(newIdentityUser);
                 await _userManager.AddPasswordAsync(newIdentityUser, user.Password);
 				if (!(await _roleManager.RoleExistsAsync(user.Role)))
