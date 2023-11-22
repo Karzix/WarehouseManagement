@@ -56,14 +56,14 @@ namespace WarehouseManagement.Service.Implementation
                 {
                     var supplierProduct =_supplierProductRepository.FindBy(
                         x=>x.SupplierId == request.SupplierId
-                        && x.ProductId == request.ProductId);
-                    if (supplierProduct.Count() != 0 && supplierProduct.First().IsDeleted == false)
+                        && x.ProductId == request.ProductId).FirstOrDefault();
+                    if (supplierProduct != null && supplierProduct.IsDeleted == false)
                     {
                         return result.BuildError("sản phẩm này đã có trong danh sách");
                     }
-                    else if(supplierProduct.First().IsDeleted == true)
+                    else if(supplierProduct != null && supplierProduct.IsDeleted == true)
                     {
-                        var data =  supplierProduct.First();
+                        var data =  supplierProduct;
                         data.IsDeleted = false;
                         _supplierProductRepository.Edit(data);
                         return result.BuildResult(request);
