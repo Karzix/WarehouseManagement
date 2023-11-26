@@ -154,7 +154,9 @@ namespace WarehouseManagement.API.Controllers
 							worksheet.Cells[row + 3 + k, 2].Value = listExportProductDistinct[k].SupplierName;
 							worksheet.Cells[row + 3 + k, 3].Value = listExportProductDistinct[k].ProductName;
 							worksheet.Cells[row + 3 + k, 4].Value = listExportProductDistinct[k].Quantity;
-						}
+							tong += listExportProductDistinct[k].Quantity;
+
+                        }
 						row += listExportProductDistinct.Count;
 					}
 					row += 3;
