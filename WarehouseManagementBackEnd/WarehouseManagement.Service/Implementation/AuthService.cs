@@ -40,10 +40,10 @@ namespace WarehouseManagement.Service.Implementation
                 identityUser = await _userManager.FindByNameAsync(login.UserName);
                 if (identityUser != null)
                 {
-                    if (identityUser.EmailConfirmed != true)
-                    {
-                        return result.BuildError(ERR_MSG_UserNotConFirmed);
-                    }
+                    //if (identityUser.EmailConfirmed != true)
+                    //{
+                    //    return result.BuildError(ERR_MSG_UserNotConFirmed);
+                    //}
                     if (await _userManager.CheckPasswordAsync(identityUser, login.Password))
                     {
                         user = new UserModel { UserName = identityUser.UserName, Email = identityUser.Email, Role= "superadmin" };
@@ -109,7 +109,7 @@ namespace WarehouseManagement.Service.Implementation
             var roles = await _userManager.GetRolesAsync(identityUser);
             foreach (var role in roles)
             {
-                claims.Add(new Claim("Role", role));
+                claims.Add(new Claim("Roles", role));
             }
 			foreach (var role in roles)
 			{
