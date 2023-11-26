@@ -120,8 +120,11 @@ namespace WarehouseManagement.API.Controllers
 									Value = listOutboundReceiptForWarehouseID[z].Id.ToString(),
 									Operation = ""
 								});
-								var resultExportProduct = _exportProductService.Search(searchExportProduct).Data.Data;
-								listExportProduct.AddRange(resultExportProduct);
+								var resultExportProduct = _exportProductService.Search(searchExportProduct);
+								if (resultExportProduct.IsSuccess == true)
+								{
+									listExportProduct.AddRange(resultExportProduct.Data.Data);
+								}
 							}
 						}
 

@@ -255,7 +255,28 @@ namespace WarehouseManagement.Service.Implementation
 								predicate = predicate.And(m => m.IsDeleted == isDetete);
 							}
 							break;
-						default:
+                            case "Month":
+                                {
+                                    var day = DateTime.ParseExact(filter.Value, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                                    //if (filter.Value!="")
+                                    predicate = predicate.And(m => m.CreatedOn.Value.Month.Equals(day.Month) && m.CreatedOn.Value.Year.Equals(day.Year));
+                                }
+                                break;
+                            case "Day":
+                                {
+                                    var day = DateTime.ParseExact(filter.Value, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                                    //if (filter.Value != "")
+                                    predicate = predicate.And(m => m.CreatedOn.Value.Day.Equals(day.Day) && m.CreatedOn.Value.Month.Equals(day.Month) && m.CreatedOn.Value.Year.Equals(day.Year));
+                                }
+                                break;
+                            case "Year":
+                                {
+                                    var day = DateTime.ParseExact(filter.Value, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                                    //if (filter.Value != "")
+                                    predicate = predicate.And(m => m.CreatedOn.Value.Year.Equals(day.Year));
+                                }
+                                break;
+                            default:
 							break;
 					}
 				}

@@ -252,23 +252,23 @@ namespace WarehouseManagement.Service.Implementation
 							break;
 							case "Month":
 								{
-									var day = DateTime.Parse(filter.Value);
+									var day = DateTime.ParseExact(filter.Value, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
 									//if (filter.Value!="")
 									predicate = predicate.And(m => m.CreatedOn.Value.Month.Equals(day.Month) && m.CreatedOn.Value.Year.Equals(day.Year));
 								}
 								break;
 							case "Day":
 								{
-									var day = DateTime.Parse(filter.Value);
-									//if (filter.Value != "")
-									predicate = predicate.And(m => m.CreatedOn.Value.Day.Equals(day.Day) && m.CreatedOn.Value.Month.Equals(day.Month) && m.CreatedOn.Value.Year.Equals(day.Year));
+									var day = DateTime.ParseExact(filter.Value, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                                    //if (filter.Value != "")
+                                    predicate = predicate.And(m => m.CreatedOn.Value.Day.Equals(day.Day) && m.CreatedOn.Value.Month.Equals(day.Month) && m.CreatedOn.Value.Year.Equals(day.Year));
 								}
 								break;
 							case "Year":
 								{
-									var day = DateTime.Parse(filter.Value);
-									//if (filter.Value != "")
-									predicate = predicate.And(m => m.CreatedOn.Value.Year.Equals(day.Year));
+									var day = DateTime.ParseExact(filter.Value, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                                    //if (filter.Value != "")
+                                    predicate = predicate.And(m => m.CreatedOn.Value.Year.Equals(day.Year));
 								}
 								break;
 							default:

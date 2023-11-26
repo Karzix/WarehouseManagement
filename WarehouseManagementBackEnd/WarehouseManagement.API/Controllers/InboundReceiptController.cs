@@ -118,8 +118,11 @@ namespace WarehouseManagement.API.Controllers
 									Value = listInboundReceiptForWarehouseID[z].Id.ToString(),
 									Operation = ""
 								});
-                                var resultImportProduct = _importProductService.Search(searchImportProduct).Data.Data;
-								listImportProduct.AddRange(resultImportProduct);
+                                var resultImportProduct = _importProductService.Search(searchImportProduct);
+                                if(resultImportProduct.IsSuccess == true)
+                                {
+                                    listImportProduct.AddRange(resultImportProduct.Data.Data);
+                                }
 							}
                         }
                         
