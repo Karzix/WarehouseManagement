@@ -88,7 +88,8 @@ namespace WarehouseManagement.API.Controllers
 					worksheet.Cells[row + 2, 2].Value = "Nhà cung cấp";
 					worksheet.Cells[row + 2, 3].Value = "Sản phẩm";
 					worksheet.Cells[row + 2, 4].Value = "Số lượng";
-					var listDate = listOutboundReceiptForWarehouseID.Select(x => x.CreatedOn.Value.ToString("dd/MM/yyyy")).Distinct().ToList();
+                    int tong = 0;
+                    var listDate = listOutboundReceiptForWarehouseID.Select(x => x.CreatedOn.Value.ToString("dd/MM/yyyy")).Distinct().ToList();
 					for (int j = 0; j < listDate.Count; j++)
 					{
 
@@ -154,8 +155,8 @@ namespace WarehouseManagement.API.Controllers
 						row += listExportProductDistinct.Count;
 					}
 					row += 3;
-
-				}
+                    worksheet.Cells[row, 4].Value = "Tổng: " + tong;
+                }
 
 				// Stream the Excel package to the client
 				MemoryStream stream = new MemoryStream(package.GetAsByteArray());
