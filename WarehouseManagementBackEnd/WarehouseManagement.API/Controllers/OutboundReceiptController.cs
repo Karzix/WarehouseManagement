@@ -84,7 +84,7 @@ namespace WarehouseManagement.API.Controllers
 				{
 					var listOutboundReceiptForWarehouseID = listInboundReceipt.Where(x => x.WarehouseId == listWarehouseId[i]).OrderBy(x => x.CreatedOn).ToList();
 					worksheet.Cells[row + 1, 1].Value = "Kho: " + listOutboundReceiptForWarehouseID[0].WarehouseName;
-					worksheet.Cells[row + 2, 1].Value = "Ngày nhập";
+					worksheet.Cells[row + 2, 1].Value = "Ngày xuất";
 					worksheet.Cells[row + 2, 2].Value = "Nhà cung cấp";
 					worksheet.Cells[row + 2, 3].Value = "Sản phẩm";
 					worksheet.Cells[row + 2, 4].Value = "Số lượng";
