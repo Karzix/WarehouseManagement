@@ -49,7 +49,10 @@ namespace WarehouseManagement.Service.Implementation
                         user = new UserModel { UserName = identityUser.UserName, Email = identityUser.Email, Role= "superadmin" };
 
                     }
-
+                    else
+                    {
+                        return result.BuildError("Mật khẩu không chính xác");
+                    }
                 }
                 else if (login.UserName == "kiet021101002@tgu.edu.vn")
                 {
@@ -70,7 +73,7 @@ namespace WarehouseManagement.Service.Implementation
                 }
                 else
                 {
-                    return result.BuildError(ERR_MSG_UserNotFound);
+                    return result.BuildError("Tài khoản không tồn tại trên hệ thống");
                 }
             }
             catch (Exception ex)
