@@ -137,7 +137,7 @@ namespace WarehouseManagement.API.Controllers
 							SupplierName = x.SupplierName,
 							SupplierId = x.SupplierId,
 							ProductId = x.ProductId,
-						}).DistinctBy(x => new { x.SupplierId, x.ProductId }).ToList();
+						}).DistinctBy(x => new { x.SupplierId, x.ProductId }).OrderBy(x=>x.SupplierId).ToList();
 						foreach (var item in listExportProductDistinct)
 						{
 							foreach (var item2 in listExportProduct)
@@ -151,8 +151,11 @@ namespace WarehouseManagement.API.Controllers
 						worksheet.Cells[row + 3, 1].Value = listDate[j];
 						for (int k = 0; k < listExportProductDistinct.Count; k++)
 						{
-							worksheet.Cells[row + 3 + k, 2].Value = listExportProductDistinct[k].SupplierName;
-							worksheet.Cells[row + 3 + k, 3].Value = listExportProductDistinct[k].ProductName;
+                            if (k == 0 || listExportProductDistinct[k].SupplierId != listExportProductDistinct[k - 1].SupplierId)
+                            {
+                                worksheet.Cells[row + 3 + k, 2].Value = listExportProductDistinct[k].SupplierName;
+                            }
+                            worksheet.Cells[row + 3 + k, 3].Value = listExportProductDistinct[k].ProductName;
 							worksheet.Cells[row + 3 + k, 4].Value = listExportProductDistinct[k].Quantity;
 							tong += listExportProductDistinct[k].Quantity;
 

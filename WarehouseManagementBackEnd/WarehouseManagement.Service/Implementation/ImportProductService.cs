@@ -136,7 +136,7 @@ namespace WarehouseManagement.Service.Implementation
                     Id = x.Id,
                     InboundReceiptId = (int)x.InboundReceiptId,
                     ProductName = x.Product.Name,
-                    SipplierName = x.Supplier.Name,
+                    SupplierName = x.Supplier.Name,
                     SupplierId = x.SupplierId,
                     ProductId = x.ProductId,
                     //CreatedOn = x.CreatedOn,
@@ -166,7 +166,7 @@ namespace WarehouseManagement.Service.Implementation
                     InboundReceiptId = (int)x.InboundReceiptId,
                     ProductId = x.ProductId,
                     ProductName = x.Product.Name,
-                    SipplierName = x.Supplier.Name,
+                    SupplierName = x.Supplier.Name,
                     SupplierId = x.SupplierId,
                     //CreatedOn= x.CreatedOn,
                 }).First();
@@ -201,7 +201,7 @@ namespace WarehouseManagement.Service.Implementation
                         InboundReceiptId = (int)x.InboundReceiptId,
                         ProductId = x.ProductId,
                         ProductName = x.Product.Name,
-                        SipplierName = x.Supplier.Name,
+                        SupplierName = x.Supplier.Name,
 					})
 					.ToList();
 

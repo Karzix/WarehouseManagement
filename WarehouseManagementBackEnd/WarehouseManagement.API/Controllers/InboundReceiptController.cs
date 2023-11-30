@@ -133,9 +133,9 @@ namespace WarehouseManagement.API.Controllers
                             InboundReceiptId = x.InboundReceiptId,
                             ProductId = x.ProductId,
                             ProductName = x.ProductName,
-                            SipplierName = x.SipplierName,
+                            SupplierName = x.SupplierName,
                             SupplierId = x.SupplierId,
-                        }).DistinctBy(x=> new {x.SupplierId, x.ProductId }).ToList();
+                        }).DistinctBy(x=> new {x.SupplierId, x.ProductId }).OrderBy(x=>x.SupplierId).ToList();
                         foreach(var item in listImportProductDistinct)
                         {
                             foreach(var item2 in listImportProduct)
@@ -149,7 +149,11 @@ namespace WarehouseManagement.API.Controllers
                         worksheet.Cells[row + 3, 1].Value = listDate[j];
                         for(int k = 0;k< listImportProductDistinct.Count; k++)
                         {
-                            worksheet.Cells[row + 3 + k, 2].Value = listImportProductDistinct[k].SipplierName;
+                            if (k == 0 || listImportProductDistinct[k].SupplierId != listImportProductDistinct[k - 1].SupplierId)
+                            {
+                                worksheet.Cells[row + 3 + k, 2].Value = listImportProductDistinct[k].SupplierName;
+                            }
+                            
                             worksheet.Cells[row + 3 + k, 3].Value = listImportProductDistinct[k].ProductName;
                             worksheet.Cells[row + 3 + k, 4].Value = listImportProductDistinct[k].Quantity;
                             tong += listImportProductDistinct[k].Quantity;
