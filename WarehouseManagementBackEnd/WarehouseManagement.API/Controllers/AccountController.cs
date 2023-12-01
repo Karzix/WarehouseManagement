@@ -10,6 +10,7 @@ namespace WarehouseManagement.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     //[Authorize(AuthenticationSchemes = "Bearer")]
+    ///sgvsdvsd
     public class AccountController : Controller
     {
         IAuthService _authService;
