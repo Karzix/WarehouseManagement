@@ -9,7 +9,7 @@ namespace WarehouseManagement.Model.Dto
 {
     public class SupplierDto:BaseDto
     {
-        public string? Name { get; set; }
+        public string Name { get; set; }
         public string? Email { get; set; }
     }
 }

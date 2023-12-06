@@ -9,7 +9,7 @@ namespace WarehouseManagement.Model.Dto
 {
     public class ProductDto:BaseDto
     {
-        public string? Name { get; set; }
+        public string Name { get; set; }
         public string? Description { get; set; }
         public int? Quantity { get; set; }
     }

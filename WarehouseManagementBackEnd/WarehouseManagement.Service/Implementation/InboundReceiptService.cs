@@ -86,11 +86,31 @@ namespace WarehouseManagement.Service.Implementation
 						ProductId = item.ProductId,
 						SupplierId = item.SupplierId,
 					};
-					listImportProduct.Add(product);
-				});
+					
+                    var productRemianming = _productRemainingRepository.FindBy(x=>x.SupplierId == item.SupplierId && x.ProductId == item.ProductId && x.WarehouseId == request.WarehouseId).FirstOrDefault();
+                    if(productRemianming == null)
+                    {
+                        var newProductRemainming = new ProductRemaining
+                        {
+                            Quantity = item.Quantity,
+                            CreatedBy = UserName,
+                            CreatedOn = DateTime.UtcNow,
+                            ProductId = item.ProductId,
+                            SupplierId = item.SupplierId,
+                            WarehouseId = request.WarehouseId,
+                        };
+                        _productRemainingRepository.Add(newProductRemainming);
+                    }
+                    else
+                    {
+                        productRemianming.Quantity += item.Quantity;
+                        _productRemainingRepository.Edit(productRemianming);
+                    }
+                    listImportProduct.Add(product);
+                });
 				_importProductRepository.AddRange(listImportProduct);
                 request.Id = inboundReceipt.Id;
-                    result.BuildResult(request);    
+                result.BuildResult(request);    
 
 
 

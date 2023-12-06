@@ -9,8 +9,8 @@ namespace WarehouseManagement.Model.Dto
 {
     public class WarehouseDto: BaseDto
     {
-        public string? Name { get; set; }
-        public string? Address { get; set; }
+        public string Name { get; set; }
+        public string Address { get; set; }
         public string? Managent { get; set; }
         public string? Email { get; set; }
     }

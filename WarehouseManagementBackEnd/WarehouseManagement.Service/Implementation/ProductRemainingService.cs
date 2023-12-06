@@ -251,16 +251,6 @@ namespace WarehouseManagement.Service.Implementation
 								predicate = predicate.And(m => m.Warehouse.Id.Equals(int.Parse(filter.Value)));
 								break;
 							}
-						case "IsDelete":
-							{
-								bool isDetete = false;
-								if (filter.Value == "True" || filter.Value == "true")
-								{
-									isDetete = true;
-								}
-								predicate = predicate.And(m => m.IsDeleted == isDetete);
-							}
-							break;
 						case "ProductId":
 							predicate = predicate.And(m => m.ProductId.Equals(int.Parse(filter.Value)));
 							break;

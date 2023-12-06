@@ -195,7 +195,6 @@ namespace WarehouseManagement.Service.Implementation
                         case "userName":
                             predicate = predicate.And(m => m.Email.Equals(filter.Value));
                             break;
-
                         default:
                             break;
                     }

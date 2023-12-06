@@ -30,6 +30,10 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<SupplierDto>();
             try
             {
+                if (supplier.Name == "")
+                {
+                    return result.BuildError("Không bỏ trống tên");
+                }
                 var UserName = ClaimHelper.GetClainByName(_httpContextAccessor, "UserName");
                 if (UserName == null)
                 {
@@ -79,6 +83,10 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<SupplierDto>();
             try
             {
+                if (supplier.Name == "")
+                {
+                    return result.BuildError("Không bỏ trống tên");
+                }
                 var request = _supplierRepository.Get(supplier.Id.Value);
                 request.Name = supplier.Name;
                 request.Email = supplier.Email;

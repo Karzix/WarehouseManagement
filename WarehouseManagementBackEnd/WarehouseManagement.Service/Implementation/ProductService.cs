@@ -36,6 +36,10 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<ProductDto>();
             try
             {
+                if (request.Name == "")
+                {
+                    return result.BuildError("Không bỏ trống tên");
+                }
                 var UserName = ClaimHelper.GetClainByName(_httpContextAccessor, "UserName");
                 if (UserName == null)
                 {
@@ -130,6 +134,10 @@ namespace WarehouseManagement.Service.Implementation
             var result = new AppResponse<ProductDto>();
             try
             {
+                if (request.Name == "")
+                {
+                    return result.BuildError("Không bỏ trống tên");
+                }
                 var product = _productRepository.Get(request.Id.Value);
                 product.Description = request.Description;
                 product.Quantity = request.Quantity;
